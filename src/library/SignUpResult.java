@@ -4,8 +4,8 @@ import java.io.Serializable;
 
 public class SignUpResult implements Serializable {
 	private static final long serialVersionUID = 2L;
-	public static final int SIGNUP = 0;
-	public static final int NOT_EXIST = 1;
+	public static final int NOT_EXIST = 0;
+	public static final int ID_EXIST = 1;
 	private int result;
 	
 	public SignUpResult(int result) {
@@ -21,8 +21,8 @@ public class SignUpResult implements Serializable {
 	public static synchronized int getNotExist() {
 		return NOT_EXIST;
 	}
-	public static synchronized int getSignUp() {
-		return SIGNUP;
+	public static synchronized int getIdExist() {
+		return ID_EXIST;
 	}
 	@Override
 	public String toString() {
