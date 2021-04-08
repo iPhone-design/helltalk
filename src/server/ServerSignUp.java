@@ -24,7 +24,7 @@ public class ServerSignUp {
 			
 			User user = (User) ois.readObject();
 			SignUpResult result = null;
-			int idCheck = dao.login(user.getId(), user.getPassword());
+			int idCheck = dao.idCheck(user.getId());
 
 			System.out.println(idCheck); // 체크용 출력
 			
