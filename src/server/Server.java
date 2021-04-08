@@ -6,7 +6,7 @@ import java.net.Socket;
 
 public class Server {
 	private final static int PORT = 2222;
-	private static UserEntrance userEnterace;
+	private static UserChat userEnterace;
 	
 	public static void main(String[] args) {
 		try (ServerSocket server = new ServerSocket(PORT)){
@@ -15,7 +15,7 @@ public class Server {
 				Socket socket = server.accept();
 				
 				System.out.println("사용자 입장");
-				userEnterace = new UserEntrance(socket);
+				userEnterace = new UserChat(socket);
 			}
 		} catch (IOException e) {
 			e.printStackTrace();

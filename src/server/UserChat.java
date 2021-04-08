@@ -6,13 +6,13 @@ import java.io.IOException;
 import java.net.Socket;
 import java.util.Scanner;
 
-public class UserEntrance {
+public class UserChat {
 	private Socket client;
 	private DataInputStream reader;
 	private DataOutputStream writer;
 	private Thread chat;
 	
-	public UserEntrance(Socket client) {
+	public UserChat(Socket client) {
 		this.client = client;
 		try {
 			writer = new DataOutputStream(client.getOutputStream());
