@@ -21,7 +21,10 @@ public class TestServer {
 					ObjectInputStream ois = new ObjectInputStream(client.getInputStream());
 					ObjectOutputStream oos = new ObjectOutputStream(client.getOutputStream());
 					
-					User user = (User) ois.readObject();
+					User user;
+					user = (User) ois.readObject();
+					
+					dao.addUser(user.getId(), user.getPassword(), user.getNickname(), user.getAge());
 					
 					oos.writeObject(user);
 					oos.flush();

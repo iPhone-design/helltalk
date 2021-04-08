@@ -8,7 +8,6 @@ import java.net.UnknownHostException;
 
 import library.LoginResult;
 import library.User;
-
 // TODO 
 // GUI 에서 입력한 로그인, 회원가입 객체 -> 서버로 전송
 public class SocketClient {
@@ -18,8 +17,8 @@ public class SocketClient {
 	
 	public LoginResult login(User user) {
 		LoginResult result = null;
-		try (Socket socket = new Socket(SERVER_ADDRESS,	PORT)) {
-			
+		try  {
+			Socket socket = new Socket(SERVER_ADDRESS,	PORT);
 			ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
 			ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
 			
@@ -27,6 +26,7 @@ public class SocketClient {
 			oos.flush();
 			
 			result = (LoginResult) ois.readObject();
+			
 			
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
@@ -53,7 +53,29 @@ public class SocketClient {
 	
 	public static void main(String[] args) {
 		SocketClient client = new SocketClient();
-		LoginResult result = client.login(new User("보라돌이", "1111"));
-		System.out.println(result);
+		User user = new User("보라돌이", "1", "뽀라", 250);
+		client.add(user);
 	}
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
