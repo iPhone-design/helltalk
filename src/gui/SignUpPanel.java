@@ -14,15 +14,16 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
-import client.SocketClient;
+import client.SignUpClient;
+import library.SignUpResult;
 import library.User;
 
 public class SignUpPanel extends JPanel {
-	private SocketClient socket;
+	private SignUpClient socket;
 	public SignUpPanel(MainFrame frame) {
 		
 		try {
-			socket = new SocketClient();
+			socket = new SignUpClient();
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
@@ -91,13 +92,27 @@ public class SignUpPanel extends JPanel {
 		JButton btnNewButton = new JButton("회원가입");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				String message = "";
+
 				if (idText.getText().equals("") || pwText.getPassword().length == 0
 						|| conPwText.getPassword().length == 0 || nickNameText.getText().equals("") 
 						|| ageText.getText().equals("")) {
-					JOptionPane.showMessageDialog(null, "빈 칸을 채워주세요.");
+					message = "빈 칸을 채워주세요.";
 				} else {
-//					User user = new User();
-//					SignUpResult response = socket.add();
+					User user = new User(idText.getText()
+										, pwText.getPassword().toString()
+										, nickNameText.getText()
+										, Integer.parseInt(ageText.getText()));
+					
+					SignUpResult response = socket.add(user);
+					int result = response.getResult();
+					if (result == SignUpResult.ID_EXIST) {
+						message = "아이디가 중복되었습니다.";
+					} else if (result == SignUpResult.NOT_EXIST) {
+						message = "가입이 완료되었습니다.";
+						
+					}
+					JOptionPane.showMessageDialog(SignUpPanel.this, message);
 				}
 			}
 		});
