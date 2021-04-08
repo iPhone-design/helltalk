@@ -1,8 +1,14 @@
 package library;
+
+import java.io.Serializable;
+
 // TODO
 // 
-public class LoginResult {
-	public static final long serialVersionUID = 1L;
+public class LoginResult implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 238733383606881091L;
 	public static final int OK = 0;
 	public static final int NOT_EXIST = 1;
 	public static final int WRONG_PASSWORD = 2;
