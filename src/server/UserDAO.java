@@ -89,18 +89,14 @@ public class UserDAO {
 					System.out.println("나이: " + rs.getInt("age"));
 					System.out.println("방장여부(0:일반, 1:방장) : " + dbStatus);
 					if (id.equals(dbId) && !password.equals(dbPw)) {
-						result = 3;
+						result = 2; // 비번틀리면 2 출력
 						return result;
-					}
-					else if (id.equals(dbId) && password.equals(dbPw) && dbStatus == 0) {
-						result = 2; // 방장아닐때 2
-						return result;
-					} else if (id.equals(dbId) && password.equals(dbPw) && dbStatus == 1) {
-						result = 1; // 방장일때 1
+					} else if (id.equals(dbId) && password.equals(dbPw)) {
+						result = 1; // id, password 일치할때 1 출력
 						return result;
 					}
 				} else {
-					result = 0;
+					result = 0; // 없는아이디일때 0출력
 					return result;
 				}
 			}

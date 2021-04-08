@@ -9,6 +9,7 @@ public class Server {
 	private static UserChat userEnterace;
 	
 	public static void main(String[] args) {
+		UserDAO userDAO = new UserDAO();
 		try (ServerSocket server = new ServerSocket(PORT)){
 			while (true) {
 				System.out.println("서버 오픈");

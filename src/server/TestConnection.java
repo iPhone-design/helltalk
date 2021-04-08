@@ -13,9 +13,8 @@ public class TestConnection {
 //			System.out.println(dao.idCheck("test1")); // 존재하는 id일때 1출력
 //			System.out.println(dao.idCheck("없는id")); // 없는 id일때는 0출력
 			
-//			System.out.println(dao.login("moderator1", "moderator1")); // 방장이면 1출력
-//			System.out.println(dao.login("test1", "test1")); // 방장아니면 2출력
-//			System.out.println(dao.login("test1", "틀린비번")); // 비번틀리면 3출력
+//			System.out.println(dao.login("moderator1", "moderator1")); // id, password 맞으면 1출력
+//			System.out.println(dao.login("test1", "틀린비번")); // 비번틀리면 2출력
 //			System.out.println(dao.login("없는계정", "없는비번")); // 없는아이디일때 0출력
 			
 		} catch (SQLException e) {
