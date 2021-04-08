@@ -3,15 +3,20 @@ package gui;
 import java.awt.Dimension;
 
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.SystemColor;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class SignUpPanel extends JPanel {
-	public SignUpPanel() {
+	public SignUpPanel(MainFrame frame) {
 		setBackground(new Color(255, 228, 225));
 		JLabel idLbl = new JLabel("ID");
 		idLbl.setFont(new Font("함초롬바탕", Font.PLAIN, 23));
@@ -74,10 +79,28 @@ public class SignUpPanel extends JPanel {
 		add(lblNewLabel);
 		
 		JButton btnNewButton = new JButton("회원가입");
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (idText.getText().equals("") || pwText.getPassword().length == 0
+						|| conPwText.getPassword().length == 0 || nickNameText.getText().equals("") 
+						|| ageText.getText().equals("")) {
+					JOptionPane.showMessageDialog(null, "빈 칸을 채워주세요.");
+				}
+			}
+		});
 		btnNewButton.setFont(new Font("함초롬바탕", Font.PLAIN, 20));
 		btnNewButton.setBackground(new Color(255, 182, 193));
 		btnNewButton.setForeground(new Color(255, 255, 255));
-		btnNewButton.setBounds(451, 523, 150, 45);
+		btnNewButton.setBounds(457, 520, 150, 45);
 		add(btnNewButton);
+		
+		JButton btnNewButton_1 = new JButton("대충 집모양");
+		btnNewButton_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				frame.changeFirstPanel();
+			}
+		});
+		btnNewButton_1.setBounds(27, 23, 97, 23);
+		add(btnNewButton_1);
 	}
 }
