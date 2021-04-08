@@ -1,22 +1,32 @@
 package gui;
 
+import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.IOException;
 
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.SystemColor;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
+
+import client.SocketClient;
+import library.User;
 
 public class SignUpPanel extends JPanel {
+	private SocketClient socket;
 	public SignUpPanel(MainFrame frame) {
+		
+		try {
+			socket = new SocketClient();
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
+		
 		setBackground(new Color(255, 228, 225));
 		JLabel idLbl = new JLabel("ID");
 		idLbl.setFont(new Font("함초롬바탕", Font.PLAIN, 23));
@@ -85,6 +95,9 @@ public class SignUpPanel extends JPanel {
 						|| conPwText.getPassword().length == 0 || nickNameText.getText().equals("") 
 						|| ageText.getText().equals("")) {
 					JOptionPane.showMessageDialog(null, "빈 칸을 채워주세요.");
+				} else {
+//					User user = new User();
+//					SignUpResult response = socket.add();
 				}
 			}
 		});
