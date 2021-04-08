@@ -6,7 +6,7 @@ import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-import library.LoginResult;
+import library.SignUpResult;
 import library.User;
 
 public class ServerSignUp {
@@ -21,28 +21,18 @@ public class ServerSignUp {
 			System.out.println("클라이언트 접속");
 			ObjectOutputStream oos = new ObjectOutputStream(client.getOutputStream());
 			ObjectInputStream ois = new ObjectInputStream(client.getInputStream());
+			
 			User user = (User) ois.readObject();
-			LoginResult result = null;
-//						int countLogin = dao.login(user.getId(), user.getPassword());
-//						
-//						if (countLogin == 0) {
-//							result = new LoginResult(LoginResult.NOT_EXIST);
-//						} else if (countLogin == 2) {
-//							result = new LoginResult(LoginResult.WRONG_PASSWORD);
-//						} else if (countLogin == 1) {
-//							result = new LoginResult(LoginResult.OK);
-//						}
-//						oos.flush();
-
-//						oos.reset();
+			SignUpResult result = null;
 			int idCheck = dao.login(user.getId(), user.getPassword());
 
-			System.out.println(idCheck);
+			System.out.println(idCheck); // 체크용 출력
+			
 			if (idCheck == 0) { // 없는 아이디라 가입가능할때
-				result = new LoginResult(LoginResult.JOIN);
+				result = new SignUpResult(SignUpResult.SIGNUP);
 				dao.addUser(user.getId(), user.getPassword(), user.getNickname(), user.getAge());
 			} else if (idCheck == 1) { // 이미 존재하는 아이디라 가입 안될때
-				result = new LoginResult(LoginResult.NOT_EXIST);
+				result = new SignUpResult(SignUpResult.NOT_EXIST);
 			}
 			System.out.println(result);
 			oos.writeObject(result);
