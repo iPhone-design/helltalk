@@ -29,10 +29,10 @@ public class ServerSignUp {
 			System.out.println(idCheck); // 체크용 출력
 			
 			if (idCheck == 0) { // 없는 아이디라 가입가능할때
-				result = new SignUpResult(SignUpResult.SIGNUP);
+				result = new SignUpResult(SignUpResult.NOT_EXIST);
 				dao.addUser(user.getId(), user.getPassword(), user.getNickname(), user.getAge());
 			} else if (idCheck == 1) { // 이미 존재하는 아이디라 가입 안될때
-				result = new SignUpResult(SignUpResult.NOT_EXIST);
+				result = new SignUpResult(SignUpResult.ID_EXIST);
 			}
 			System.out.println(result);
 			oos.writeObject(result);
