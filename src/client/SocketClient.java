@@ -18,19 +18,22 @@ public class SocketClient {
 	
 	static LoginResult result = null;
 	static User user = new User();
+	private Socket socket;
+	private ObjectOutputStream oos;
+	private ObjectInputStream ois;
 	
+	public SocketClient() throws IOException {
+		socket = new Socket(SERVER_ADDRESS, PORT);
+		oos = new ObjectOutputStream(socket.getOutputStream());
+		ois = new ObjectInputStream(socket.getInputStream());
+	}
+
 	public LoginResult login(User user) {
-		try (Socket socket = new Socket(SERVER_ADDRESS,	PORT)) {
-			
-			ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
-			ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
-			
+		try {
 			oos.writeObject(user);	// 서버에 객체 전달
 			oos.flush();
 			
-			
 			result = (LoginResult) ois.readObject();
-			
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -43,8 +46,7 @@ public class SocketClient {
 	
 	public void add(User user) {
 		LoginResult result = null;
-		try (Socket socket = new Socket(SERVER_ADDRESS,	PORT)) {
-			ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
+		try  {
 			oos.writeObject(user);
 			oos.flush();
 		} catch (UnknownHostException e) {
@@ -54,9 +56,19 @@ public class SocketClient {
 		}
 	}
 	
-	public static void main(String[] args) {
+	public void closeSocket() {
+		try {
+			socket.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public static void main(String[] args) throws IOException, InterruptedException {
 		SocketClient client = new SocketClient();
 		LoginResult result = client.login(new User("moderator1", "moderator1"));
+//		client.add(new User("8", "8", "8", 8));
 		System.out.println(result);
+		Thread.sleep(3000); //3초 뒤에 닫힘 
 	}
 }
