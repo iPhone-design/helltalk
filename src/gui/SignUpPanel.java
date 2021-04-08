@@ -3,27 +3,37 @@ package gui;
 import java.awt.Dimension;
 
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.SystemColor;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class SignUpPanel extends JPanel {
-	public SignUpPanel() {
+	public SignUpPanel(MainFrame frame) {
 		setBackground(new Color(255, 228, 225));
 		JLabel idLbl = new JLabel("ID");
 		idLbl.setFont(new Font("함초롬바탕", Font.PLAIN, 23));
 		idLbl.setBounds(332, 112, 36, 52);
+		
 		JLabel pwLbl = new JLabel("PASSWORD");
 		pwLbl.setFont(new Font("함초롬바탕", Font.PLAIN, 23));
 		pwLbl.setBounds(234, 193, 134, 52);
+		
 		JLabel conPwLbl = new JLabel("PASSWORD 확인");
 		conPwLbl.setFont(new Font("함초롬바탕", Font.PLAIN, 23));
 		conPwLbl.setBounds(189, 260, 179, 61);
+		
 		JLabel nickNameLbl = new JLabel("닉네임");
 		nickNameLbl.setFont(new Font("함초롬바탕", Font.PLAIN, 23));
 		nickNameLbl.setBounds(300, 345, 68, 52);
+		
 		JLabel ageLbl = new JLabel("나이");
 		ageLbl.setFont(new Font("함초롬바탕", Font.PLAIN, 23));
 		ageLbl.setBounds(318, 427, 56, 52);
@@ -31,15 +41,19 @@ public class SignUpPanel extends JPanel {
 		JTextField idText = new JTextField();
 		idText.setFont(new Font("굴림", Font.PLAIN, 16));
 		idText.setBounds(386, 112, 309, 45);
-		JTextField pwText = new JTextField();
+		
+		JPasswordField pwText = new JPasswordField();
 		pwText.setFont(new Font("굴림", Font.PLAIN, 16));
 		pwText.setBounds(386, 193, 309, 45);
-		JTextField conPwText = new JTextField();
+		
+		JPasswordField conPwText = new JPasswordField();
 		conPwText.setFont(new Font("굴림", Font.PLAIN, 16));
 		conPwText.setBounds(386, 273, 309, 45);
+		
 		JTextField nickNameText = new JTextField();
 		nickNameText.setFont(new Font("굴림", Font.PLAIN, 16));
 		nickNameText.setBounds(386, 354, 309, 45);
+		
 		JTextField ageText = new JTextField();
 		ageText.setFont(new Font("굴림", Font.PLAIN, 16));
 		ageText.setBounds(386, 436, 309, 45);
@@ -65,10 +79,28 @@ public class SignUpPanel extends JPanel {
 		add(lblNewLabel);
 		
 		JButton btnNewButton = new JButton("회원가입");
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (idText.getText().equals("") || pwText.getPassword().length == 0
+						|| conPwText.getPassword().length == 0 || nickNameText.getText().equals("") 
+						|| ageText.getText().equals("")) {
+					JOptionPane.showMessageDialog(null, "빈 칸을 채워주세요.");
+				}
+			}
+		});
 		btnNewButton.setFont(new Font("함초롬바탕", Font.PLAIN, 20));
 		btnNewButton.setBackground(new Color(255, 182, 193));
 		btnNewButton.setForeground(new Color(255, 255, 255));
-		btnNewButton.setBounds(451, 523, 150, 45);
+		btnNewButton.setBounds(457, 520, 150, 45);
 		add(btnNewButton);
+		
+		JButton btnNewButton_1 = new JButton("대충 집모양");
+		btnNewButton_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				frame.changeFirstPanel();
+			}
+		});
+		btnNewButton_1.setBounds(27, 23, 97, 23);
+		add(btnNewButton_1);
 	}
 }
