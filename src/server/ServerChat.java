@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-public class Server {
+public class ServerChat {
 	private final static int PORT = 2222;
 	
 	public static void main(String[] args) {
