@@ -8,6 +8,7 @@ public class Server {
 	private final static int PORT = 2222;
 	
 	public static void main(String[] args) {
+		UserDAO userDAO = new UserDAO();
 		try (ServerSocket server = new ServerSocket(PORT)){
 			System.out.println("서버 오픈");
 			while (true) {

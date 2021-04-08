@@ -58,10 +58,10 @@ public class UserDAO {
 			pstmt.setString(1, id);
 			try (ResultSet rs = pstmt.executeQuery()) {
 				if (rs.next()) {
-					result = 0; // 이미 존재하는 아이디일때
+					result = 1; // 가입가능한 아이디일때
 					return result;
 				} else {
-					result = 1; // 가입가능한 아이디일때
+					result = 0; // 이미 존재하는 아이디일때
 					return result;
 				}
 			}
@@ -81,23 +81,22 @@ public class UserDAO {
 				if (rs.next()) {
 					String dbId = rs.getString("id");
 					String dbPw = rs.getString("password");
-					int dbActive = rs.getInt("active");
+					int dbStatus = rs.getInt("status");
 					
 					System.out.println("입력한 아이디: " + id + ", 저장된 아이디: " + dbId);
-					System.out.println("입력한 비밀번호: " + password + ", 입력한 비밀번호: " + dbPw);
-					System.out.println("휴면계정여부(0:휴면, 1:활성) : " + dbActive);
+					System.out.println("입력한 비밀번호: " + password + ", 저장된 비밀번호: " + dbPw);
+					System.out.println("닉네임: " + rs.getString("nickname"));
+					System.out.println("나이: " + rs.getInt("age"));
+					System.out.println("방장여부(0:일반, 1:방장) : " + dbStatus);
 					if (id.equals(dbId) && !password.equals(dbPw)) {
-						result = 2;
+						result = 2; // 비번틀리면 2 출력
 						return result;
-					} else if (id.equals(dbId) && password.equals(dbPw) && dbActive == 0) {
-						result = 3;
-						return result;
-					} else if (id.equals(dbId) && password.equals(dbPw) && dbActive == 1) {
-						result = 1;
+					} else if (id.equals(dbId) && password.equals(dbPw)) {
+						result = 1; // id, password 일치할때 1 출력
 						return result;
 					}
 				} else {
-					result = 0;
+					result = 0; // 없는아이디일때 0출력
 					return result;
 				}
 			}
