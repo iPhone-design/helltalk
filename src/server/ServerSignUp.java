@@ -9,7 +9,7 @@ import java.net.Socket;
 import library.LoginResult;
 import library.User;
 
-public class MainServer {
+public class ServerSignUp {
 	private static final int PORT = 2222;
 
 	public static void main(String[] args) {
