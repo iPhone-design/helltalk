@@ -9,7 +9,7 @@ public class User implements Serializable {
 	private String password;
 	private String nickname;
 	private int age;
-	private int active;
+	private int status;
 	
 	public User(String id, String password) {
 		super();
@@ -61,26 +61,26 @@ public class User implements Serializable {
 		this.age = age;
 	}
 
-	public int getActive() {
-		return active;
+	public int getStatus() {
+		return status;
 	}
 
-	public void setActive(int active) {
-		this.active = active;
+	public void setStatus(int status) {
+		this.status = status;
 	}
 
 	
 	@Override
 	public String toString() {
-		return "User [id=" + id + ", password=" + password + ", nickname=" + nickname + ", age=" + age + ", active="
-				+ active + "]";
+		return "User [id=" + id + ", password=" + password + ", nickname=" + nickname + ", age=" + age + ", status="
+				+ status + "]";
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + active;
+		result = prime * result + status;
 		result = prime * result + age;
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result + ((nickname == null) ? 0 : nickname.hashCode());
@@ -97,7 +97,7 @@ public class User implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		User other = (User) obj;
-		if (active != other.active)
+		if (status != other.status)
 			return false;
 		if (age != other.age)
 			return false;
