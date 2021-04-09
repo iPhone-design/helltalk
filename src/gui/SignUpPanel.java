@@ -16,7 +16,6 @@ import javax.swing.JTextField;
 
 import client.SignUpClient;
 import library.LoginResult;
-import library.SignUpResult;
 import library.User;
 
 public class SignUpPanel extends JPanel {
@@ -106,8 +105,15 @@ public class SignUpPanel extends JPanel {
 										, nickNameText.getText()
 										, Integer.parseInt(ageText.getText()));
 					
+					System.out.println(user.toString());
+					
 					LoginResult response = socket.add(user);
+					
+					System.out.println("response : " + response);
+					
 					int result = response.getResult();
+					System.out.println("SignUp Panel " + result);
+					
 					if (result == LoginResult.ID_EXIST) {
 						message = "아이디가 중복되었습니다.";
 					} else if (result == LoginResult.NOT_EXIST) {
@@ -115,6 +121,7 @@ public class SignUpPanel extends JPanel {
 						frame.changeLoginPanel();
 					}
 					JOptionPane.showMessageDialog(SignUpPanel.this, message);
+					
 				}
 			}
 		});

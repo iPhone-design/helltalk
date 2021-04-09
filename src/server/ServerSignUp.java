@@ -31,9 +31,9 @@ public class ServerSignUp {
 		
 					System.out.println(idCheck); // 체크용 출력
 					
-					if (request.getChoose() == 1) {
+					if (request.getChoose() == 0) {
 						
-					} else if (request.getChoose() == 0) {
+					} else if (request.getChoose() == 1) {
 						if (idCheck == 1) { // 없는 아이디라 가입가능할때
 							result = new LoginResult(LoginResult.OK);
 							dao.addUser(request.getUser().getId()
