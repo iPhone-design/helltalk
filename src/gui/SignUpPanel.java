@@ -15,6 +15,7 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 import client.SignUpClient;
+import library.LoginResult;
 import library.SignUpResult;
 import library.User;
 
@@ -105,11 +106,11 @@ public class SignUpPanel extends JPanel {
 										, nickNameText.getText()
 										, Integer.parseInt(ageText.getText()));
 					
-					SignUpResult response = socket.add(user);
+					LoginResult response = socket.add(user);
 					int result = response.getResult();
-					if (result == SignUpResult.ID_EXIST) {
+					if (result == LoginResult.ID_EXIST) {
 						message = "아이디가 중복되었습니다.";
-					} else if (result == SignUpResult.NOT_EXIST) {
+					} else if (result == LoginResult.NOT_EXIST) {
 						message = "가입이 완료되었습니다.";
 						frame.changeLoginPanel();
 					}

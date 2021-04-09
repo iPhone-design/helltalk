@@ -50,7 +50,7 @@ public class UserDAO {
 		return -1;
 	}
 	
-	public int idCheck(String id) { // 아이디 중복여부>어차피 pk인데 필요한가?
+	public int idCheck(String id) {
 		int result = 0;
 		String query = "SELECT * FROM user WHERE id = ?";
 		try (Connection conn = getConnection();

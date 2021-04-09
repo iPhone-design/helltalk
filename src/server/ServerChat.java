@@ -14,7 +14,7 @@ public class ServerChat {
 			while (true) {
 				Socket socket = server.accept();
 				
-				Chat userEnterace = new Chat(socket);
+				ChatServer userEnterace = new ChatServer(socket);
 				userEnterace.start();
 			}
 		} catch (IOException e) {

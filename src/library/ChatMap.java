@@ -1,4 +1,4 @@
-package server;
+package library;
 
 import java.io.DataOutputStream;
 import java.io.IOException;

@@ -8,62 +8,52 @@ import java.net.UnknownHostException;
 
 import library.LoginResult;
 import library.User;
-import library.UserRequest;
 
-public class SignUpClient {
+// TODO 
+// GUI 에서 입력한 로그인, 회원가입 객체 -> 서버로 전송
+public class SocketClient {
 //	private final String SERVER_ADDRESS = "192.168.100.33";
 	private final static String SERVER_ADDRESS = "localhost";
 	private final static int PORT = 2222;
 	
+	static LoginResult result = null;
 	static User user = new User();
 	private Socket socket;
 	private ObjectOutputStream oos;
 	private ObjectInputStream ois;
 	
-	public SignUpClient() throws IOException {
+	public SocketClient() throws IOException {
 		socket = new Socket(SERVER_ADDRESS, PORT);
 		oos = new ObjectOutputStream(socket.getOutputStream());
 		ois = new ObjectInputStream(socket.getInputStream());
 	}
 
-	// 로그인 요청
 	public LoginResult login(User user) {
-		LoginResult result = null;
 		try {
-			oos.writeObject(new UserRequest(user, 0));
+			oos.writeObject(user);	// 서버에 객체 전달
 			oos.flush();
+			
 			result = (LoginResult) ois.readObject();
-			Thread.sleep(1);
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
 		return result;
 	}
 	
-	// 회원가입 요청
-	public LoginResult add(User user) {
+	public void add(User user) {
 		LoginResult result = null;
 		try  {
-			oos.writeObject(new UserRequest(user, 1));
+			oos.writeObject(user);
 			oos.flush();
-			result = (LoginResult) ois.readObject();
-			Thread.sleep(1);
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
 		}
-		return result;
 	}
 	
 	public void closeSocket() {
@@ -73,26 +63,12 @@ public class SignUpClient {
 			e.printStackTrace();
 		}
 	}
+	
+	public static void main(String[] args) throws IOException, InterruptedException {
+		SocketClient client = new SocketClient();
+//		LoginResult result = client.login(new User("moderator1", "moderator1"));
+//		client.add(new User("8", "8", "8", 8));
+		System.out.println(result);
+		Thread.sleep(3000); //3초 뒤에 닫힘 
+	}
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
