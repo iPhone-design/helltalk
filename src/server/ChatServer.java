@@ -12,12 +12,14 @@ import library.ChatMap;
 
 public class ChatServer extends Thread {
 	private Socket client;
+	private String roomName;
 	private DataInputStream dis;
 	private DataOutputStream dos;
 	
-	public ChatServer(Socket client) {
+	public ChatServer(Socket client, String roomName) {
 		System.out.println("사용자 접속 성공");
 		this.client = client;
+		this.roomName = roomName;
 		try {
 			dos = new DataOutputStream(client.getOutputStream());
 			dis = new DataInputStream(client.getInputStream());
@@ -25,7 +27,6 @@ public class ChatServer extends Thread {
 			e.printStackTrace();
 		}
 	}
-	
 
 	@Override
 	public void run() {
@@ -33,25 +34,25 @@ public class ChatServer extends Thread {
 		try {
 			id = dis.readUTF();
 			////////////////////////////////////////////////////////////////////로그인 닉네임 으로 바꿔야됨 id가 어케 하지??
-			ChatMap.addUser(id , dos);
-			ChatMap.messageToAll(id + " 님이 입장하셨습니다.");
+			ChatMap.enterUser("test", id , dos);
+			ChatMap.messageToAll(roomName, id + " 님이 입장하셨습니다.");
 			String read = null;
 			
 			while ((read = dis.readUTF())!= null) {
 				if (read.equals("/종료")) {
-//					ChatMap.messageToAll(" 님이 퇴장하셨습니다.");                     나중에 구현 합시다 시부레!
+					// 퇴장 시 메시지 출력이 안됨 ㅜㅜ
+					ChatMap.messageToAll(roomName, " 님이 퇴장하셨습니다.");
 					break;
 				} else if (read.startsWith("/w ")) {
-					ChatMap.sendMessageToOne(read);
+					ChatMap.sendMessageToOne(roomName, read);
 				} else {
-					ChatMap.messageToAll(read);
+					ChatMap.messageToAll(roomName, read);
 				}
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		} finally {
 			try {
-				ChatMap.removeSocket(id);
 				client.close();
 			} catch (IOException e) {
 				e.printStackTrace();
