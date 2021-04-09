@@ -87,7 +87,8 @@ public class UserDAO {
 					System.out.println("입력한 비밀번호: " + password + ", 저장된 비밀번호: " + dbPw);
 					System.out.println("닉네임: " + rs.getString("nickname"));
 					System.out.println("나이: " + rs.getInt("age"));
-					System.out.println("방장여부(0:일반, 1:방장) : " + dbStatus);
+					System.out.println("유저상태(0:로그아웃, 1:로그인, 2:방장");
+					System.out.println("↳" + dbStatus);
 					if (id.equals(dbId) && !password.equals(dbPw)) {
 						result = 2; // 비번틀리면 2 출력
 						return result;

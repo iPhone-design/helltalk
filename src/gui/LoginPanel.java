@@ -61,14 +61,6 @@ public class LoginPanel extends JPanel {
 				
 				LoginResult response = socket.login(
 						new User(idText.getText(), getPassword(pwText.getPassword())));
-				/*
-				 * LoginResult response;
-				 * User a = new User(idText.getText(),
-				 * pwText.getPassword().toString());
-				 * UserRequest b = new UserRequest(a, 0);
-				 * System.out.println(a.toString());
-				 * response = socket.login(a);
-				 */
 				int result = response.getResult();
 				System.out.println(result);
 				String message = "";
