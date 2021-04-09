@@ -18,6 +18,10 @@ public class ChatMap {
 		}
 	}
 	
+	public static void createRoom() {
+		userMap = new HashMap<>();
+	}
+	
 	public static void messageToAll(String message)	{
 		synchronized (userMap) {
 			for (DataOutputStream dos : userMap.values()) {
@@ -30,7 +34,6 @@ public class ChatMap {
 			}
 		}
 	}
-	
 	
 	public static void removeSocket(String id) {
 		synchronized (userMap) {
