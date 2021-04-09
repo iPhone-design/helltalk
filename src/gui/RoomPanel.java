@@ -8,18 +8,20 @@ import javax.swing.JLabel;
 import java.awt.Font;
 
 public class RoomPanel extends JPanel {
-	public RoomPanel() {
+	public RoomPanel(String roomTitle, String name) {
 		setPreferredSize(new Dimension(330, 80));
 		setMaximumSize(new Dimension(330, 80));
 		setBackground(Color.WHITE);
 		setLayout(null);
 		
-		JLabel lblNewLabel = new JLabel("민초");
+		JLabel lblNewLabel = new JLabel();
+		lblNewLabel.setText(name);
 		lblNewLabel.setFont(new Font("굴림", Font.PLAIN, 20));
 		lblNewLabel.setBounds(213, 5, 69, 24);
 		add(lblNewLabel);
 		
-		JLabel lblNewLabel_1 = new JLabel("방1");
+		JLabel lblNewLabel_1 = new JLabel();
+		lblNewLabel_1.setText(roomTitle);
 		lblNewLabel_1.setFont(new Font("굴림", Font.PLAIN, 20));
 		lblNewLabel_1.setBounds(12, 5, 69, 24);
 		add(lblNewLabel_1);
