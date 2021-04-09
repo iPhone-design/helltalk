@@ -33,11 +33,15 @@ public class ServerSignUp {
 					System.out.println(idCheck); // 체크용 출력
 					
 					if (request.getChoose() == 1) { // 이제 회원가입 된다고!
-						result = new LoginResult(LoginResult.OK);
-						dao.addUser(request.getUser().getId()
-								, request.getUser().getPassword()
-								, request.getUser().getNickname()
-								, request.getUser().getAge());
+						if (idCheck == 1) { // 1 = 중복된 아이디 없음, 가입가능한 상태
+							result = new LoginResult(LoginResult.OK);
+							dao.addUser(request.getUser().getId()
+									, request.getUser().getPassword()
+									, request.getUser().getNickname()
+									, request.getUser().getAge());
+						} else if (idCheck == 0) { // 0 = 이미 존재하는 id, 해당id로는 가입불가능
+							result = new LoginResult(LoginResult.ID_EXIST);
+						}
 					} else if (request.getChoose() == 0) { // 로그인창
 						if (loginCheck == 2) { // 비번틀림
 							result = new LoginResult(LoginResult.WRONG_PASSWORD);
