@@ -13,6 +13,8 @@ public class ServerChat {
 		UserDAO userDAO = new UserDAO();
 		try (ServerSocket server = new ServerSocket(PORT)){
 			System.out.println("서버 오픈");
+			///////////////////////////////////////////////////////////// 방만드는 버튼과 연결시켜야함
+			ChatMap.createRoom("test");
 			while (true) {
 				Socket socket = server.accept();
 				

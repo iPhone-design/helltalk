@@ -46,20 +46,20 @@ public class ChatMap {
 		}
 	}
 	//("님의 귓속말: ")앞에 id어케 붙이지 ㅠ
-	public static void sendMessageToOne(String roomName, String read) {
+	public static void sendMessageToOne(String roomName, String id, String read) {
 		int start = read.indexOf(" ") + 1;
 		int end = read.indexOf(" ", start);
 		
 		if (start != -1 && end != -1) {
-			String id = read.substring(start, end);
+			String targetId = read.substring(start, end);
 			String message = read.substring(end + 1);
-			ChatMap.messageToOne(roomName, id, "님의 귓속말: " + message);
+			ChatMap.messageToOne(roomName, targetId, id + " 님의 귓속말: " + message);
 		}
 	}
 	
-	private static void messageToOne(String roomName, String id, String message)	{
+	private static void messageToOne(String roomName, String targetId, String message)	{
 		synchronized (roomMap) {
-			DataOutputStream dos = roomMap.get(roomName).get(id);
+			DataOutputStream dos = roomMap.get(roomName).get(targetId);
 			try {
 				if (dos != null) {
 					dos.writeUTF(message);
