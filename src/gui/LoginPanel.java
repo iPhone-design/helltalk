@@ -16,6 +16,7 @@ import javax.swing.JTextField;
 import client.SignUpClient;
 import library.LoginResult;
 import library.User;
+import library.UserRequest;
 
 public class LoginPanel extends JPanel {
 	private SignUpClient socket;
@@ -60,6 +61,14 @@ public class LoginPanel extends JPanel {
 				
 				LoginResult response = socket.login(
 						new User(idText.getText(), pwText.getPassword().toString()));
+				/*
+				 * LoginResult response;
+				 * User a = new User(idText.getText(),
+				 * pwText.getPassword().toString());
+				 * UserRequest b = new UserRequest(a, 0);
+				 * System.out.println(a.toString());
+				 * response = socket.login(a);
+				 */
 				int result = response.getResult();
 				System.out.println(result);
 				String message = "";

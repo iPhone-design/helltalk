@@ -16,7 +16,6 @@ import javax.swing.JTextField;
 
 import client.SignUpClient;
 import library.LoginResult;
-import library.SignUpResult;
 import library.User;
 
 public class SignUpPanel extends JPanel {
@@ -105,7 +104,7 @@ public class SignUpPanel extends JPanel {
 										, pwText.getPassword().toString()
 										, nickNameText.getText()
 										, Integer.parseInt(ageText.getText()));
-					
+					System.out.println();
 					LoginResult response = socket.add(user);
 					int result = response.getResult();
 					if (result == LoginResult.ID_EXIST) {
