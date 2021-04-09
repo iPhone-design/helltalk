@@ -16,7 +16,6 @@ import javax.swing.JTextField;
 
 import client.SignUpClient;
 import library.LoginResult;
-import library.SignUpResult;
 import library.User;
 
 public class SignUpPanel extends JPanel {

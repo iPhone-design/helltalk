@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+import library.ChatMap;
+
 public class ServerChat {
 	private final static int PORT = 2222;
 	
@@ -14,7 +16,7 @@ public class ServerChat {
 			while (true) {
 				Socket socket = server.accept();
 				
-				ChatServer userEnterace = new ChatServer(socket);
+				ChatServer userEnterace = new ChatServer(socket, "test");
 				userEnterace.start();
 			}
 		} catch (IOException e) {
