@@ -5,6 +5,10 @@ import java.awt.Dimension;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import javax.swing.JPanel;
 import javax.swing.border.LineBorder;
@@ -15,11 +19,15 @@ import java.awt.event.ActionEvent;
 
  
 public class RoomListPanel extends JPanel {
-	private RoomPanel roomPanel = new RoomPanel();
+//	private RoomPanel roomPanel = new RoomPanel();
 	private JTextField textField;
+	
+	private List<RoomPanel> roomList;
+	
 	
 	
 	public RoomListPanel(BufferedChatPanel buffer) {
+		roomList = new ArrayList<>();
 	 	setPreferredSize(new Dimension(370, 580));
 	    setMaximumSize(new Dimension(370, 580));
 	    setBackground(Color.white);
@@ -30,19 +38,19 @@ public class RoomListPanel extends JPanel {
 	    panel.setBounds(12, 51, 346, 437);
 	    panel.setBorder(new LineBorder(Color.LIGHT_GRAY, 1));
 	    panel.setLayout(null);
-	    roomPanel.addMouseListener(new MouseAdapter() {
-	    	@Override
-	    	public void mouseClicked(MouseEvent e) {
-	    		super.mouseClicked(e);
-	    		buffer.getChatPanel().setVisible(true);
-	    	}
-		}); 
+//	    roomPanel.addMouseListener(new MouseAdapter() {
+//	    	@Override
+//	    	public void mouseClicked(MouseEvent e) {
+//	    		super.mouseClicked(e);
+//	    		buffer.getChatPanel().setVisible(true);
+//	    	}
+//		}); 	 	
 	    int y = 5;
-	    for (int i = 0; i < 3; i++) {
-	    	 RoomPanel room = new RoomPanel();
-	    	 room.setBounds(8, y, 330, 80);
-	    	 panel.add(room);
-	    	 y += 85;
+	    for (int i = 0; i < roomList.size(); i++) {
+	    	RoomPanel room = roomList.get(i);
+	    	room.setBounds(8, y, 330, 80);
+	    	panel.add(room);
+	    	y += 85;
 	    	 
 	     }
 	     
@@ -57,15 +65,18 @@ public class RoomListPanel extends JPanel {
 	    add(btnNewButton);
 	    JButton btnNewButton_1 = new JButton("방 개설");
 	    btnNewButton_1.addActionListener(new ActionListener() {
+	    	int y = 5;
 	     	public void actionPerformed(ActionEvent e) {
-	     		int y = 260;
-	     		RoomPanel room = new RoomPanel();
-	     		room.setBounds(8, y, 330, 80);
-		    	panel.add(room);
+	     		RoomPanel room = new RoomPanel("61", "12");
+	     		roomList.add(room);
+	     		room.setBounds(8, y + roomList.get(roomList.size() - 1).getY(), 330, 80);
+		    	panel.add(roomList.get(roomList.size() - 1));
 		    	System.out.println("saoaweoao");
+		    	System.out.println(roomList);
+		    	System.out.println(roomList.get(roomList.size() - 1).getY());
 		    	revalidate();
 		    	repaint();
-		    	y += 80;
+		    	y += 85;
 		    	
 	     	}
 	     });
