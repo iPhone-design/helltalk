@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import library.ChatMap;
+
 public class Chat extends Thread {
 	private Socket client;
 	private DataInputStream dis;
@@ -39,7 +41,7 @@ public class Chat extends Thread {
 				} else if (read.startsWith("/w ")) {
 					ChatMap.sendMessageToOne(read);
 				} else {
-					ChatMap.messageToAll(read);
+					ChatMap.messageToAll(id + ": " + read);
 				}
 			}
 		} catch (IOException e) {
