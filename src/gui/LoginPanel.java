@@ -60,7 +60,7 @@ public class LoginPanel extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				
 				LoginResult response = socket.login(
-						new User(idText.getText(), pwText.getPassword().toString()));
+						new User(idText.getText(), getPassword(pwText.getPassword())));
 				/*
 				 * LoginResult response;
 				 * User a = new User(idText.getText(),
@@ -103,5 +103,14 @@ public class LoginPanel extends JPanel {
 		});
 		btnNewButton.setBounds(23, 21, 97, 23);
 		add(btnNewButton);
+	}
+	private String getPassword(char[] pw) {
+		String password = "";
+		for (char p : pw) {
+			Character.toString(p);
+			password += p;
+		}
+		System.out.println(password);
+		return password;
 	}
 }
