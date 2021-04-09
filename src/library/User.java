@@ -9,7 +9,7 @@ public class User implements Serializable {
 	private String password;
 	private String nickname;
 	private int age;
-	private int status;
+	private int status; // 1 ~ 9, 숫자에 따라 상태변경
 	
 	public User(String id, String password) {
 		super();
