@@ -40,7 +40,7 @@ public class ServerSignUp {
 					} else if (request.getChoose() == 0) { // 로그인창 TODO
 						if (idCheck == 1) { // 없는 아이디라 가입가능할때
 							// TODO 가입가능메시지 출력?
-						} else if (idCheck == -1) { // 이미 존재하는 아이디라 가입 안될때
+						} else if (idCheck == 0) { // 이미 존재하는 아이디라 가입 안될때
 							result = new LoginResult(LoginResult.ID_EXIST);
 						}
 					}

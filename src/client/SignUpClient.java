@@ -53,6 +53,7 @@ public class SignUpClient {
 			oos.writeObject(new UserRequest(user, 1));
 			oos.flush();
 			result = (LoginResult) ois.readObject();
+			System.out.println("add 메서드 " + result);
 			Thread.sleep(1);
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
