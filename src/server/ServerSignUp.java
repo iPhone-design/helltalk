@@ -38,11 +38,12 @@ public class ServerSignUp {
 								, request.getUser().getPassword()
 								, request.getUser().getNickname()
 								, request.getUser().getAge());
-					} else if (request.getChoose() == 0) { // 로그인창 TODO
+					} else if (request.getChoose() == 0) { // 로그인창
 						if (loginCheck == 2) { // 비번틀림
-							// TODO 가입가능메시지 출력?
-						} else if (loginCheck == 1) { // 로긴성공
+							result = new LoginResult(LoginResult.WRONG_PASSWORD);
+						} else if (loginCheck == 1) { // 로그인 성공
 							result = new LoginResult(LoginResult.ID_EXIST);
+							request.getUser().setStatus(1);
 						} else if (loginCheck == 0) { // 존재하지 않는 ID입니다.
 							result = new LoginResult(LoginResult.NOT_EXIST);
 						}
