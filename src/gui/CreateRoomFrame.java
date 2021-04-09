@@ -13,6 +13,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import client.ChatClient;
 import library.ChatMap;
 
 import server.ChatServer;
@@ -53,8 +54,7 @@ public class CreateRoomFrame extends JFrame {
 						public void actionPerformed(ActionEvent e) {
 			    			buffer.getChatPanel().getTitleLbl().setText(roomList.get(j).getTitleLbl().getText());
 			    			buffer.getChatPanel().setVisible(true);
-			    			ChatServer userEnterace = new ChatServer(ServerChat.getSocket(), roomList.get(j).getTitleLbl().getText());
-							userEnterace.start();
+			    			ChatClient.clientStart();
 						}
 					});
 			    }
