@@ -2,8 +2,6 @@ package library;
 
 import java.io.Serializable;
 
-// TODO
-// 
 public class LoginResult implements Serializable {
 	/**
 	 * 
@@ -12,8 +10,7 @@ public class LoginResult implements Serializable {
 	public static final int OK = 0;
 	public static final int NOT_EXIST = 1;
 	public static final int WRONG_PASSWORD = 2;
-	public static final int JOIN = 3;
-	public static final int ID_EXIST = 4;
+	public static final int ID_EXIST = 3;
 	private int result;
 	public LoginResult(int result) {
 		super();
@@ -33,9 +30,6 @@ public class LoginResult implements Serializable {
 	}
 	public static synchronized int getWrongPassword() {
 		return WRONG_PASSWORD;
-	}
-	public static synchronized int getJoin() {
-		return JOIN;
 	}
 	@Override
 	public String toString() {
