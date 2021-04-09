@@ -17,7 +17,8 @@ import javax.swing.JButton;
 
 public class ChatPanel extends JPanel {
 	private JTextField textField;
-	public ChatPanel() {
+	private JLabel titleLbl;
+	public ChatPanel(String title) {
 		setBorder(new LineBorder(Color.LIGHT_GRAY, 1));
 		setPreferredSize(new Dimension(583, 583));
 		setMaximumSize(new Dimension(583, 583));
@@ -31,10 +32,10 @@ public class ChatPanel extends JPanel {
 		add(panel);
 		panel.setLayout(null);
 		
-		JLabel lblNewLabel = new JLabel("방 1");
-		lblNewLabel.setFont(new Font("굴림", Font.PLAIN, 18));
-		lblNewLabel.setBounds(12, 10, 70, 32);
-		panel.add(lblNewLabel);
+		titleLbl = new JLabel(title);
+		titleLbl.setFont(new Font("굴림", Font.PLAIN, 18));
+		titleLbl.setBounds(12, 10, 294, 32);
+		panel.add(titleLbl);
 		
 		JButton btnNewButton = new JButton("유저 리스트");
 		btnNewButton.setBackground(new Color(255, 182, 193));
@@ -50,6 +51,13 @@ public class ChatPanel extends JPanel {
 		textField.setBounds(14, 508, 559, 49);
 		add(textField);
 		textField.setColumns(10);
-		
 	}
+	public JLabel getTitleLbl() {
+		return titleLbl;
+	}
+	public void setTitleLbl(JLabel titleLbl) {
+		this.titleLbl = titleLbl;
+	}
+	
+	
 }

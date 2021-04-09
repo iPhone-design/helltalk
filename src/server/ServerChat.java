@@ -4,25 +4,26 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+import gui.CreateRoomFrame;
 import library.ChatMap;
 
 public class ServerChat {
 	private final static int PORT = 2222;
+	private static Socket socket;
 	
 	public static void main(String[] args) {
 		UserDAO userDAO = new UserDAO();
 		try (ServerSocket server = new ServerSocket(PORT)){
 			System.out.println("서버 오픈");
-			///////////////////////////////////////////////////////////// 방만드는 버튼과 연결시켜야함
-			ChatMap.createRoom("test");
 			while (true) {
-				Socket socket = server.accept();
-				
-				ChatServer userEnterace = new ChatServer(socket, "test");
-				userEnterace.start();
+				socket = server.accept();
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+
+	public static Socket getSocket() {
+		return socket;
 	}
 }

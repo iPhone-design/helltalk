@@ -19,42 +19,22 @@ import java.awt.event.ActionEvent;
 
  
 public class RoomListPanel extends JPanel {
-//	private RoomPanel roomPanel = new RoomPanel();
 	private JTextField textField;
-	
+	private JPanel panel;
 	private List<RoomPanel> roomList;
-	
-	
-	
+	int panelY = 5;
 	public RoomListPanel(BufferedChatPanel buffer) {
 		roomList = new ArrayList<>();
+		panel = new JPanel();
 	 	setPreferredSize(new Dimension(370, 580));
 	    setMaximumSize(new Dimension(370, 580));
 	    setBackground(Color.white);
 	    setBorder(new LineBorder(Color.LIGHT_GRAY, 1));
 	    setLayout(null);
 	     
-	    JPanel panel = new JPanel();
 	    panel.setBounds(12, 51, 346, 437);
 	    panel.setBorder(new LineBorder(Color.LIGHT_GRAY, 1));
-	    panel.setLayout(null);
-//	    roomPanel.addMouseListener(new MouseAdapter() {
-//	    	@Override
-//	    	public void mouseClicked(MouseEvent e) {
-//	    		super.mouseClicked(e);
-//	    		buffer.getChatPanel().setVisible(true);
-//	    	}
-//		}); 	 	
-	    int y = 5;
-	    for (int i = 0; i < roomList.size(); i++) {
-	    	RoomPanel room = roomList.get(i);
-	    	room.setBounds(8, y, 330, 80);
-	    	panel.add(room);
-	    	y += 85;
-	    	 
-	     }
-	     
-	     
+	    panel.setLayout(null);	 	
 	     
 	    textField = new JTextField();
 	    textField.setBounds(12, 10, 265, 31);
@@ -65,21 +45,11 @@ public class RoomListPanel extends JPanel {
 	    add(btnNewButton);
 	    JButton btnNewButton_1 = new JButton("방 개설");
 	    btnNewButton_1.addActionListener(new ActionListener() {
-	    	int y = 5;
 	     	public void actionPerformed(ActionEvent e) {
-	     		RoomPanel room = new RoomPanel("61", "12");
-	     		roomList.add(room);
-	     		room.setBounds(8, y + roomList.get(roomList.size() - 1).getY(), 330, 80);
-		    	panel.add(roomList.get(roomList.size() - 1));
-		    	System.out.println("saoaweoao");
-		    	System.out.println(roomList);
-		    	System.out.println(roomList.get(roomList.size() - 1).getY());
-		    	revalidate();
-		    	repaint();
-		    	y += 85;
-		    	
+	     		CreateRoomFrame frame = new CreateRoomFrame(buffer, RoomListPanel.this);
 	     	}
 	     });
+	    
 	    btnNewButton_1.setBounds(54, 498, 97, 23);
 	    add(btnNewButton_1);
 	     
@@ -90,5 +60,32 @@ public class RoomListPanel extends JPanel {
 	    add(panel);
 	
 	 
-	 } 
+	 }
+
+	public JPanel getPanel() {
+		return panel;
+	}
+
+	public void setPanel(JPanel panel) {
+		this.panel = panel;
+	}
+
+	public List<RoomPanel> getRoomList() {
+		return roomList;
+	}
+
+	public void setRoomList(List<RoomPanel> roomList) {
+		this.roomList = roomList;
+	}
+
+	public int getPanelY() {
+		return panelY;
+	}
+
+	public void setPanelY(int panelY) {
+		this.panelY = panelY;
+	}
+
+	
+	
 }
