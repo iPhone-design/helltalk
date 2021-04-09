@@ -20,6 +20,7 @@ import library.User;
 
 public class SignUpPanel extends JPanel {
 	private SignUpClient socket;
+	
 	public SignUpPanel(MainFrame frame) {
 		
 		try {
@@ -110,7 +111,7 @@ public class SignUpPanel extends JPanel {
 						message = "아이디가 중복되었습니다.";
 					} else if (result == SignUpResult.NOT_EXIST) {
 						message = "가입이 완료되었습니다.";
-						
+						frame.changeLoginPanel();
 					}
 					JOptionPane.showMessageDialog(SignUpPanel.this, message);
 				}
