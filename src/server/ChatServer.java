@@ -4,9 +4,6 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
 
 import library.ChatMap;
 
@@ -35,8 +32,8 @@ public class ChatServer extends Thread {
 			////////////////////////////////////////////////////////////////////로그인 닉네임 으로 바꿔야됨
 			id = dis.readUTF();
 			////////////////////////////////////////////////////////////////////방 텍스트 긁어와서 넣어야함!!!
-			ChatMap.enterUser("test", id , dos);
-			ChatMap.messageToAll(roomName, id + " 님이 입장하셨습니다.");
+			ChatMap.enterUser(roomName, "A" , dos);
+			ChatMap.messageToAll(roomName, "A" + " 님이 입장하셨습니다.");
 			String read = null;
 			
 			while ((read = dis.readUTF())!= null) {
