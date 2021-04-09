@@ -28,7 +28,8 @@ public class ServerSignUp {
 					request = (UserRequest) ois.readObject();
 					LoginResult result = null;
 					int idCheck = dao.idCheck(request.getUser().getId());
-		
+					int loginCheck = dao.login(request.getUser().getId(), request.getUser().getPassword());
+					
 					System.out.println(idCheck); // 체크용 출력
 					
 					if (request.getChoose() == 1) { // 이제 회원가입 된다고!
@@ -38,10 +39,13 @@ public class ServerSignUp {
 								, request.getUser().getNickname()
 								, request.getUser().getAge());
 					} else if (request.getChoose() == 0) { // 로그인창 TODO
-						if (idCheck == 1) { // 없는 아이디라 가입가능할때
+						if (loginCheck == 2) { // 비번틀림
 							// TODO 가입가능메시지 출력?
-						} else if (idCheck == -1) { // 이미 존재하는 아이디라 가입 안될때
+							result = new LoginResult(LoginResult.WRONG_PASSWORD);
+						} else if (loginCheck == 1) { // 로긴성공
 							result = new LoginResult(LoginResult.ID_EXIST);
+						} else if (loginCheck == 0) { // 존재하지 않는 ID입니다.
+							result = new LoginResult(LoginResult.NOT_EXIST);
 						}
 					}
 					
