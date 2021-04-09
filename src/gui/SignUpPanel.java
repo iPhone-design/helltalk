@@ -101,27 +101,18 @@ public class SignUpPanel extends JPanel {
 					message = "빈 칸을 채워주세요.";
 				} else {
 					User user = new User(idText.getText()
-										, pwText.getPassword().toString()
+										, getPassword(pwText.getPassword())
 										, nickNameText.getText()
 										, Integer.parseInt(ageText.getText()));
-					
-					System.out.println(user.toString());
-					
 					LoginResult response = socket.add(user);
 					
-					System.out.println("response : " + response);
-					
 					int result = response.getResult();
-					System.out.println("SignUp Panel " + result);
-					
 					if (result == LoginResult.ID_EXIST) {
 						message = "아이디가 중복되었습니다.";
 					} else if (result == LoginResult.NOT_EXIST) {
 						message = "가입이 완료되었습니다.";
-						frame.changeLoginPanel();
 					}
 					JOptionPane.showMessageDialog(SignUpPanel.this, message);
-					
 				}
 			}
 		});
@@ -139,5 +130,14 @@ public class SignUpPanel extends JPanel {
 		});
 		btnNewButton_1.setBounds(27, 23, 97, 23);
 		add(btnNewButton_1);
+	}
+	private String getPassword(char[] pw) {
+		String password = "";
+		for (char p : pw) {
+			Character.toString(p);
+			password += p;
+		}
+		System.out.println(password);
+		return password;
 	}
 }

@@ -31,16 +31,16 @@ public class ServerSignUp {
 		
 					System.out.println(idCheck); // 체크용 출력
 					
-					if (request.getChoose() == 0) {
-						
-					} else if (request.getChoose() == 1) {
+					if (request.getChoose() == 1) { // 이제 회원가입 된다고!
+						result = new LoginResult(LoginResult.OK);
+						dao.addUser(request.getUser().getId()
+								, request.getUser().getPassword()
+								, request.getUser().getNickname()
+								, request.getUser().getAge());
+					} else if (request.getChoose() == 0) { // 로그인창 TODO
 						if (idCheck == 1) { // 없는 아이디라 가입가능할때
-							result = new LoginResult(LoginResult.OK);
-							dao.addUser(request.getUser().getId()
-									, request.getUser().getPassword()
-									, request.getUser().getNickname()
-									, request.getUser().getAge());
-						} else if (idCheck == -1) { // 이미 존재하는 아이디라 가입 안될때
+							// TODO 가입가능메시지 출력?
+						} else if (idCheck == 0) { // 이미 존재하는 아이디라 가입 안될때
 							result = new LoginResult(LoginResult.ID_EXIST);
 						}
 					}
