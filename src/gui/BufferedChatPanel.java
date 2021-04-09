@@ -12,10 +12,12 @@ import java.awt.event.MouseListener;
 import javax.swing.JButton;
 
 public class BufferedChatPanel extends JPanel{
-	ChatPanel chatPanel = new ChatPanel();
+	ChatPanel chatPanel;
 	RoomListPanel roomlistPanel;
+	String roomTitle;
 
 	public BufferedChatPanel() {
+		chatPanel = new ChatPanel("하이");
 		roomlistPanel = new RoomListPanel(this);
 		setPreferredSize(new Dimension(1000, 600));
 		setMaximumSize(new Dimension(1000, 600));
@@ -40,5 +42,23 @@ public class BufferedChatPanel extends JPanel{
 	public void setChatPanel(ChatPanel chatPanel) {
 		this.chatPanel = chatPanel;
 	}
+
+	public RoomListPanel getRoomlistPanel() {
+		return roomlistPanel;
+	}
+
+	public void setRoomlistPanel(RoomListPanel roomlistPanel) {
+		this.roomlistPanel = roomlistPanel;
+	}
+
+	public String getRoomTitle() {
+		return roomTitle;
+	}
+
+	public void setRoomTitle(String roomTitle) {
+		this.roomTitle = roomTitle;
+	}
+	
+	
 
 }

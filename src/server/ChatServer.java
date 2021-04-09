@@ -60,4 +60,14 @@ public class ChatServer extends Thread {
 			}
 		}
 	}
+
+	public DataOutputStream getDos() {
+		return dos;
+	}
+
+	public void setDos(DataOutputStream dos) {
+		this.dos = dos;
+	}
+	
+	
 }
