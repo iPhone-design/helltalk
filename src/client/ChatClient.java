@@ -12,10 +12,14 @@ public class ChatClient {
 	private static final int PORT = 2222;
 	
 	public static void main(String[] args) {
-		try (Socket socket = new Socket(ADDRESS, PORT);) {
+		try (Socket socket = new Socket("localhost", PORT);) {
 			DataOutputStream dos = new DataOutputStream(socket.getOutputStream());
 			DataInputStream dis = new DataInputStream(socket.getInputStream());
 			Scanner scan = new Scanner(System.in);
+			System.out.println("아이디를 입력해주세요");
+			String id = scan.nextLine();
+			dos.writeUTF(id);
+			dos.flush();
 			
 			Thread writeTextThead = new Thread(new Runnable() {
 				@Override

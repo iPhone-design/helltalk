@@ -1,4 +1,4 @@
-package server;
+package library;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -18,6 +18,10 @@ public class ChatMap {
 		}
 	}
 	
+	public static void createRoom() {
+		userMap = new HashMap<>();
+	}
+	
 	public static void messageToAll(String message)	{
 		synchronized (userMap) {
 			for (DataOutputStream dos : userMap.values()) {
@@ -31,13 +35,12 @@ public class ChatMap {
 		}
 	}
 	
-	
 	public static void removeSocket(String id) {
 		synchronized (userMap) {
 			userMap.remove(id);
 		}
 	}
-	
+	//("님의 귓속말: ")앞에 id어케 붙이지 ㅠ
 	public static void sendMessageToOne(String read) {
 		int start = read.indexOf(" ") + 1;
 		int end = read.indexOf(" ", start);
@@ -45,7 +48,7 @@ public class ChatMap {
 		if (start != -1 && end != -1) {
 			String id = read.substring(start, end);
 			String message = read.substring(end + 1);
-			ChatMap.messageToOne(id, message);
+			ChatMap.messageToOne(id, "님의 귓속말: " + message);
 		}
 	}
 	
