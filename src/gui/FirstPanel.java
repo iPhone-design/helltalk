@@ -13,6 +13,7 @@ import java.awt.event.ActionEvent;
 
 public class FirstPanel extends JPanel {
 	public FirstPanel(MainFrame frame) {
+		
 		setPreferredSize(new Dimension(1000, 600));
 		setMaximumSize(new Dimension(1000, 600));
 		setBackground(new Color(255, 228, 225));
