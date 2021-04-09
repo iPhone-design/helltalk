@@ -137,7 +137,6 @@ public class SignUpPanel extends JPanel {
 			Character.toString(p);
 			password += p;
 		}
-		System.out.println(password);
 		return password;
 	}
 }
