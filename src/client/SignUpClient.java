@@ -20,8 +20,18 @@ public class SignUpClient {
 	private ObjectOutputStream oos;
 	private ObjectInputStream ois;
 	
+	public void openSocket() {
+		try {
+			socket = new Socket(SERVER_ADDRESS, PORT);
+		} catch (UnknownHostException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
 	public SignUpClient() throws IOException {
-		socket = new Socket(SERVER_ADDRESS, PORT);
+		openSocket();
 		oos = new ObjectOutputStream(socket.getOutputStream());
 		ois = new ObjectInputStream(socket.getInputStream());
 	}
