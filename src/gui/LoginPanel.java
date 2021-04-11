@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -21,7 +22,7 @@ import library.UserRequest;
 public class LoginPanel extends JPanel {
 	private SignUpClient socket;
 	
-	public LoginPanel(MainFrame frame) {
+	public LoginPanel(MainFrame frame, SignUpPanel signUp) {
 		setBackground(new Color(255, 228, 225));
 		JLabel idLbl = new JLabel("ID");
 		idLbl.setFont(new Font("함초롬바탕", Font.PLAIN, 23));
@@ -54,11 +55,11 @@ public class LoginPanel extends JPanel {
 		lblNewLabel.setBounds(495, 33, 116, 40);
 		add(lblNewLabel);
 		
+		socket = signUp.getSocket();
 		
 		JButton loginBtn = new JButton("로그인");
 		loginBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
 				LoginResult response = socket.login(
 						new User(idText.getText(), getPassword(pwText.getPassword())));
 				int result = response.getResult();
@@ -90,7 +91,11 @@ public class LoginPanel extends JPanel {
 		JButton btnNewButton = new JButton("대충 집");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				frame.changeFirstPanel();
+				try {
+					frame.changeFirstPanel();
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
 			}
 		});
 		btnNewButton.setBounds(23, 21, 97, 23);

@@ -58,10 +58,10 @@ public class UserDAO {
 			pstmt.setString(1, id);
 			try (ResultSet rs = pstmt.executeQuery()) {
 				if (rs.next()) {
-					result = 1; // 가입가능한 아이디일때
+					result = 0; // 가입가능한 아이디일때
 					return result;
 				} else {
-					result = 0; // 이미 존재하는 아이디일때
+					result = 1; // 이미 존재하는 아이디일때
 					return result;
 				}
 			}

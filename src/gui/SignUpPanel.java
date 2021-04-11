@@ -125,7 +125,11 @@ public class SignUpPanel extends JPanel {
 		JButton btnNewButton_1 = new JButton("대충 집모양");
 		btnNewButton_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				frame.changeFirstPanel();
+				try {
+					frame.changeFirstPanel();
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
 			}
 		});
 		btnNewButton_1.setBounds(27, 23, 97, 23);
@@ -138,5 +142,11 @@ public class SignUpPanel extends JPanel {
 			password += p;
 		}
 		return password;
+	}
+	public SignUpClient getSocket() {
+		return socket;
+	}
+	public void setSocket(SignUpClient socket) {
+		this.socket = socket;
 	}
 }

@@ -3,10 +3,13 @@ package gui;
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.EventQueue;
+import java.io.IOException;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import client.SignUpClient;
 
 public class MainFrame extends JFrame {
 	private CardLayout cards = new CardLayout();
@@ -38,7 +41,7 @@ public class MainFrame extends JFrame {
 		setLayout(cards);
 		signUpPanel = new SignUpPanel(this);
 		firstPanel = new FirstPanel(this);
-		loginPanel = new LoginPanel(this);
+		loginPanel = new LoginPanel(this, signUpPanel);
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1000, 650);
@@ -47,8 +50,10 @@ public class MainFrame extends JFrame {
 		getContentPane().add("Login", loginPanel);
 	}
 	
-	public void changeFirstPanel() {
+	public void changeFirstPanel() throws IOException {
 		cards.show(this.getContentPane(), "First");
+		signUpPanel.getSocket().closeSocket();
+		signUpPanel.setSocket(new SignUpClient());
 	}
 	public void changeSignUpPanel() {
 		cards.show(this.getContentPane(), "SignUp");
