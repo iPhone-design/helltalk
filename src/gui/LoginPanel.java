@@ -23,6 +23,12 @@ public class LoginPanel extends JPanel {
 	private SignUpClient socket;
 	
 	public LoginPanel(MainFrame frame, SignUpPanel signUp) {
+//		try {
+//			socket = new SignUpClient();
+//		} catch (IOException e1) {
+//			e1.printStackTrace();
+//		}
+		
 		setBackground(new Color(255, 228, 225));
 		JLabel idLbl = new JLabel("ID");
 		idLbl.setFont(new Font("함초롬바탕", Font.PLAIN, 23));
@@ -77,14 +83,13 @@ public class LoginPanel extends JPanel {
 						message = "비밀번호를 다시 확인해주세요.";
 					}
 					JOptionPane.showMessageDialog(LoginPanel.this, message);
-					socket.closeSocket();
-//					socket = signUp.setSocket(new SignUpClient());
 					
-//					try {
-//						setSocket(new SignUpClient());
-//					} catch (IOException e2) {
-//						e2.printStackTrace();
-//					}
+					socket.closeSocket();
+					try {
+						signUp.setSocket(new SignUpClient());
+					} catch (IOException e1) {
+						e1.printStackTrace();
+					}
 				}
 			}
 		});
