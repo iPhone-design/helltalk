@@ -114,14 +114,11 @@ public class SignUpPanel extends JPanel {
 					JOptionPane.showMessageDialog(SignUpPanel.this, message);
 					
 					socket.closeSocket();
-					System.out.println("밖");
 					try {
 						socket = new SignUpClient();
-						System.out.println("안");
 					} catch (IOException e1) {
 						e1.printStackTrace();
 					}
-					
 				}
 			}
 		});
@@ -135,8 +132,6 @@ public class SignUpPanel extends JPanel {
 		btnNewButton_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
-					socket.closeSocket();
-					socket = new SignUpClient();
 					frame.changeFirstPanel();
 				} catch (IOException e1) {
 					e1.printStackTrace();
