@@ -4,10 +4,16 @@ import java.awt.Color;
 import java.awt.Dimension;
 
 import javax.swing.JPanel;
+
+import client.ChatClient;
+import server.ChatServer;
+import server.ServerChat;
+
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import java.awt.Font;
 import java.awt.event.ActionListener;
+import java.net.Socket;
 import java.awt.event.ActionEvent;
 
 public class RoomPanel extends JPanel {
@@ -15,6 +21,7 @@ public class RoomPanel extends JPanel {
 	private JLabel amountLbl;
 	private JLabel nameLbl;
 	private JButton jbtn;
+	private ChatServer chatserver;
 
 	public RoomPanel(String roomTitle, String name) {
 		setPreferredSize(new Dimension(330, 80));
@@ -41,6 +48,18 @@ public class RoomPanel extends JPanel {
 		
 		jbtn = new JButton("입장");
 		jbtn.setBounds(249, 46, 69, 24);
+		jbtn.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Thread ChatClientThread = new Thread(new Runnable() {
+					@Override
+					public void run() {
+						ChatClient.clientStart();
+					}
+				});
+				ChatClientThread.start();
+			}
+		});
 		add(jbtn);
 	}
 
@@ -75,8 +94,4 @@ public class RoomPanel extends JPanel {
 	public void setJbtn(JButton jbtn) {
 		this.jbtn = jbtn;
 	}
-
-	
-	
-	
 }

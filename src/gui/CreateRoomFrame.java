@@ -15,15 +15,17 @@ import javax.swing.JTextField;
 
 import client.ChatClient;
 import library.ChatMap;
-
+import library.Room;
 import server.ChatServer;
+import server.RoomListDAO;
 import server.ServerChat;
 
 public class CreateRoomFrame extends JFrame {
+	private RoomListDAO roomlistDAO;
+	private int j = 0;
 	
-	int j = 0;
-	
-	public CreateRoomFrame(BufferedChatPanel buffer, RoomListPanel roomPanel) {
+	public CreateRoomFrame(BufferedChatPanel buffer, RoomListPanel roomlistPanel) {
+		roomlistDAO = new RoomListDAO();
 		setSize(300, 500);
 		setLayout(null);
 		JTextField textfield = new JTextField(10);
@@ -34,35 +36,41 @@ public class CreateRoomFrame extends JFrame {
 		btn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				ChatMap.createRoom(textfield.getText());
-				List<RoomPanel> roomList = roomPanel.getRoomList();
-				RoomPanel room = new RoomPanel(textfield.getText(), "12");
-				roomList.add(room);
-	     		room.setBounds(8, roomPanel.getPanelY() + roomList.get(roomList.size() - 1).getY(), 330, 80);
-	     		roomPanel.setPanelY(roomPanel.getPanelY() + 85);
-	     		System.out.println(roomList.get(roomList.size() - 1).getY());
-	     		roomPanel.getPanel().add(roomList.get(roomList.size() - 1));
-		    	roomPanel.revalidate();
-		    	roomPanel.repaint();
+//				ChatMap.createRoom("test");
+				roomlistDAO.addRoom(textfield.getText(),"master");
+//				List<Room> roomList = roomlistDAO.RoomlistAll();
+//				for (int i = 0; i <= roomList.size() -1; i++) {
+//					RoomPanel panel = new RoomPanel(roomList.get(i).getTitle(), roomList.get(i).getRoomMasterName());
+//					panel.setBounds(8, 5 + (i * 80) , 330, 80);
+//					roomlistPanel.getPanel().add(panel);
+//				}
+//				roomlistPanel.revalidate();
+//				roomlistPanel.repaint();
+//		    	
+//		    	Thread clientChatThread = new Thread(new Runnable() {
+//					@Override
+//					public void run() {
+//						ChatServer chatserver = new ChatServer(ServerChat.getSocket(), textfield.getText());
+//					}
+//				});
 		    	
 		    	setVisible(false);
-		    	for (int i = 0; i < roomList.size(); i++) {
-		    		j = i;
-			    	roomList.get(i).getJbtn().addActionListener(new ActionListener() {
-			    		int j = CreateRoomFrame.this.j;
-			    		@Override
-						public void actionPerformed(ActionEvent e) {
-			    			buffer.getChatPanel().getTitleLbl().setText(roomList.get(j).getTitleLbl().getText());
-			    			buffer.getChatPanel().setVisible(true);
-			    			ChatClient.clientStart();
-						}
-					});
-			    }
+//		    	for (int i = 0; i < roomList.size(); i++) {
+//		    		j = i;
+//			    	roomList.get(i).getJbtn().addActionListener(new ActionListener() {
+//			    		int j = CreateRoomFrame.this.j;
+//			    		@Override
+//						public void actionPerformed(ActionEvent e) {
+//			    			buffer.getChatPanel().getTitleLbl().setText(roomList.get(j).getTitleLbl().getText());
+//			    			buffer.getChatPanel().setVisible(true);
+//			    			clientChatThread.start();
+//			    			ChatClient client = new ChatClient();
+//						}
+//					});
+//			    }
 			}
 		});
 		add(btn);
 		setVisible(true);
-		
 	}
-
 }
