@@ -78,11 +78,13 @@ public class LoginPanel extends JPanel {
 					}
 					JOptionPane.showMessageDialog(LoginPanel.this, message);
 					socket.closeSocket();
-					try {
-						socket = new SignUpClient();
-					} catch (IOException e1) {
-						e1.printStackTrace();
-					}
+//					socket = signUp.setSocket(new SignUpClient());
+					
+//					try {
+//						setSocket(new SignUpClient());
+//					} catch (IOException e2) {
+//						e2.printStackTrace();
+//					}
 				}
 			}
 		});
@@ -117,5 +119,11 @@ public class LoginPanel extends JPanel {
 		}
 		System.out.println(password);
 		return password;
+	}
+	public synchronized SignUpClient getSocket() {
+		return socket;
+	}
+	public synchronized void setSocket(SignUpClient socket) {
+		this.socket = socket;
 	}
 }
