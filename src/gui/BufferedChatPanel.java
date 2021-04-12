@@ -12,9 +12,9 @@ import java.awt.event.MouseListener;
 import javax.swing.JButton;
 
 public class BufferedChatPanel extends JPanel{
-	ChatPanel chatPanel;
-	RoomListPanel roomlistPanel;
-	String roomTitle;
+	private ChatPanel chatPanel;
+	private RoomListPanel roomlistPanel;
+	private String roomTitle;
 
 	public BufferedChatPanel() {
 		chatPanel = new ChatPanel("하이");
@@ -32,7 +32,6 @@ public class BufferedChatPanel extends JPanel{
 		chatPanel.add(button);
 		roomlistPanel.setBounds(610, 10, 370, 580);
 		add(roomlistPanel);
-
 	}
 
 	public ChatPanel getChatPanel() {
@@ -58,7 +57,4 @@ public class BufferedChatPanel extends JPanel{
 	public void setRoomTitle(String roomTitle) {
 		this.roomTitle = roomTitle;
 	}
-	
-	
-
 }

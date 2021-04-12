@@ -9,6 +9,12 @@ import javax.swing.JPanel;
 import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
 import java.awt.Panel;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.JLabel;
@@ -49,6 +55,9 @@ public class ChatPanel extends JPanel {
 		
 		textField = new JTextField();
 		textField.setBounds(14, 508, 559, 49);
+//		textField.addKeyListener(new KeyAdapter() {
+//			
+//		};
 		add(textField);
 		textField.setColumns(10);
 	}

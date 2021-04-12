@@ -70,4 +70,14 @@ public class ChatMap {
 			}
 		}
 	}
+	
+	public static boolean selectRoom(String roomName) {
+		boolean exist = true;
+		synchronized (roomMap) {
+			if (roomMap.get(roomName) != null) {
+				exist = false;
+			}
+		}
+		return exist;
+	}
 }

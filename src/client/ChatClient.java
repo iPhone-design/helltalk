@@ -11,7 +11,7 @@ public class ChatClient {
 	private static final String ADDRESS = "192.168.100.33";
 	private static final int PORT = 2222;
 	
-	public static void clientStart() {
+	public ChatClient() {
 		try (Socket socket = new Socket("localhost", PORT);) {
 			DataOutputStream dos = new DataOutputStream(socket.getOutputStream());
 			DataInputStream dis = new DataInputStream(socket.getInputStream());
