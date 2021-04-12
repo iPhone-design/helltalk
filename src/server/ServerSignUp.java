@@ -56,13 +56,13 @@ public class ServerSignUp {
 					System.out.println(result);
 					oos.writeObject(result);
 					oos.flush();
+				} catch (ClassNotFoundException e) {
+					e.printStackTrace();
 				}
-				catch (ClassNotFoundException e) {
-						e.printStackTrace();
-					}
-				}
+			}
 		} catch (IOException e) {
-			e.printStackTrace();
+//			e.printStackTrace();
+			System.out.println("클라이언트가 비정상적으로 종료됨.");
 		}
 	}
 }
