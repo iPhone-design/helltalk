@@ -135,8 +135,8 @@ public class SignUpPanel extends JPanel {
 		btnNewButton_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
-//					socket.closeSocket();
-//					socket = new SignUpClient();
+					socket.closeSocket();
+					socket = new SignUpClient();
 					frame.changeFirstPanel();
 				} catch (IOException e1) {
 					e1.printStackTrace();
