@@ -5,6 +5,8 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.io.IOException;
 
 import javax.swing.JButton;
@@ -13,22 +15,19 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
+import javax.swing.text.JTextComponent;
 
 import client.SignUpClient;
 import library.LoginResult;
 import library.User;
 import library.UserRequest;
 
-public class LoginPanel extends JPanel {
+public class LoginPanel extends JPanel implements KeyListener {
 	private SignUpClient socket;
+	private JTextField idText;
+	private JPasswordField pwText;
 	
 	public LoginPanel(MainFrame frame, SignUpPanel signUp) {
-//		try {
-//			socket = new SignUpClient();
-//		} catch (IOException e1) {
-//			e1.printStackTrace();
-//		}
-		
 		setBackground(new Color(255, 228, 225));
 		JLabel idLbl = new JLabel("ID");
 		idLbl.setFont(new Font("함초롬바탕", Font.PLAIN, 23));
@@ -39,13 +38,15 @@ public class LoginPanel extends JPanel {
 		pwLbl.setBounds(247, 282, 128, 31);
 		
 		
-		JTextField idText = new JTextField();
+		idText = new JTextField();
 		idText.setFont(new Font("굴림", Font.PLAIN, 16));
 		idText.setBounds(405, 202, 309, 45);
+		idText.addKeyListener(this);
 		
-		JPasswordField pwText = new JPasswordField();
+		pwText = new JPasswordField();
 		pwText.setFont(new Font("굴림", Font.PLAIN, 16));
 		pwText.setBounds(405, 279, 309, 45);
+		pwText.addKeyListener(this);
 		setLayout(null);
 		
 		
@@ -65,22 +66,26 @@ public class LoginPanel extends JPanel {
 		JButton loginBtn = new JButton("로그인");
 		loginBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				String message = "";
+
 				socket = signUp.getSocket();
 				LoginResult response = socket.login(
 						new User(idText.getText(), getPassword(pwText.getPassword())));
+				
 				int result = response.getResult();
-				System.out.println(result);
-				String message = "";
 				
 				if (idText.getText().equals("") || pwText.getPassword().length == 0) {
 					JOptionPane.showMessageDialog(null, "빈 칸을 채워주세요.");
 				} else {
 					if (result == LoginResult.OK) {
 						message = "로그인 완료";
+						clearField();
 					} else if (result == LoginResult.NOT_EXIST) {
 						message = "존재하지 않는 아이디 입니다.";
+						clearField();
 					} else if (result == LoginResult.WRONG_PASSWORD) {
 						message = "비밀번호를 다시 확인해주세요.";
+						pwText.setText("");
 					}
 					JOptionPane.showMessageDialog(LoginPanel.this, message);
 					
@@ -105,8 +110,6 @@ public class LoginPanel extends JPanel {
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
-//					socket.closeSocket();
-//					socket = new SignUpClient();
 					frame.changeFirstPanel();
 				} catch (IOException e1) {
 					e1.printStackTrace();
@@ -130,5 +133,23 @@ public class LoginPanel extends JPanel {
 	}
 	public synchronized void setSocket(SignUpClient socket) {
 		this.socket = socket;
+	}
+	@Override
+	public void keyTyped(KeyEvent e) {
+		int num = 20;
+		int length = ((JTextComponent) e.getSource()).getText().length();
+		if (length > num) {
+			e.consume();
+		}
+	}
+	public void clearField() {
+		idText.setText("");
+		pwText.setText("");
+	}
+	@Override
+	public void keyPressed(KeyEvent e) {
+	}
+	@Override
+	public void keyReleased(KeyEvent e) {
 	}
 }
