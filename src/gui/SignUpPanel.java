@@ -135,13 +135,13 @@ public class SignUpPanel extends JPanel implements KeyListener {
 				String message = "";
 				if (checkData() == 1) {
 					message = "빈칸을 채워주세요.";
-					JOptionPane.showMessageDialog(SignUpPanel.this, message, "오류", JOptionPane.WARNING_MESSAGE);
+					showMessage("Error", message);
 				} else if (checkData() == 2) {
 					message = "공백을 제거해주세요.";
-					JOptionPane.showMessageDialog(SignUpPanel.this, message, "오류", JOptionPane.WARNING_MESSAGE);
+					showMessage("Error", message);
 				} else if (!checkPassword()) {
 					message = "비밀번호가 틀립니다.";
-					JOptionPane.showMessageDialog(SignUpPanel.this, message, "오류", JOptionPane.WARNING_MESSAGE);
+					showMessage("Error", message);
 				} else {
 					User user = new User(idText.getText()
 										, getPassword(pwText.getPassword())
@@ -157,7 +157,7 @@ public class SignUpPanel extends JPanel implements KeyListener {
 						message = "가입이 완료되었습니다.";
 						clearField();
 					}
-					JOptionPane.showMessageDialog(SignUpPanel.this, message);
+					showMessage("회원가입", message);
 					socket.closeSocket();
 					try {
 						socket = new SignUpClient();
@@ -244,5 +244,8 @@ public class SignUpPanel extends JPanel implements KeyListener {
 		pwText.setText("");
 		conPwText.setText("");
 		return false;
+	}
+	public void showMessage(String type, String message) {
+		JOptionPane.showMessageDialog(SignUpPanel.this, message, type, JOptionPane.WARNING_MESSAGE);
 	}
 }
