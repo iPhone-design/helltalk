@@ -38,6 +38,7 @@ public class SignUpClient {
 
 	// 로그인 요청
 	public LoginResult login(User user) {
+		System.out.println("sddssaaaas");
 		LoginResult result = null;
 		try {
 			oos.writeObject(new UserRequest(user, 0));

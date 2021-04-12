@@ -52,8 +52,8 @@ public class MainFrame extends JFrame {
 	
 	public void changeFirstPanel() throws IOException {
 		cards.show(this.getContentPane(), "First");
-		signUpPanel.getSocket().closeSocket();
-		signUpPanel.setSocket(new SignUpClient());
+//		signUpPanel.getSocket().closeSocket();
+//		signUpPanel.setSocket(new SignUpClient());
 	}
 	public void changeSignUpPanel() {
 		cards.show(this.getContentPane(), "SignUp");

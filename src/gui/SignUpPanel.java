@@ -94,7 +94,6 @@ public class SignUpPanel extends JPanel {
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String message = "";
-
 				if (idText.getText().equals("") || pwText.getPassword().length == 0
 						|| conPwText.getPassword().length == 0 || nickNameText.getText().equals("") 
 						|| ageText.getText().equals("")) {
@@ -113,6 +112,16 @@ public class SignUpPanel extends JPanel {
 						message = "가입이 완료되었습니다.";
 					}
 					JOptionPane.showMessageDialog(SignUpPanel.this, message);
+					
+					socket.closeSocket();
+					System.out.println("밖");
+					try {
+						socket = new SignUpClient();
+						System.out.println("안");
+					} catch (IOException e1) {
+						e1.printStackTrace();
+					}
+					
 				}
 			}
 		});
@@ -126,6 +135,8 @@ public class SignUpPanel extends JPanel {
 		btnNewButton_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
+//					socket.closeSocket();
+//					socket = new SignUpClient();
 					frame.changeFirstPanel();
 				} catch (IOException e1) {
 					e1.printStackTrace();

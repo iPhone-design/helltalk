@@ -55,11 +55,11 @@ public class LoginPanel extends JPanel {
 		lblNewLabel.setBounds(495, 33, 116, 40);
 		add(lblNewLabel);
 		
-		socket = signUp.getSocket();
 		
 		JButton loginBtn = new JButton("로그인");
 		loginBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				socket = signUp.getSocket();
 				LoginResult response = socket.login(
 						new User(idText.getText(), getPassword(pwText.getPassword())));
 				int result = response.getResult();
@@ -77,6 +77,12 @@ public class LoginPanel extends JPanel {
 						message = "비밀번호를 다시 확인해주세요.";
 					}
 					JOptionPane.showMessageDialog(LoginPanel.this, message);
+					socket.closeSocket();
+					try {
+						socket = new SignUpClient();
+					} catch (IOException e1) {
+						e1.printStackTrace();
+					}
 				}
 			}
 		});
@@ -92,6 +98,8 @@ public class LoginPanel extends JPanel {
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
+//					socket.closeSocket();
+//					socket = new SignUpClient();
 					frame.changeFirstPanel();
 				} catch (IOException e1) {
 					e1.printStackTrace();
