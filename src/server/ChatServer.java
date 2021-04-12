@@ -32,19 +32,19 @@ public class ChatServer extends Thread {
 			////////////////////////////////////////////////////////////////////로그인 닉네임 으로 바꿔야됨
 			id = dis.readUTF();
 			////////////////////////////////////////////////////////////////////방 텍스트 긁어와서 넣어야함!!!
-			ChatMap.enterUser(roomName, "A" , dos);
-			ChatMap.messageToAll(roomName, "A" + " 님이 입장하셨습니다.");
+			ChatMap.enterUser("test", id, dos);
+			ChatMap.messageToAll("test", id + " 님이 입장하셨습니다.");
 			String read = null;
 			
 			while ((read = dis.readUTF())!= null) {
 				if (read.equals("/종료")) {
 					// 퇴장 시 메시지 출력이 안됨 ㅜㅜ
-					ChatMap.messageToAll(roomName, id + " 님이 퇴장하셨습니다.");
+					ChatMap.messageToAll("test", id + " 님이 퇴장하셨습니다.");
 					break;
 				} else if (read.startsWith("/w ")) {
-					ChatMap.sendMessageToOne(roomName, id, read);
+					ChatMap.sendMessageToOne("test", id, read);
 				} else {
-					ChatMap.messageToAll(roomName, id + " : " + read);
+					ChatMap.messageToAll("test", id + " : " + read);
 				}
 			}
 		} catch (IOException e) {
