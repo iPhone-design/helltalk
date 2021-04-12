@@ -1,16 +1,22 @@
 package server;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 public class UserDAO {
 	private static String DRIVER = "com.mysql.jdbc.Driver";
 	private static String DB_URL = "jdbc:mysql://localhost:3306/hell_db?characterEncoding=UTF-8";
 	private static String ID = "root";
 	private static String PASSWORD = "root";
+	// 모든 유저 기본 프로필이미지
+	private File defaultUserImg = new File(".\\img\\defaultUser1.png"); 
 	
 	static {
 		try {
@@ -67,6 +73,7 @@ public class UserDAO {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
+			System.out.println("몬가 잘못됨.");
 		}
 		return -1;
 	}
@@ -103,7 +110,30 @@ public class UserDAO {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
+			System.out.println("몬가 잘못됨.");
 		}
 		return -1;
+	}
+	
+	
+	public void insertImage() { // db에 이미지 저장하는 메소드
+		String query = "INSERT INTO profile_img (id, filename, file) VALUES (?, ?, ?)";
+		try (Connection conn = DriverManager.getConnection(DB_URL,ID,PASSWORD);
+				PreparedStatement pre = conn.prepareStatement(query);) {
+			FileInputStream fis = new FileInputStream(defaultUserImg);
+			
+			pre.setInt(1,1);
+			pre.setString(2,"default_user_img");
+			pre.setBinaryStream(3,fis,(int)defaultUserImg.length()); //Stream형의 파일 업로드
+			pre.executeUpdate();
+			
+			System.out.println("DB에 이미지 저장 완료!");
+		} catch (SQLException e) {
+			e.printStackTrace();
+			System.out.println("몬가 잘못됨.");
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+			System.out.println("몬가 잘못됨.");
+		}
 	}
 }
