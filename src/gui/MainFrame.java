@@ -1,15 +1,10 @@
 package gui;
 
-import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.EventQueue;
 import java.io.IOException;
 
 import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-
-import client.SignUpClient;
 
 public class MainFrame extends JFrame {
 	private CardLayout cards = new CardLayout();
