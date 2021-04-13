@@ -17,7 +17,8 @@ public class TestConnection {
 //			System.out.println(dao.login("test1", "틀린비번")); // 비번틀리면 2출력
 //			System.out.println(dao.login("없는계정", "없는비번")); // 없는아이디일때 0출력
 			
-			dao.insertImage(); // db에 이미지 저장테스트, 테스트할때 db에서 이미지 지우고 할것
+//			dao.insertImage(); // db에 이미지 저장테스트, 테스트할때 db에서 이미지 지우고 할것
+//			dao.extractImage(); // db에 저장된 이미지 불러오기 테스트
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

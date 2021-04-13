@@ -7,7 +7,6 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 import library.LoginResult;
-import library.User;
 import library.UserRequest;
 
 public class ServerSignUp {
