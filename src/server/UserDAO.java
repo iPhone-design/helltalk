@@ -3,21 +3,26 @@ package server;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 
 public class UserDAO {
 	private static String DRIVER = "com.mysql.jdbc.Driver";
 	private static String DB_URL = "jdbc:mysql://localhost:3306/hell_db?characterEncoding=UTF-8";
 	private static String ID = "root";
 	private static String PASSWORD = "root";
+
+	private static final int BUFFER_SIZE = 1024;
+
 	// 모든 유저 기본 프로필이미지
-	private File defaultUserImg = new File(".\\img\\defaultUser1.png"); 
-	
+	private File defaultUserImg = new File(".\\img\\defaultUser1.png");
+
 	static {
 		try {
 			Class.forName(DRIVER);
@@ -25,28 +30,22 @@ public class UserDAO {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public Connection getConnection() throws SQLException {
-		Connection conn = DriverManager
-				.getConnection(DB_URL, ID, PASSWORD);
+		Connection conn = DriverManager.getConnection(DB_URL, ID, PASSWORD);
 		return conn;
 	}
-	
-	public int addUser(String id
-			, String password
-			, String nickname
-			, int age) {
+
+	public int addUser(String id, String password, String nickname, int age) {
 		try (Connection conn = getConnection();
-			PreparedStatement pstmt
-			= conn.prepareStatement("INSERT INTO user"
-					+ " (id, password, nickname, age)"
-					+ " VALUE (?, ?, ?, ?)")) {
-			
+				PreparedStatement pstmt = conn.prepareStatement(
+						"INSERT INTO user" + " (id, password, nickname, age)" + " VALUE (?, ?, ?, ?)")) {
+
 			pstmt.setString(1, id);
 			pstmt.setString(2, password);
 			pstmt.setString(3, nickname);
 			pstmt.setInt(4, age);
-			
+
 			int result = pstmt.executeUpdate();
 			return result;
 		} catch (SQLException e) {
@@ -55,12 +54,11 @@ public class UserDAO {
 		}
 		return -1;
 	}
-	
+
 	public int idCheck(String id) {
 		int result = 0;
 		String query = "SELECT * FROM user WHERE id = ?";
-		try (Connection conn = getConnection();
-				PreparedStatement pstmt = conn.prepareStatement(query)) {
+		try (Connection conn = getConnection(); PreparedStatement pstmt = conn.prepareStatement(query)) {
 			pstmt.setString(1, id);
 			try (ResultSet rs = pstmt.executeQuery()) {
 				if (rs.next()) {
@@ -77,24 +75,25 @@ public class UserDAO {
 		}
 		return -1;
 	}
-	
+
 	public int login(String id, String password) {
 		int result = 0;
 		String query = "SELECT * FROM user WHERE id = ?";
-		try (Connection conn = getConnection();
-				PreparedStatement pstmt = conn.prepareStatement(query)) {
+		try (Connection conn = getConnection(); PreparedStatement pstmt = conn.prepareStatement(query)) {
 			pstmt.setString(1, id);
 			try (ResultSet rs = pstmt.executeQuery()) {
 				if (rs.next()) {
 					String dbId = rs.getString("id");
 					String dbPw = rs.getString("password");
 					int dbStatus = rs.getInt("status");
-					
+
 					System.out.println("입력한 아이디: " + id + ", 저장된 아이디: " + dbId);
 					System.out.println("입력한 비밀번호: " + password + ", 저장된 비밀번호: " + dbPw);
 					System.out.println("닉네임: " + rs.getString("nickname"));
 					System.out.println("나이: " + rs.getInt("age"));
 					System.out.println("유저상태(0:로그아웃, 1:로그인, 2:방장");
+//					방마다 방장을 두고 거따가 유저를 집어넣기
+//					방 여러개 동시에 실행하면 어칼거?
 					System.out.println("↳" + dbStatus);
 					if (id.equals(dbId) && !password.equals(dbPw)) {
 						result = 2; // 비번틀리면 2 출력
@@ -114,19 +113,22 @@ public class UserDAO {
 		}
 		return -1;
 	}
-	
-	
+
 	public void insertImage() { // db에 이미지 저장하는 메소드
-		String query = "INSERT INTO profile_img (id, filename, file) VALUES (?, ?, ?)";
-		try (Connection conn = DriverManager.getConnection(DB_URL,ID,PASSWORD);
-				PreparedStatement pre = conn.prepareStatement(query);) {
+		String query = "INSERT INTO profile_img (id, filename, image) VALUES (?, ?, ?)";
+		String id = "id";
+		String password = "password";
+		String nickname = "nickname";
+
+		try (Connection conn = DriverManager.getConnection(DB_URL, ID, PASSWORD);
+				PreparedStatement pstmt = conn.prepareStatement(query);) {
 			FileInputStream fis = new FileInputStream(defaultUserImg);
-			
-			pre.setInt(1,1);
-			pre.setString(2,"default_user_img");
-			pre.setBinaryStream(3,fis,(int)defaultUserImg.length()); //Stream형의 파일 업로드
-			pre.executeUpdate();
-			
+
+			pstmt.setString(1, "1");
+			pstmt.setString(2, "default_user_img");
+			pstmt.setBinaryStream(3, fis, (int)defaultUserImg.length()); // Stream형의 파일 업로드
+			pstmt.executeUpdate();
+
 			System.out.println("DB에 이미지 저장 완료!");
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -134,6 +136,38 @@ public class UserDAO {
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 			System.out.println("몬가 잘못됨.");
+		}
+	}
+
+	public void extractImage() {
+		String query = "SELECT * FROM profile_img WHERE id = ?";
+
+		String id = "1";
+
+		FileOutputStream fos = null;
+		try (Connection conn = DriverManager.getConnection(DB_URL, ID, PASSWORD);
+				PreparedStatement pstmt = conn.prepareStatement(query);) {
+
+			pstmt.setString(1, id);
+			ResultSet rs = pstmt.executeQuery();
+			rs.next();
+			InputStream is = rs.getBinaryStream("image"); // 파라미터 = 칼럼이름
+			fos = new FileOutputStream(".\\img\\user_img_1.png"); // 저장될 경로와 파일이름
+			byte[] byteArrays = new byte[BUFFER_SIZE * 4];
+			int n;
+			while ((n = is.read(byteArrays)) > 0) {
+				fos.write(byteArrays, 0, n);
+			}
+			System.out.println("DB에서 이미지 불러오기 완료!");
+		} catch (SQLException e) {
+			e.printStackTrace();
+			System.out.println("몬가 잘못됨.1");
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+			System.out.println("몬가 잘못됨.2");
+		} catch (IOException e) {
+			e.printStackTrace();
+			System.out.println("몬가 잘못됨.3");
 		}
 	}
 }
