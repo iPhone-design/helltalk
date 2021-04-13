@@ -151,6 +151,8 @@ public class UserDAO {
 		String id = "id";
 		String password = "password";
 		String nickname = "nickname";
+		
+		String fileName; // 파일명
 
 		try (Connection conn = DriverManager.getConnection(DB_URL, ID, PASSWORD);
 				PreparedStatement pstmt = conn.prepareStatement(query);) {
@@ -174,6 +176,7 @@ public class UserDAO {
 	public void extractImage() {
 		String query = "SELECT * FROM profile_img WHERE id = ?";
 
+		String fileName = "user_img_";
 		String id = "1";
 
 		FileOutputStream fos = null;
@@ -184,7 +187,7 @@ public class UserDAO {
 			ResultSet rs = pstmt.executeQuery();
 			rs.next();
 			InputStream is = rs.getBinaryStream("image"); // 파라미터 = 칼럼이름
-			fos = new FileOutputStream(".\\img\\user_img_1.png"); // 저장될 경로와 파일이름
+			fos = new FileOutputStream(".\\img\\" + fileName + "1.png"); // 저장될 경로와 파일이름
 			byte[] byteArrays = new byte[BUFFER_SIZE * 4];
 			int n;
 			while ((n = is.read(byteArrays)) > 0) {
