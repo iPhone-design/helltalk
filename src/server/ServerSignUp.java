@@ -49,8 +49,11 @@ public class ServerSignUp {
 							result = new LoginResult(LoginResult.NOT_EXIST);
 						}
 					}
-
-					if (true) {
+					/*
+					 *  TODO 혜리랑 마저 얘기해야함
+					 *  
+					 */
+					if (request.getChoose() == 2) {
 						
 					}
 					
