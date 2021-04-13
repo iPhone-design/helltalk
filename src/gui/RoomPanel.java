@@ -9,7 +9,7 @@ import client.ChatClient;
 import library.ChatMap;
 import server.ChatServer;
 import server.RoomListDAO;
-import server.ServerChat;
+import server.Server;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -27,7 +27,7 @@ public class RoomPanel extends JPanel {
 	private RoomListDAO roomListDAO;
 	private ChatServer chatServer;
 
-	public RoomPanel(String roomTitle, String name, BufferedChatPanel buffer) {
+	public RoomPanel(String roomTitle, String name) {
 		setPreferredSize(new Dimension(330, 80));
 		setMaximumSize(new Dimension(330, 80));
 		setBackground(Color.WHITE);
@@ -55,16 +55,14 @@ public class RoomPanel extends JPanel {
 		jbtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				buffer.getChatPanel().setVisible(true);
-				buffer.revalidate();
-				buffer.repaint();
+//				buffer.getChatPanel().setVisible(true);
+//				buffer.revalidate();
+//				buffer.repaint();
 				Thread ChatClientThread = new Thread(new Runnable() {
 					@Override
 					public void run() {
-						buffer.getChatPanel().getTitleLbl().setText(getTitleLbl().getText());
-						ChatClient client = new ChatClient();
-//						chatServer =  new ChatServer(ServerChat.getSocket(), getTitleLbl().getText());
-//						chatServer.start();
+//						buffer.getChatPanel().getTitleLbl().setText(getTitleLbl().getText());
+//						ChatClient client = new ChatClient();
 					}
 				});
 				ChatClientThread.start();

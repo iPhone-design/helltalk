@@ -51,6 +51,7 @@ public class ChatPanel extends JPanel {
 		JTextArea textArea = new JTextArea();
 		textArea.setBounds(12, 102, 559, 396);
 		textArea.setBorder(new LineBorder(Color.LIGHT_GRAY, 1));
+//		textArea.setText(t);
 		add(textArea);
 		
 		textField = new JTextField();

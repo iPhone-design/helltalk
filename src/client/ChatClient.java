@@ -8,15 +8,19 @@ import java.net.UnknownHostException;
 import java.util.Scanner;
 
 public class ChatClient {
-	private static final String ADDRESS = "192.168.100.33";
-	private static final int PORT = 2222;
-	
-	public ChatClient() {
-		try (Socket socket = new Socket("localhost", PORT);) {
+	private Socket socket;
+	public ChatClient(Socket socket) {
+		this.socket = socket;
+		try {
 			DataOutputStream dos = new DataOutputStream(socket.getOutputStream());
 			DataInputStream dis = new DataInputStream(socket.getInputStream());
 			Scanner scan = new Scanner(System.in);
-			System.out.println("아이디를 입력해주세요");
+			System.out.println("메뉴를 선택하세요");
+			String menu = scan.nextLine();
+			dos.writeUTF(menu);
+			dos.flush();
+			
+			System.out.println("아이디를 입력하세요");
 			String id = scan.nextLine();
 			dos.writeUTF(id);
 			dos.flush();
