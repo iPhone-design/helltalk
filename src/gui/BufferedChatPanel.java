@@ -18,13 +18,13 @@ public class BufferedChatPanel extends JPanel{
 
 	public BufferedChatPanel() {
 		chatPanel = new ChatPanel("하이");
-		roomlistPanel = new RoomListPanel(this);
+		roomlistPanel = new RoomListPanel();
 		setPreferredSize(new Dimension(1000, 600));
 		setMaximumSize(new Dimension(1000, 600));
 		setBackground(new Color(255, 228, 225));
 		setLayout(null);
 		chatPanel.setBounds(10, 10, 583, 583);
-		chatPanel.setVisible(false);
+		chatPanel.setVisible(true);
 		add(chatPanel);
 		
 		JButton button = new JButton("New button");

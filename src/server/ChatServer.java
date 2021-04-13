@@ -7,16 +7,16 @@ import java.net.Socket;
 
 import library.ChatMap;
 
-public class ChatServer extends Thread {
+public class ChatServer implements Runnable {
 	private Socket client;
 	private String roomName;
 	private DataInputStream dis;
 	private DataOutputStream dos;
 	
-	public ChatServer(Socket client, String roomName) {
+	public ChatServer(Socket client) {
 		System.out.println("사용자 접속 성공");
 		this.client = client;
-		this.roomName = roomName;
+//		this.roomName = roomName;
 		try {
 			dos = new DataOutputStream(client.getOutputStream());
 			dis = new DataInputStream(client.getInputStream());

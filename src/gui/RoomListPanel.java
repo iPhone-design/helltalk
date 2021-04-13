@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.net.Socket;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -17,7 +18,7 @@ import library.ChatMap;
 import library.Room;
 import server.ChatServer;
 import server.RoomListDAO;
-import server.ServerChat;
+import server.Server;
 
 import javax.swing.JButton;
 import javax.swing.JTextField;
@@ -29,8 +30,11 @@ public class RoomListPanel extends JPanel {
 	private JTextField textField;
 	private JPanel panelBackground;
 	private RoomListDAO roomlistDAO;
+	private Socket socket;
 	int panelY = 5;
-	public RoomListPanel(BufferedChatPanel buffer) {
+	public RoomListPanel() {
+		this.socket = socket;
+//		BufferedChatPanel buffer = new BufferedChatPanel();
 		panelBackground = new JPanel();
 	 	setPreferredSize(new Dimension(370, 580));
 	    setMaximumSize(new Dimension(370, 580));
@@ -52,7 +56,7 @@ public class RoomListPanel extends JPanel {
 	    JButton btnNewButton_1 = new JButton("방 개설");
 	    btnNewButton_1.addActionListener(new ActionListener() {
 	     	public void actionPerformed(ActionEvent e) {
-	     		CreateRoomFrame create = new CreateRoomFrame(buffer, RoomListPanel.this);
+	     		CreateRoomFrame create = new CreateRoomFrame(socket);
 	     	}
 	    });
 	    
@@ -64,7 +68,7 @@ public class RoomListPanel extends JPanel {
 					RoomListDAO roomlist = new RoomListDAO();
 					List<Room> roomList = roomlist.RoomlistAll();
 					for (int i = 0; i <= roomList.size() -1; i++) {
-						RoomPanel panelRoom = new RoomPanel(roomList.get(i).getTitle(), roomList.get(i).getRoomMasterName(), buffer);
+						RoomPanel panelRoom = new RoomPanel(roomList.get(i).getTitle(), roomList.get(i).getRoomMasterName());
 						panelRoom.setBounds(8, 5 + (i * 85), 330, 80);
 						panelBackground.add(panelRoom);
 					}
