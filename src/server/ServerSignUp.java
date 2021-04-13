@@ -15,7 +15,7 @@ public class ServerSignUp {
 	public static void main(String[] args) {
 		UserDAO dao = new UserDAO();
 		UserRequest request = null;
-		
+
 		try (ServerSocket server = new ServerSocket(PORT)) {
 			System.out.println("클라이언트의 접속을 기다립니다.");
 			while (true) {
@@ -23,21 +23,19 @@ public class ServerSignUp {
 					System.out.println("클라이언트 접속");
 					ObjectOutputStream oos = new ObjectOutputStream(client.getOutputStream());
 					ObjectInputStream ois = new ObjectInputStream(client.getInputStream());
-					
+
 					request = (UserRequest) ois.readObject();
 					LoginResult result = null;
 					int idCheck = dao.idCheck(request.getUser().getId());
 					int loginCheck = dao.login(request.getUser().getId(), request.getUser().getPassword());
-					
+
 					System.out.println(idCheck); // 체크용 출력
-					
-					if (request.getChoose() == 1) { // 이제 회원가입 된다고!
+
+					if (request.getChoose() == 1) { // 회원가입
 						if (idCheck == 1) { // 1 = 중복된 아이디 없음, 가입가능한 상태
 							result = new LoginResult(LoginResult.OK);
-							dao.addUser(request.getUser().getId()
-									, request.getUser().getPassword()
-									, request.getUser().getNickname()
-									, request.getUser().getAge());
+							dao.addUser(request.getUser().getId(), request.getUser().getPassword(),
+									request.getUser().getNickname(), request.getUser().getAge());
 						} else if (idCheck == 0) { // 0 = 이미 존재하는 id, 해당id로는 가입불가능
 							result = new LoginResult(LoginResult.ID_EXIST);
 						}
@@ -50,6 +48,10 @@ public class ServerSignUp {
 						} else if (loginCheck == 0) { // 존재하지 않는 ID입니다.
 							result = new LoginResult(LoginResult.NOT_EXIST);
 						}
+					}
+
+					if (true) {
+						
 					}
 					
 					System.out.println(result);

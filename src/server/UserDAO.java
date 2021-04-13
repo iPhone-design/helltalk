@@ -12,6 +12,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import library.User;
+
 public class UserDAO {
 	private static String DRIVER = "com.mysql.jdbc.Driver";
 	private static String DB_URL = "jdbc:mysql://localhost:3306/hell_db?characterEncoding=UTF-8";
@@ -22,6 +24,7 @@ public class UserDAO {
 
 	// 모든 유저 기본 프로필이미지
 	private File defaultUserImg = new File(".\\img\\defaultUser1.png");
+	private User user;
 
 	static {
 		try {
@@ -92,8 +95,7 @@ public class UserDAO {
 					System.out.println("닉네임: " + rs.getString("nickname"));
 					System.out.println("나이: " + rs.getInt("age"));
 					System.out.println("유저상태(0:로그아웃, 1:로그인, 2:방장");
-//					방마다 방장을 두고 거따가 유저를 집어넣기
-//					방 여러개 동시에 실행하면 어칼거?
+
 					System.out.println("↳" + dbStatus);
 					if (id.equals(dbId) && !password.equals(dbPw)) {
 						result = 2; // 비번틀리면 2 출력
@@ -114,6 +116,36 @@ public class UserDAO {
 		return -1;
 	}
 
+	public User getUserData(String id) {
+		String sql = "SELECT * FROM user WHERE id = ?";
+		try (Connection conn = getConnection();
+				PreparedStatement pstmt = conn.prepareStatement(sql);) {
+			pstmt.setString(1, id);
+			
+			try (ResultSet rs = pstmt.executeQuery()) {
+				while (rs.next()) {
+					String dbId = rs.getString("id");
+					String dbPw = rs.getString("password");
+					String dbNn = rs.getString("nickname");
+					int dbAge = rs.getInt("age");
+					int dbstatus = rs.getInt("status");
+					
+					user = new User();
+					user.setId(dbId);
+					user.setPassword(dbPw);
+					user.setNickname(dbNn);
+					user.setAge(dbAge);
+					user.setStatus(dbstatus);
+					return user;
+				}
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			System.out.println("몬가 잘못됨.");
+		}
+		return null;
+	}
+	
 	public void insertImage() { // db에 이미지 저장하는 메소드
 		String query = "INSERT INTO profile_img (id, filename, image) VALUES (?, ?, ?)";
 		String id = "id";
@@ -126,7 +158,7 @@ public class UserDAO {
 
 			pstmt.setString(1, "1");
 			pstmt.setString(2, "default_user_img");
-			pstmt.setBinaryStream(3, fis, (int)defaultUserImg.length()); // Stream형의 파일 업로드
+			pstmt.setBinaryStream(3, fis, (int) defaultUserImg.length()); // Stream형의 파일 업로드
 			pstmt.executeUpdate();
 
 			System.out.println("DB에 이미지 저장 완료!");
