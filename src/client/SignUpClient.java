@@ -98,6 +98,7 @@ public class SignUpClient {
 	public LoginResult updateUserData(User user) {
 		LoginResult result = null;
 		try {
+			System.out.println("클라 : " + user);
 			oos.writeObject(new UserRequest(user, 3));
 			oos.flush();
 			result = (LoginResult) ois.readObject();

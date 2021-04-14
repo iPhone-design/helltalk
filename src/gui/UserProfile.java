@@ -42,12 +42,16 @@ public class UserProfile extends JDialog {
 	private File currentFile;
 
 	private List<JTextField> list = new ArrayList();
-
+	private User user;
+	private JLabel lbl_id;
+	private JLabel lbl_pw;
+	private JLabel lbl_nickName;
+	private JLabel lbl_confirm_pw;
 	public UserProfile(SignUpPanel signUp) {
 		
 		socket = signUp.getSocket();
 		
-		User user = new User();
+//		User user = new User();
 		user = socket.getUserData();
 		System.out.println("패널 : " + user.toString());
 		
@@ -71,7 +75,7 @@ public class UserProfile extends JDialog {
 		
 		JPanel pnl_fake = new JPanel();
 		pnl_fake.setBackground(Color.WHITE);
-		pnl_fake.setBounds(12, 221, 310, 114);
+		pnl_fake.setBounds(0, 205, 334, 154);
 		panel.add(pnl_fake);
 		
 		lbl_mainNickName = new JLabel();
@@ -90,7 +94,7 @@ public class UserProfile extends JDialog {
 		tfd_confirm_pw.setBounds(121, 314, 170, 21);
 		panel.add(tfd_confirm_pw);
 		
-		JLabel lbl_id = new JLabel("아이디");
+		lbl_id = new JLabel("아이디");
 		lbl_id.setHorizontalAlignment(SwingConstants.CENTER);
 		lbl_id.setFont(new Font("함초롬바탕", Font.BOLD, 13));
 		lbl_id.setBounds(21, 253, 98, 15);
@@ -102,7 +106,7 @@ public class UserProfile extends JDialog {
 		tfd_id.setBounds(121, 252, 170, 21);
 		panel.add(tfd_id);
 		
-		JLabel lbl_pw = new JLabel("비밀번호");
+		lbl_pw = new JLabel("비밀번호");
 		lbl_pw.setHorizontalAlignment(SwingConstants.CENTER);
 		lbl_pw.setFont(new Font("함초롬바탕", Font.BOLD, 13));
 		lbl_pw.setBounds(21, 284, 97, 15);
@@ -122,7 +126,7 @@ public class UserProfile extends JDialog {
 		list.add(tfd_pw);
 		list.add(tfd_confirm_pw);
 		
-		JLabel lbl_nickName = new JLabel("닉네임");
+		lbl_nickName = new JLabel("닉네임");
 		lbl_nickName.setHorizontalAlignment(SwingConstants.CENTER);
 		lbl_nickName.setFont(new Font("함초롬바탕", Font.BOLD, 13));
 		lbl_nickName.setBounds(22, 224, 97, 15);
@@ -133,11 +137,11 @@ public class UserProfile extends JDialog {
 		btn_profile.setIcon(btnImage);
 		panel.add(btn_profile);
 		
-		JLabel lbl_pw_1 = new JLabel("비밀번호 확인");
-		lbl_pw_1.setHorizontalAlignment(SwingConstants.CENTER);
-		lbl_pw_1.setFont(new Font("함초롬바탕", Font.BOLD, 13));
-		lbl_pw_1.setBounds(21, 316, 88, 15);
-		panel.add(lbl_pw_1);
+		lbl_confirm_pw = new JLabel("비밀번호 확인");
+		lbl_confirm_pw.setHorizontalAlignment(SwingConstants.CENTER);
+		lbl_confirm_pw.setFont(new Font("함초롬바탕", Font.BOLD, 13));
+		lbl_confirm_pw.setBounds(21, 316, 88, 15);
+		panel.add(lbl_confirm_pw);
 		btn_profile.addActionListener(new ActionListener() {
 	         @Override
 	         public void actionPerformed(ActionEvent e) {
@@ -179,6 +183,14 @@ public class UserProfile extends JDialog {
 				btn_confirm.addActionListener(new ActionListener() {
 					@Override
 					public void actionPerformed(ActionEvent e) {
+						
+						socket.closeSocket();
+						try {
+							socket = new SignUpClient();
+						} catch (IOException e2) {
+							e2.printStackTrace();
+						}
+						
 						String message = "";
 						// 빈칸 & 공백 거르기
 						if (checkData() == 1) {
@@ -191,28 +203,39 @@ public class UserProfile extends JDialog {
 							message = "비밀번호가 일치하지 않습니다.";
 							showMessage("Error", message);
 						} else {
-							pnl_fake.setVisible(true);
+							// 클라로 변경될 유저 데이터 보내기
+							LoginResult response = socket.updateUserData(getUserInfo());
+							// 변경 결과
+							int result = response.getResult();
+							
+							if (result == LoginResult.UPDATE_USERDATA) {
+								message = "회원정보가 성공적으로 변경되었습니다.";
+								showMessage("회원 정보", message);
+								
+//								pnl_fake.setVisible(true);
+								
+								try {
+									socket = new SignUpClient();
+								} catch (IOException e1) {
+									e1.printStackTrace();
+								}
+								
+								user = socket.getUserData();
+								System.out.println("패널 : " + user.toString());
+								showUserInfo(user);
+//								hideField();
+								
+								
+								
+								
+							} else {
+								message = "정보 변경 실패 !";
+								showMessage("회원 정보", message);
+							}
+							
+							btn_edit.setVisible(true);
 							btn_confirm.setVisible(false);
 							btn_load.setVisible(false);
-							btn_edit.setVisible(true);
-							
-							User user = new User(tfd_id.getText()
-												, getPassword(tfd_pw.getPassword())
-												, tfd_nickName.getText());
-							
-							System.out.println(user.toString());
-							
-//							// 클라로 데이터 보내기
-//							LoginResult response = socket.updateUserData(user);
-//							int result = response.getResult();
-//							
-//							if (result == LoginResult.UPDATE_USERDATA) {
-//								message = "회원정보가 성공적으로 변경되었습니다.";
-//								showMessage("회원 정보", message);
-//							} else {
-//								message = "정보 변경 실패 !";
-//								showMessage("회원 정보", message);
-//							}
 						}
 					}
 				});
@@ -297,5 +320,22 @@ public class UserProfile extends JDialog {
 	// 메세지 띄우는 메서드
 	public void showMessage(String type, String message) {
 		JOptionPane.showMessageDialog(null, message, type, JOptionPane.WARNING_MESSAGE);
+	}
+	public User getUserInfo() {
+		user = new User(tfd_id.getText()
+				, getPassword(tfd_pw.getPassword())
+				, tfd_nickName.getText());
+		return user;
+	}
+	public void hideField() {
+//		List<JTextField> temp = new ArrayList();
+		lbl_id.setVisible(false);
+		lbl_pw.setVisible(false);
+		lbl_confirm_pw.setVisible(false);
+		lbl_nickName.setVisible(false);
+		tfd_id.setVisible(false);
+		tfd_pw.setVisible(false);
+		tfd_confirm_pw.setVisible(false);
+		tfd_nickName.setVisible(false);
 	}
 }
