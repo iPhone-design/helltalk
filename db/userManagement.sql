@@ -29,8 +29,9 @@ CREATE TABLE `profile_img` (
   `userid` varchar(20) NOT NULL,
   `filename` varchar(45) NOT NULL,
   `image` mediumblob NOT NULL,
-  PRIMARY KEY (`imgnum`),
-  CONSTRAINT `fk_user` FOREIGN KEY (`imgnum`) REFERENCES `user` (`usernum`)
+  KEY `fk_user_idx` (`imgnum`),
+  KEY `fk_user_idx1` (`userid`),
+  CONSTRAINT `fk_user` FOREIGN KEY (`userid`) REFERENCES `user` (`userid`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -68,7 +69,6 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (1,'1','1','test1',1,0);
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -89,4 +89,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-04-14 10:52:34
+-- Dump completed on 2021-04-14 12:10:00
