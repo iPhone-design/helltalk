@@ -116,7 +116,7 @@ public class UserDAO {
 		return -1;
 	}
 
-	public User getUserData(String id) {
+	public User getUserData(String id) { // 마이페이지, 프로필보기용 유저데이터 조회
 		String sql = "SELECT * FROM user WHERE id = ?";
 		try (Connection conn = getConnection();
 				PreparedStatement pstmt = conn.prepareStatement(sql);) {

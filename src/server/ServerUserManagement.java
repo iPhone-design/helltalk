@@ -9,7 +9,7 @@ import java.net.Socket;
 import library.LoginResult;
 import library.UserRequest;
 
-public class ServerSignUp {
+public class ServerUserManagement {
 	private static final int PORT = 2222;
 
 	public static void main(String[] args) {
@@ -49,12 +49,14 @@ public class ServerSignUp {
 							result = new LoginResult(LoginResult.NOT_EXIST);
 						}
 					}
-					/*
-					 *  TODO 혜리랑 마저 얘기해야함
-					 *  
-					 */
+					
 					if (request.getChoose() == 2) {
-						
+						result = new LoginResult(LoginResult.GET_USERDATA);
+						dao.getUserData("1");
+					}
+					
+					if (request.getChoose() == 3) {
+						result = new LoginResult(LoginResult.UPDATE_USERDATA);
 					}
 					
 					System.out.println(result);
