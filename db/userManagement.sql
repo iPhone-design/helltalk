@@ -18,6 +18,32 @@ USE `hell_db`;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
+-- Table structure for table `profile_img`
+--
+
+DROP TABLE IF EXISTS `profile_img`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `profile_img` (
+  `imgnum` int(11) NOT NULL AUTO_INCREMENT,
+  `userid` varchar(20) NOT NULL,
+  `filename` varchar(45) NOT NULL,
+  `image` mediumblob NOT NULL,
+  PRIMARY KEY (`imgnum`),
+  CONSTRAINT `fk_user` FOREIGN KEY (`imgnum`) REFERENCES `user` (`usernum`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `profile_img`
+--
+
+LOCK TABLES `profile_img` WRITE;
+/*!40000 ALTER TABLE `profile_img` DISABLE KEYS */;
+/*!40000 ALTER TABLE `profile_img` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `user`
 --
 
@@ -25,13 +51,15 @@ DROP TABLE IF EXISTS `user`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `user` (
-  `id` varchar(20) NOT NULL,
+  `usernum` int(11) NOT NULL AUTO_INCREMENT,
+  `userid` varchar(20) NOT NULL,
   `password` varchar(20) NOT NULL,
   `nickname` varchar(20) NOT NULL,
   `age` int(11) NOT NULL,
-  `active` tinyint(1) NOT NULL DEFAULT '1',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `status` tinyint(9) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`usernum`),
+  UNIQUE KEY `id_UNIQUE` (`userid`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -40,7 +68,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES ('test1','test1','테스트닉넴',22,1);
+INSERT INTO `user` VALUES (1,'1','1','test1',1,0);
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -61,4 +89,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-04-08 11:36:30
+-- Dump completed on 2021-04-14 10:52:34
