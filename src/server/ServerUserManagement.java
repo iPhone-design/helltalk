@@ -53,11 +53,11 @@ public class ServerUserManagement {
 					if (request.getChoose() == 2) {
 						result = new LoginResult(LoginResult.GET_USERDATA);
 						oos.writeObject(dao.getUserData("1"));
-						oos.flush();
 					}
 					
 					if (request.getChoose() == 3) {
 						result = new LoginResult(LoginResult.UPDATE_USERDATA);
+						oos.writeObject(dao.updateUserData("1a", "11", "1")); // 닉넴, 비번, id 순
 					}
 					
 					System.out.println("result : " + result);
