@@ -7,6 +7,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 import library.LoginResult;
+import library.User;
 import library.UserRequest;
 
 public class ServerSignUp {
@@ -15,6 +16,7 @@ public class ServerSignUp {
 	public static void main(String[] args) {
 		UserDAO dao = new UserDAO();
 		UserRequest request = null;
+		User user = null; 
 
 		try (ServerSocket server = new ServerSocket(PORT)) {
 			System.out.println("클라이언트의 접속을 기다립니다.");
@@ -30,7 +32,9 @@ public class ServerSignUp {
 					int loginCheck = dao.login(request.getUser().getId(), request.getUser().getPassword());
 
 					System.out.println(idCheck); // 체크용 출력
-
+					
+					
+					
 					if (request.getChoose() == 1) { // 회원가입
 						if (idCheck == 1) { // 1 = 중복된 아이디 없음, 가입가능한 상태
 							result = new LoginResult(LoginResult.OK);
@@ -49,7 +53,7 @@ public class ServerSignUp {
 							result = new LoginResult(LoginResult.NOT_EXIST);
 						}
 					}
-
+					
 					if (true) {
 						
 					}

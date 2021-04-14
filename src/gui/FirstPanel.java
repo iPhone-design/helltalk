@@ -48,6 +48,20 @@ public class FirstPanel extends JPanel {
 		btnNewButton_1.setFont(new Font("굴림", Font.PLAIN, 17));
 		btnNewButton_1.setBounds(534, 319, 125, 39);
 		add(btnNewButton_1);
+		
+		
+		JButton btnNewButton_2 = new JButton("temp");
+		btnNewButton_1.setBackground(new Color(255, 182, 193));
+		btnNewButton_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				UserProfile temp = new UserProfile();
+			}
+		});
+		btnNewButton_2.setForeground(new Color(255, 255, 255));
+		btnNewButton_2.setBackground(new Color(255, 182, 193));
+		btnNewButton_2.setFont(new Font("굴림", Font.PLAIN, 17));
+		btnNewButton_2.setBounds(750, 319, 125, 39);
+		add(btnNewButton_2);
 
 	}
 }
