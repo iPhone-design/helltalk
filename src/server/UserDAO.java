@@ -82,7 +82,8 @@ public class UserDAO {
 	public int login(String id, String password) {
 		int result = 0;
 		String query = "SELECT * FROM user WHERE userid = ?";
-		try (Connection conn = getConnection(); PreparedStatement pstmt = conn.prepareStatement(query)) {
+		try (Connection conn = getConnection();
+				PreparedStatement pstmt = conn.prepareStatement(query)) {
 			pstmt.setString(1, id);
 			try (ResultSet rs = pstmt.executeQuery()) {
 				if (rs.next()) {
@@ -146,8 +147,22 @@ public class UserDAO {
 		return null;
 	}
 	
-	public void updateUserData () {
+	public int updateUserData (String nickname, String password, String userid) {
+		String query = "UPDATE user SET nickname = ?, password = ?"
+				+ " WHERE userid = ?";
 		
+		try (Connection conn = getConnection();
+				PreparedStatement pstmt = conn.prepareStatement(query);) {
+			pstmt.setString(1, nickname);
+			pstmt.setString(2, password);
+			pstmt.setString(3, userid);
+			int result = pstmt.executeUpdate(); 
+			System.out.println("수정된 행 개수: " + result);
+			return result;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return -1;
 	}
 	
 	public void insertImage() { // db에 이미지 저장하는 메소드
