@@ -11,6 +11,7 @@ public class MainFrame extends JFrame {
 	private SignUpPanel signUpPanel;
 	private FirstPanel firstPanel;
 	private LoginPanel loginPanel;
+	private BufferedChatPanel bufferedChatPanel;
 
 	/**
 	 * Launch the application.
@@ -37,12 +38,14 @@ public class MainFrame extends JFrame {
 		signUpPanel = new SignUpPanel(this);
 		firstPanel = new FirstPanel(this);
 		loginPanel = new LoginPanel(this, signUpPanel);
+		bufferedChatPanel = new BufferedChatPanel();
 
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1000, 650);
 		getContentPane().add("First", firstPanel);
 		getContentPane().add("SignUp", signUpPanel);
 		getContentPane().add("Login", loginPanel);
+		getContentPane().add("Chat", bufferedChatPanel);
 	}
 
 	public void changeFirstPanel() throws IOException {
@@ -55,5 +58,8 @@ public class MainFrame extends JFrame {
 
 	public void changeLoginPanel() {
 		cards.show(this.getContentPane(), "Login");
+	}
+	public void changeChatPanel() {
+		cards.show(this.getContentPane(), "Chat");
 	}
 }

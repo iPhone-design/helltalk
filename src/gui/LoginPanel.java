@@ -83,6 +83,7 @@ public class LoginPanel extends JPanel implements KeyListener {
 					if (result == LoginResult.OK) {
 						message = "로그인 완료";
 						clearField();
+						frame.changeChatPanel();
 					} else if (result == LoginResult.NOT_EXIST) {
 						message = "존재하지 않는 아이디 입니다.";
 						clearField();
