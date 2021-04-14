@@ -95,7 +95,7 @@ public class SignUpClient {
 	}
 	
 	// User 정보 업데이트
-	public void updateUserData(User user) {
+	public LoginResult updateUserData(User user) {
 		LoginResult result = null;
 		try {
 			oos.writeObject(new UserRequest(user, 3));
@@ -109,6 +109,7 @@ public class SignUpClient {
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
+		return result;
 	}
 	public void closeSocket() {
 		try {
