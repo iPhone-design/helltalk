@@ -36,7 +36,7 @@ public class MainFrame extends JFrame {
 	public MainFrame() {
 		setLayout(cards);
 		signUpPanel = new SignUpPanel(this);
-		firstPanel = new FirstPanel(this);
+		firstPanel = new FirstPanel(this, signUpPanel);
 		loginPanel = new LoginPanel(this, signUpPanel);
 		bufferedChatPanel = new BufferedChatPanel();
 

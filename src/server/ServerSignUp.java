@@ -7,14 +7,16 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 import library.LoginResult;
+import library.User;
 import library.UserRequest;
 
-public class ServerUserManagement {
+public class ServerSignUp {
 	private static final int PORT = 2222;
 
 	public static void main(String[] args) {
 		UserDAO dao = new UserDAO();
 		UserRequest request = null;
+		User user = null; 
 
 		try (ServerSocket server = new ServerSocket(PORT)) {
 			System.out.println("클라이언트의 접속을 기다립니다.");
@@ -30,7 +32,9 @@ public class ServerUserManagement {
 					int loginCheck = dao.login(request.getUser().getId(), request.getUser().getPassword());
 
 					System.out.println(idCheck); // 체크용 출력
-
+					
+					
+					
 					if (request.getChoose() == 1) { // 회원가입
 						if (idCheck == 1) { // 1 = 중복된 아이디 없음, 가입가능한 상태
 							result = new LoginResult(LoginResult.OK);
@@ -50,17 +54,11 @@ public class ServerUserManagement {
 						}
 					}
 					
-					if (request.getChoose() == 2) {
-						result = new LoginResult(LoginResult.GET_USERDATA);
-						oos.writeObject(dao.getUserData("1"));
-						oos.flush();
+					if (true) {
+						
 					}
 					
-					if (request.getChoose() == 3) {
-						result = new LoginResult(LoginResult.UPDATE_USERDATA);
-					}
-					
-					System.out.println("result : " + result);
+					System.out.println(result);
 					oos.writeObject(result);
 					oos.flush();
 				} catch (ClassNotFoundException e) {

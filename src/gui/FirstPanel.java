@@ -12,7 +12,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
 public class FirstPanel extends JPanel {
-	public FirstPanel(MainFrame frame) {
+	public FirstPanel(MainFrame frame, SignUpPanel signUp) {
 		
 		setPreferredSize(new Dimension(1000, 600));
 		setMaximumSize(new Dimension(1000, 600));
@@ -48,6 +48,19 @@ public class FirstPanel extends JPanel {
 		btnNewButton_1.setFont(new Font("굴림", Font.PLAIN, 17));
 		btnNewButton_1.setBounds(534, 319, 125, 39);
 		add(btnNewButton_1);
+		
+		// 임시 버튼 _ 마이페이지
+		JButton btnNewButton_2 = new JButton("대충 마이페이지");
+		btnNewButton_2.setBackground(new Color(255, 182, 193));
+		btnNewButton_2.setFont(new Font("굴림", Font.PLAIN, 15));
+		btnNewButton_2.setBounds(680, 319, 125, 39);
+		
+		btnNewButton_2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				UserProfile temp = new UserProfile(signUp);
+			}
+		});
+		add(btnNewButton_2);
 
 	}
 }
