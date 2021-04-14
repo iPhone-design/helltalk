@@ -6,6 +6,7 @@ import java.awt.FlowLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JFileChooser;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
@@ -15,6 +16,7 @@ import library.User;
 import javax.swing.SwingConstants;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.io.File;
 import java.awt.event.ActionEvent;
 import java.awt.Color;
 import javax.swing.JTextField;
@@ -30,6 +32,7 @@ public class UserProfile extends JDialog {
 	private JTextField tfd_nickName;
 	private ImageIcon btnImage = new ImageIcon("btnImage1.png");
 	private JLabel lbl_mainNickName;
+	private File currentFile;
 
 	// User 객체를 받아서 띄우는 메서드
 	public void showUserInfo(User user) {
@@ -120,13 +123,13 @@ public class UserProfile extends JDialog {
 		btn_profile.addActionListener(new ActionListener() {
 	         @Override
 	         public void actionPerformed(ActionEvent e) {
-	            JDialog dialog = new JDialog();
+	            JDialog dialog1 = new JDialog();
 	            JLabel jlabel = new JLabel();
 	            jlabel.setIcon(btnImage);
-	            dialog.getContentPane().add(jlabel);
-	            dialog.setModal(true);
-	            dialog.setSize(500, 500);
-	            dialog.setVisible(true);
+	            dialog1.getContentPane().add(jlabel);
+	            dialog1.setModal(true);
+	            dialog1.setSize(500, 500);
+	            dialog1.setVisible(true);
 	         }
 	      });
 		
@@ -137,6 +140,7 @@ public class UserProfile extends JDialog {
 			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
 			{
+				
 				
 				JButton btn_edit = new JButton("프로필 수정");
 				btn_edit.setFont(new Font("함초롬바탕", Font.BOLD, 14));
@@ -153,6 +157,7 @@ public class UserProfile extends JDialog {
 				// TODO
 				// 완료 버튼 눌렀을 때 pw,닉네임이 서버로 보내지게하기
 				// 동기화? 새로고침 or 필드내용 자체 변경?
+
 				btn_confirm.addActionListener(new ActionListener() {
 					User user;
 					@Override
@@ -170,22 +175,35 @@ public class UserProfile extends JDialog {
 					}
 				});
 				
+
 				// 프로필 수정 버튼
 				// TODO 눌렀을 때 수정한 내용 DB 전송
+				//프로필 수정
 				btn_edit.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 						pnl_fake.setVisible(false);
 						btn_edit.setVisible(false);
 						btn_confirm.setVisible(true);
 						btn_load.setVisible(true);
-						
 					}
 				});
 				
-				// TODO 프로필 사진 변경 버튼
+				//파일 열기
 				btn_load.addActionListener(new ActionListener() {
+					@Override
 					public void actionPerformed(ActionEvent e) {
-						
+						pnl_fake.setVisible(false);
+						btn_edit.setVisible(false);
+						btn_confirm.setVisible(true);
+						JFileChooser chooser = new JFileChooser(".");
+						int i = chooser.showOpenDialog(null);
+						if (i == JFileChooser.APPROVE_OPTION) {
+							currentFile = chooser.getSelectedFile();
+							btn_profile.setIcon(new ImageIcon(currentFile.getPath()));
+							btnImage = new ImageIcon(currentFile.getPath());
+						} else if (i == JFileChooser.CANCEL_OPTION) {
+							
+						}
 					}
 				});
 				
@@ -195,6 +213,7 @@ public class UserProfile extends JDialog {
 				buttonPane.add(btn_edit);
 				buttonPane.add(btn_load);
 				buttonPane.add(btn_confirm);
+				buttonPane.add(btn_load);
 			}
 		}
 	}
