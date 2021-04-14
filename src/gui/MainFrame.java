@@ -33,7 +33,7 @@ public class MainFrame extends JFrame {
 	public MainFrame(Socket socket) {
 		setLayout(cards);
 		signUpPanel = new SignUpPanel(this);
-		firstPanel = new FirstPanel(this);
+		firstPanel = new FirstPanel(this, signUpPanel);
 		bufferedChatPanel = new BufferedChatPanel();
 		this.socket = socket;
 		
@@ -45,8 +45,10 @@ public class MainFrame extends JFrame {
 //			oos.writeObject(new ObjectInOut(0, "test"));
 //			oos.flush();
 			
-			oos.writeObject(new ObjectInOut(ObjectInOut.LOGIN, loginPanel.getIdText().getText(), loginPanel.getPassword(loginPanel.getPwText().getPassword())));
+//			oos.writeObject(new ObjectInOut(ObjectInOut.LOGIN, loginPanel.getIdText().getText(), loginPanel.getPassword(loginPanel.getPwText().getPassword())));
+			oos.writeObject(new ObjectInOut(ObjectInOut.LOGIN));
 			oos.flush();
+			
 			signUpClient = new SignUpClient(socket);
 			loginPanel = new LoginPanel(MainFrame.this, signUpClient);
 //			signUpClient = new SignUpClient(socket);

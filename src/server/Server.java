@@ -56,7 +56,7 @@ public class Server {
 //								userDAO.idCheck(object.get)
 								
 								
-//								ServerSignUp signUp = new ServerSignUp(socket);
+								ServerSignUp signUp = new ServerSignUp(socket);
 //								SignUpClient signUpClient = new SignUpClient(socket);
 								DataOutputStream out = new DataOutputStream(socket.getOutputStream());
 								out.writeUTF("성공");

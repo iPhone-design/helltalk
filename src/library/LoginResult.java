@@ -7,10 +7,14 @@ public class LoginResult implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 238733383606881091L;
+	
 	public static final int OK = 0;
 	public static final int NOT_EXIST = 1;
 	public static final int WRONG_PASSWORD = 2;
 	public static final int ID_EXIST = 3;
+	public static final int GET_USERDATA = 4;
+	public static final int UPDATE_USERDATA = 5;
+	
 	private int result;
 	public LoginResult(int result) {
 		super();

@@ -42,7 +42,7 @@ public class UserDAO {
 	public int addUser(String id, String password, String nickname, int age) {
 		try (Connection conn = getConnection();
 				PreparedStatement pstmt = conn.prepareStatement(
-						"INSERT INTO user" + " (id, password, nickname, age)" + " VALUE (?, ?, ?, ?)")) {
+						"INSERT INTO user" + " (userid, password, nickname, age)" + " VALUE (?, ?, ?, ?)")) {
 
 			pstmt.setString(1, id);
 			pstmt.setString(2, password);
@@ -60,7 +60,7 @@ public class UserDAO {
 
 	public int idCheck(String id) {
 		int result = 0;
-		String query = "SELECT * FROM user WHERE id = ?";
+		String query = "SELECT * FROM user WHERE userid = ?";
 		try (Connection conn = getConnection(); PreparedStatement pstmt = conn.prepareStatement(query)) {
 			pstmt.setString(1, id);
 			try (ResultSet rs = pstmt.executeQuery()) {
@@ -81,12 +81,13 @@ public class UserDAO {
 
 	public int login(String id, String password) {
 		int result = 0;
-		String query = "SELECT * FROM user WHERE id = ?";
-		try (Connection conn = getConnection(); PreparedStatement pstmt = conn.prepareStatement(query)) {
+		String query = "SELECT * FROM user WHERE userid = ?";
+		try (Connection conn = getConnection();
+				PreparedStatement pstmt = conn.prepareStatement(query)) {
 			pstmt.setString(1, id);
 			try (ResultSet rs = pstmt.executeQuery()) {
 				if (rs.next()) {
-					String dbId = rs.getString("id");
+					String dbId = rs.getString("userid");
 					String dbPw = rs.getString("password");
 					int dbStatus = rs.getInt("status");
 
@@ -116,15 +117,15 @@ public class UserDAO {
 		return -1;
 	}
 
-	public User getUserData(String id) {
-		String sql = "SELECT * FROM user WHERE id = ?";
+	public User getUserData(String id) { // 마이페이지, 프로필보기용 유저데이터 조회
+		String sql = "SELECT * FROM user WHERE userid = ?";
 		try (Connection conn = getConnection();
 				PreparedStatement pstmt = conn.prepareStatement(sql);) {
 			pstmt.setString(1, id);
 			
 			try (ResultSet rs = pstmt.executeQuery()) {
 				while (rs.next()) {
-					String dbId = rs.getString("id");
+					String dbId = rs.getString("userid");
 					String dbPw = rs.getString("password");
 					String dbNn = rs.getString("nickname");
 					int dbAge = rs.getInt("age");
@@ -146,8 +147,26 @@ public class UserDAO {
 		return null;
 	}
 	
+	public int updateUserData (String nickname, String password, String userid) {
+		String query = "UPDATE user SET nickname = ?, password = ?"
+				+ " WHERE userid = ?";
+		
+		try (Connection conn = getConnection();
+				PreparedStatement pstmt = conn.prepareStatement(query);) {
+			pstmt.setString(1, nickname);
+			pstmt.setString(2, password);
+			pstmt.setString(3, userid);
+			int result = pstmt.executeUpdate(); 
+			System.out.println("수정된 행 개수: " + result);
+			return result;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return -1;
+	}
+	
 	public void insertImage() { // db에 이미지 저장하는 메소드
-		String query = "INSERT INTO profile_img (id, filename, image) VALUES (?, ?, ?)";
+		String query = "INSERT INTO profile_img (userid, filename, image) VALUES (?, ?, ?)";
 		String id = "id";
 		String password = "password";
 		String nickname = "nickname";
@@ -174,7 +193,7 @@ public class UserDAO {
 	}
 
 	public void extractImage() {
-		String query = "SELECT * FROM profile_img WHERE id = ?";
+		String query = "SELECT * FROM profile_img WHERE userid = ?";
 
 		String fileName = "user_img_";
 		String id = "1";

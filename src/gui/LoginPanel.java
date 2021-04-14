@@ -52,10 +52,10 @@ public class LoginPanel extends JPanel implements KeyListener {
 		pwText.addKeyListener(this);
 		setLayout(null);
 		
-		add(idLbl);		
-		add(pwLbl);		
-		add(idText);		
-		add(pwText);		
+		add(idLbl);
+		add(pwLbl);
+		add(idText);
+		add(pwText);
 		setPreferredSize(new Dimension(1000, 600));
 		setMaximumSize(new Dimension(1000, 600));
 		
@@ -68,9 +68,14 @@ public class LoginPanel extends JPanel implements KeyListener {
 		loginBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				System.out.println("클라 로그인 시도중");
+				User user = null;
 				String message = "";
 
 				LoginResult response = signUpClient.login(new User(idText.getText(), getPassword(pwText.getPassword())));
+//				socket = signUp.getSocket();
+				
+//				user = new User(idText.getText(), getPassword(pwText.getPassword()));
+//				LoginResult response = socket.login(user);
 				
 				int result = response.getResult();
 				
