@@ -61,4 +61,28 @@ public class MainFrame extends JFrame {
 	public void changeLoginPanel() {
 		cards.show(this.getContentPane(), "Login");
 	}
+	
+	public SignUpPanel getSignUpPanel() {
+		return signUpPanel;
+	}
+
+	public void setSignUpPanel(SignUpPanel signUpPanel) {
+		this.signUpPanel = signUpPanel;
+	}
+
+	public FirstPanel getFirstPanel() {
+		return firstPanel;
+	}
+
+	public void setFirstPanel(FirstPanel firstPanel) {
+		this.firstPanel = firstPanel;
+	}
+
+	public LoginPanel getLoginPanel() {
+		return loginPanel;
+	}
+
+	public void setLoginPanel(LoginPanel loginPanel) {
+		this.loginPanel = loginPanel;
+	}
 }

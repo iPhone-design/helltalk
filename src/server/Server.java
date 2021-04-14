@@ -34,14 +34,15 @@ public class Server {
 				socket = server.accept();
 				dos = new DataOutputStream(socket.getOutputStream());
 				dis = new DataInputStream(socket.getInputStream());
-				oos = new ObjectOutputStream(socket.getOutputStream());
-				ois = new ObjectInputStream(socket.getInputStream());
 				
 				if (dis.readUTF().equals("a")) {
 					Thread t1 = new Thread(new ChatServer(socket));
 					t1.start();
-				} 
-				
+				} else if (dis.readUTF().equals("b")) {
+					oos = new ObjectOutputStream(socket.getOutputStream());
+					ois = new ObjectInputStream(socket.getInputStream());
+					dao.addRoom("test", "master");
+				}
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
