@@ -33,9 +33,9 @@ public class ServerUserManagement {
 
 					if (request.getChoose() == 1) { // 회원가입
 						if (idCheck == 1) { // 1 = 중복된 아이디 없음, 가입가능한 상태
-							result = new LoginResult(LoginResult.OK);
 							dao.addUser(request.getUser().getId(), request.getUser().getPassword(),
 									request.getUser().getNickname(), request.getUser().getAge());
+							result = new LoginResult(LoginResult.OK);
 						} else if (idCheck == 0) { // 0 = 이미 존재하는 id, 해당id로는 가입불가능
 							result = new LoginResult(LoginResult.ID_EXIST);
 						}
@@ -56,11 +56,15 @@ public class ServerUserManagement {
 					}
 					
 					if (request.getChoose() == 3) {
+						dao.updateUserData(request.getUser().getNickname()
+											, request.getUser().getPassword()
+											, request.getUser().getId()); // 닉넴, 비번, id 순
 						result = new LoginResult(LoginResult.UPDATE_USERDATA);
-						oos.writeObject(dao.updateUserData("1a", "11", "1")); // 닉넴, 비번, id 순
+						System.out.println("서버 : " + result);
+						oos.writeObject(result);
 					}
 					
-					System.out.println("result : " + result);
+					System.out.println("서버 - 결과: " + result);
 					oos.writeObject(result);
 					oos.flush();
 				} catch (ClassNotFoundException e) {
