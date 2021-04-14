@@ -20,14 +20,18 @@ import javax.swing.text.JTextComponent;
 import client.SignUpClient;
 import library.LoginResult;
 import library.User;
-import library.UserRequest;
 
 public class LoginPanel extends JPanel implements KeyListener {
-	private SignUpClient socket;
+	private SignUpClient signUpClient;
+	private MainFrame frame;
 	private JTextField idText;
 	private JPasswordField pwText;
+	private JButton loginBtn;
 	
-	public LoginPanel(MainFrame frame, SignUpPanel signUp) {
+	public LoginPanel(MainFrame frame, SignUpClient signUpClient) {
+		this.frame = frame;
+		this.signUpClient = signUpClient;
+		
 		setBackground(new Color(255, 228, 225));
 		JLabel idLbl = new JLabel("ID");
 		idLbl.setFont(new Font("함초롬바탕", Font.PLAIN, 23));
@@ -36,7 +40,6 @@ public class LoginPanel extends JPanel implements KeyListener {
 		JLabel pwLbl = new JLabel("PASSWORD");
 		pwLbl.setFont(new Font("함초롬바탕", Font.PLAIN, 23));
 		pwLbl.setBounds(247, 282, 128, 31);
-		
 		
 		idText = new JTextField();
 		idText.setFont(new Font("굴림", Font.PLAIN, 16));
@@ -48,7 +51,6 @@ public class LoginPanel extends JPanel implements KeyListener {
 		pwText.setBounds(405, 279, 309, 45);
 		pwText.addKeyListener(this);
 		setLayout(null);
-		
 		
 		add(idLbl);		
 		add(pwLbl);		
@@ -62,15 +64,13 @@ public class LoginPanel extends JPanel implements KeyListener {
 		lblNewLabel.setBounds(495, 33, 116, 40);
 		add(lblNewLabel);
 		
-		
-		JButton loginBtn = new JButton("로그인");
+		loginBtn = new JButton("로그인");
 		loginBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				System.out.println("클라 로그인 시도중");
 				String message = "";
 
-				socket = signUp.getSocket();
-				LoginResult response = socket.login(
-						new User(idText.getText(), getPassword(pwText.getPassword())));
+				LoginResult response = signUpClient.login(new User(idText.getText(), getPassword(pwText.getPassword())));
 				
 				int result = response.getResult();
 				
@@ -80,6 +80,7 @@ public class LoginPanel extends JPanel implements KeyListener {
 					if (result == LoginResult.OK) {
 						message = "로그인 완료";
 						clearField();
+						frame.changeChatPanel();
 					} else if (result == LoginResult.NOT_EXIST) {
 						message = "존재하지 않는 아이디 입니다.";
 						clearField();
@@ -89,12 +90,8 @@ public class LoginPanel extends JPanel implements KeyListener {
 					}
 					JOptionPane.showMessageDialog(LoginPanel.this, message);
 					
-					socket.closeSocket();
-					try {
-						signUp.setSocket(new SignUpClient());
-					} catch (IOException e1) {
-						e1.printStackTrace();
-					}
+//					socket.closeSocket();
+//					signUp.setSocket(new SignUpClient(socket1));
 				}
 			}
 		});
@@ -119,7 +116,30 @@ public class LoginPanel extends JPanel implements KeyListener {
 		btnNewButton.setBounds(23, 21, 97, 23);
 		add(btnNewButton);
 	}
-	private String getPassword(char[] pw) {
+	
+	public SignUpClient getSocket() {
+		return signUpClient;
+	}
+	
+	public void setSocket(SignUpClient socket) {
+		this.signUpClient = socket;
+	}
+	
+	public JTextField getIdText() {
+		return idText;
+	}
+	
+	public JPasswordField getPwText() {
+		return pwText;
+	}
+	
+	public JButton getLoginBtn() {
+		return loginBtn;
+	}
+	
+	///////////////////////////////////////////////////////////
+	
+	public String getPassword(char[] pw) {
 		String password = "";
 		for (char p : pw) {
 			Character.toString(p);
@@ -128,12 +148,12 @@ public class LoginPanel extends JPanel implements KeyListener {
 		System.out.println(password);
 		return password;
 	}
-	public synchronized SignUpClient getSocket() {
-		return socket;
+	
+	public void clearField() {
+		idText.setText("");
+		pwText.setText("");
 	}
-	public synchronized void setSocket(SignUpClient socket) {
-		this.socket = socket;
-	}
+	
 	@Override
 	public void keyTyped(KeyEvent e) {
 		int num = 20;
@@ -141,10 +161,6 @@ public class LoginPanel extends JPanel implements KeyListener {
 		if (length > num) {
 			e.consume();
 		}
-	}
-	public void clearField() {
-		idText.setText("");
-		pwText.setText("");
 	}
 	@Override
 	public void keyPressed(KeyEvent e) {

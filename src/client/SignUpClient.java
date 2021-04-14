@@ -6,34 +6,26 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
+import gui.LoginPanel;
 import library.LoginResult;
 import library.User;
 import library.UserRequest;
 
 public class SignUpClient {
-//	private final String SERVER_ADDRESS = "192.168.100.33";
-	private final static String SERVER_ADDRESS = "localhost";
-	private final static int PORT = 2222;
-	
 	static User user = new User();
 	private Socket socket;
 	private ObjectOutputStream oos;
 	private ObjectInputStream ois;
 	
-	public void openSocket() {
+	
+	public SignUpClient(Socket socket) {
+		this.socket = socket;
 		try {
-			socket = new Socket(SERVER_ADDRESS, PORT);
-		} catch (UnknownHostException e) {
-			e.printStackTrace();
+			oos = new ObjectOutputStream(socket.getOutputStream());
+			ois = new ObjectInputStream(socket.getInputStream());
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-	}
-	
-	public SignUpClient() throws IOException {
-		openSocket();
-		oos = new ObjectOutputStream(socket.getOutputStream());
-		ois = new ObjectInputStream(socket.getInputStream());
 	}
 
 	// 로그인 요청
@@ -74,14 +66,6 @@ public class SignUpClient {
 			e.printStackTrace();
 		}
 		return result;
-	}
-	
-	public void closeSocket() {
-		try {
-			socket.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 	}
 }
 

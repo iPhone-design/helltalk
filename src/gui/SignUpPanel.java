@@ -11,6 +11,7 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.IOException;
+import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,13 +42,6 @@ public class SignUpPanel extends JPanel implements KeyListener {
 	private JFormattedTextField ageText;
 	
 	public SignUpPanel(MainFrame frame) {
-		
-		try {
-			socket = new SignUpClient();
-		} catch (IOException e1) {
-			e1.printStackTrace();
-		}
-		
 		setBackground(new Color(255, 228, 225));
 		JLabel idLbl = new JLabel("ID");
 		idLbl.setFont(new Font("함초롬바탕", Font.PLAIN, 23));
@@ -158,12 +152,12 @@ public class SignUpPanel extends JPanel implements KeyListener {
 						clearField();
 					}
 					showMessage("회원가입", message);
-					socket.closeSocket();
-					try {
-						socket = new SignUpClient();
-					} catch (IOException e1) {
-						e1.printStackTrace();
-					}
+//					socket.closeSocket();
+//					try {
+//						socket = new SignUpClient();
+//					} catch (IOException e1) {
+//						e1.printStackTrace();
+//					}
 				}
 			}
 		});
