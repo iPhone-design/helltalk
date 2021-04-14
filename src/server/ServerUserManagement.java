@@ -52,15 +52,15 @@ public class ServerUserManagement {
 					
 					if (request.getChoose() == 2) {
 						result = new LoginResult(LoginResult.GET_USERDATA);
-//						dao.getUserData("1");
 						oos.writeObject(dao.getUserData("1"));
+						oos.flush();
 					}
 					
 					if (request.getChoose() == 3) {
 						result = new LoginResult(LoginResult.UPDATE_USERDATA);
 					}
 					
-					System.out.println(result);
+					System.out.println("result : " + result);
 					oos.writeObject(result);
 					oos.flush();
 				} catch (ClassNotFoundException e) {

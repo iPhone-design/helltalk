@@ -25,6 +25,13 @@ public class User implements Serializable {
 		this.age = age;
 	}
 	
+	public User(String id, String password, String nickname) {
+		super();
+		this.id = id;
+		this.password = password;
+		this.nickname = nickname;
+	}
+	
 	public User() {
 		super();
 	}

@@ -82,6 +82,7 @@ public class SignUpClient {
 			oos.writeObject(new UserRequest(user, 2));
 			oos.flush();
 			user = (User) ois.readObject();
+			System.out.println("클라 : " + user.toString());
 			Thread.sleep(1);
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();

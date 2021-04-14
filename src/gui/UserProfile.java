@@ -29,48 +29,30 @@ public class UserProfile extends JDialog {
 	private JTextField tfd_id;
 	private JTextField tfd_nickName;
 	private ImageIcon btnImage = new ImageIcon("btnImage1.png");
-	/**
-	 * Launch the application.
-	 */
-//	public static void main(String[] args) {
-//		try {
-////			UserProfile dialog = new UserProfile();
-//			dialog.
-//			dialog.
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
-//	}
-	/**
-	 * Create the dialog.
-	 */
-	
-	
+	private JLabel lbl_mainNickName;
+
 	// User 객체를 받아서 띄우는 메서드
 	public void showUserInfo(User user) {
 		tfd_id.setText(user.getId());
 		tfd_pw.setText(user.getPassword());
 		tfd_nickName.setText(user.getNickname());
+		lbl_mainNickName.setText(user.getNickname());
 	}
 	
-	public UserProfile() {
-		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-		setVisible(true);
+	public UserProfile(SignUpPanel signUp) {
 		
-		try {
-			socket = new SignUpClient();
-			// TODO 소켓 받기
-			
-		} catch (IOException e1) {
-			e1.printStackTrace();
-		}
+		socket = signUp.getSocket();
 		
 		User user = new User();
 		user = socket.getUserData();
-		showUserInfo(user);
+		System.out.println("패널 : " + user.toString());
 		
 		
 		setBounds(100, 100, 350, 480);
+		setVisible(true);
+		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+
+		
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBackground(Color.WHITE);
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -88,7 +70,7 @@ public class UserProfile extends JDialog {
 		pnl_fake.setBounds(22, 223, 299, 114);
 		panel.add(pnl_fake);
 		
-		JLabel lbl_mainNickName = new JLabel("Hyelee");
+		lbl_mainNickName = new JLabel();
 		lbl_mainNickName.setBounds(85, 167, 170, 47);
 		panel.add(lbl_mainNickName);
 		lbl_mainNickName.setFont(new Font("함초롬바탕", Font.BOLD, 21));
@@ -122,6 +104,9 @@ public class UserProfile extends JDialog {
 		tfd_nickName.setBounds(109, 299, 170, 21);
 		panel.add(tfd_nickName);
 		
+		// 유저 정보 셋팅
+		showUserInfo(user);
+		
 		JLabel lbl_nickName = new JLabel("닉네임");
 		lbl_nickName.setHorizontalAlignment(SwingConstants.CENTER);
 		lbl_nickName.setFont(new Font("함초롬바탕", Font.BOLD, 15));
@@ -144,7 +129,6 @@ public class UserProfile extends JDialog {
 	            dialog.setVisible(true);
 	         }
 	      });
-
 		
 		contentPanel.setBackground(new Color(255, 228, 225));
 		{
@@ -170,12 +154,15 @@ public class UserProfile extends JDialog {
 				// 완료 버튼 눌렀을 때 pw,닉네임이 서버로 보내지게하기
 				// 동기화? 새로고침 or 필드내용 자체 변경?
 				btn_confirm.addActionListener(new ActionListener() {
+					User user;
 					@Override
 					public void actionPerformed(ActionEvent e) {
 						pnl_fake.setVisible(true);
 						btn_edit.setVisible(true);
 						btn_confirm.setVisible(false);
 						btn_load.setVisible(false);
+						// 클라로 데이터 보내기
+						
 						// 기존 패스워드와 동일한 경우 거르기
 							
 						// 
@@ -184,7 +171,7 @@ public class UserProfile extends JDialog {
 				});
 				
 				// 프로필 수정 버튼
-				// 눌렀을 때 수정한 내용 DB 전송
+				// TODO 눌렀을 때 수정한 내용 DB 전송
 				btn_edit.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 						pnl_fake.setVisible(false);
@@ -195,7 +182,7 @@ public class UserProfile extends JDialog {
 					}
 				});
 				
-				// 프로필 사진 변경 버튼
+				// TODO 프로필 사진 변경 버튼
 				btn_load.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 						
