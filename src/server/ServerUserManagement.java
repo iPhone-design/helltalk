@@ -52,7 +52,8 @@ public class ServerUserManagement {
 					
 					if (request.getChoose() == 2) {
 						result = new LoginResult(LoginResult.GET_USERDATA);
-						dao.getUserData("1");
+//						dao.getUserData("1");
+						oos.writeObject(dao.getUserData("1"));
 					}
 					
 					if (request.getChoose() == 3) {
