@@ -12,18 +12,10 @@ public class ChatClient {
 	public ChatClient(Socket socket) {
 		this.socket = socket;
 		try {
+			System.out.println("클라접속");
 			DataOutputStream dos = new DataOutputStream(socket.getOutputStream());
 			DataInputStream dis = new DataInputStream(socket.getInputStream());
 			Scanner scan = new Scanner(System.in);
-			System.out.println("메뉴를 선택하세요");
-			String menu = scan.nextLine();
-			dos.writeUTF(menu);
-			dos.flush();
-			
-			System.out.println("아이디를 입력하세요");
-			String id = scan.nextLine();
-			dos.writeUTF(id);
-			dos.flush();
 			
 			Thread writeTextThead = new Thread(new Runnable() {
 				@Override

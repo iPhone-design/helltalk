@@ -23,14 +23,16 @@ import server.Server;
 
 public class CreateRoomFrame extends JFrame {
 	private Socket socket;
-	private ObjectOutputStream oos;
-	private ObjectInputStream ois;
+	private DataOutputStream dos;
+	private DataInputStream dis;
 	
 	public CreateRoomFrame(Socket socket) {
 		this.socket = socket;
 		try {
-			oos = new ObjectOutputStream(socket.getOutputStream());
-			ois = new ObjectInputStream(socket.getInputStream());
+			dos = new DataOutputStream(socket.getOutputStream());
+			dis = new DataInputStream(socket.getInputStream());
+			dos.writeUTF("b");
+			dos.flush();
 		} catch (IOException e2) {
 			e2.printStackTrace();
 		}
@@ -45,7 +47,8 @@ public class CreateRoomFrame extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				try {
-					oos.writeObject(new Room(textfield.getText(), "master", 4));
+					dos.writeUTF("b");
+					dos.flush();
 				} catch (IOException e1) {
 					e1.printStackTrace();
 				}
