@@ -12,8 +12,6 @@ import gui.MainFrame;
 public class Client {
 	private static final String ADDRESS = "192.168.100.33";
 	private static final int PORT = 2222;
-	private static ObjectOutputStream oos;
-	private static ObjectInputStream ois;
 	
 	public static void main(String[] args) {
 		try {

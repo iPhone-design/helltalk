@@ -17,7 +17,7 @@ import javax.swing.JTextField;
 
 import library.ChatMap;
 import library.Room;
-import server.ChatServer;
+import server.Controller;
 import server.RoomListDAO;
 import server.Server;
 

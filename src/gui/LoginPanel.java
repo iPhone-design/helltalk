@@ -65,42 +65,6 @@ public class LoginPanel extends JPanel implements KeyListener {
 		add(lblNewLabel);
 		
 		loginBtn = new JButton("로그인");
-		loginBtn.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				System.out.println("클라 로그인 시도중");
-				User user = null;
-				String message = "";
-
-				LoginResult response = signUpClient.login(new User(idText.getText(), getPassword(pwText.getPassword())));
-//				socket = signUp.getSocket();
-				
-//				user = new User(idText.getText(), getPassword(pwText.getPassword()));
-//				LoginResult response = socket.login(user);
-				
-				int result = response.getResult();
-				
-				if (idText.getText().equals("") || pwText.getPassword().length == 0) {
-					JOptionPane.showMessageDialog(null, "빈 칸을 채워주세요.");
-				} else {
-					if (result == LoginResult.OK) {
-						message = "로그인 완료";
-						clearField();
-						frame.changeChatPanel();
-					} else if (result == LoginResult.NOT_EXIST) {
-						message = "존재하지 않는 아이디 입니다.";
-						clearField();
-					} else if (result == LoginResult.WRONG_PASSWORD) {
-						message = "비밀번호를 다시 확인해주세요.";
-						pwText.setText("");
-					}
-					JOptionPane.showMessageDialog(LoginPanel.this, message);
-					
-//					socket.closeSocket();
-//					signUp.setSocket(new SignUpClient(socket1));
-				}
-			}
-		});
-		
 		
 		loginBtn.setFont(new Font("함초롬바탕", Font.PLAIN, 20));
 		loginBtn.setBackground(new Color(255, 182, 193));

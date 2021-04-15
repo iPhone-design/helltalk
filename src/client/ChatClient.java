@@ -1,21 +1,26 @@
 package client;
 
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 import java.net.UnknownHostException;
-import java.util.Scanner;
+
+import gui.BufferedChatPanel;
 
 public class ChatClient {
 	private Socket socket;
-	public ChatClient(Socket socket) {
+	private BufferedChatPanel bufferedChatPanel;
+	
+	public ChatClient(Socket socket, BufferedChatPanel bufferedChatPanel) {
+		this.bufferedChatPanel = bufferedChatPanel;
 		this.socket = socket;
 		try {
 			System.out.println("클라접속");
 			DataOutputStream dos = new DataOutputStream(socket.getOutputStream());
 			DataInputStream dis = new DataInputStream(socket.getInputStream());
-			Scanner scan = new Scanner(System.in);
 			
 			Thread writeTextThead = new Thread(new Runnable() {
 				@Override
@@ -23,7 +28,8 @@ public class ChatClient {
 					String read = null;
 					try {
 						while ((read = dis.readUTF()) != null) {
-							System.out.println(read);
+							bufferedChatPanel.getChatPanel().getTextArea().setText(bufferedChatPanel.getChatPanel().getTextArea().getText() + read + "\n");
+							bufferedChatPanel.getChatPanel().getTextField().setText("");
 						}
 					} catch (IOException e) {
 						e.printStackTrace();
@@ -32,15 +38,23 @@ public class ChatClient {
 			});
 			writeTextThead.start();
 			
-			while (true) {
-				String write = null;
-				write = scan.nextLine();
-				if (write.equals("/종료")) {
-					break;
+			bufferedChatPanel.getChatPanel().getTextField().addKeyListener(new KeyAdapter() {
+				
+				@Override
+				public void keyPressed(KeyEvent e) {
+					if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+						System.out.println("kaafao");
+						String write = bufferedChatPanel.getChatPanel().getTextField().getText();
+						System.out.println("write임" + write);
+						try {
+							dos.writeUTF(write);
+							dos.flush();
+						} catch (IOException e1) {
+							e1.printStackTrace();
+						}
+					}
 				}
-				dos.writeUTF(write);
-				dos.flush();
-			}
+			});
 		} catch (UnknownHostException e) {
 			// 어케 해결함?????????????????????????!!#@!#!@#@!#!@
 //			e.printStackTrace();

@@ -5,6 +5,7 @@ import java.io.Serializable;
 public class ObjectInOut implements Serializable {
 	private static final long serialVersionUID = 1L;
 	public static final int CHAT = 100;
+	public static final int EXIT = 101;
 	public static final int LOGIN = 0;
 	public static final int REGISTRATION = 1;
 	
@@ -13,25 +14,24 @@ public class ObjectInOut implements Serializable {
 	private String id;
 	private String pw;
 	private String title;
+	private String nickName;
+	
+	public ObjectInOut() {
+		super();
+	}
 	
 	public ObjectInOut(int protocol) {
 		super();
 		this.protocol = protocol;
 	}
 
-	public ObjectInOut(int protocol, String id, String pw) {
-		super();
-		this.protocol = protocol;
-		this.id = id;
-		this.pw = pw;
-	}
-
-	public ObjectInOut(int protocol, String title) {
+	public ObjectInOut(int protocol, String title, String nickName) {
 		super();
 		this.protocol = protocol;
 		this.title = title;
+		this.nickName = nickName;
 	}
-	
+
 	public int getProtocol() {
 		return protocol;
 	}
@@ -40,8 +40,7 @@ public class ObjectInOut implements Serializable {
 		return title;
 	}
 
-	@Override
-	public String toString() {
-		return "ObjectInOut [protocol=" + protocol + ", title=" + title + "]";
+	public String getNickName() {
+		return nickName;
 	}
 }
