@@ -10,11 +10,8 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 
-import client.SignUpClient;
 import gui.RoomPanel;
-import library.ChatMap;
 import library.ObjectInOut;
-import library.Room;
 
 public class Server {
 	private final static int PORT = 2222;
@@ -34,44 +31,12 @@ public class Server {
 			System.out.println("서버 오픈");
 			while (true) {
 				socket = server.accept();
-				oos = new ObjectOutputStream(socket.getOutputStream());
-				ois = new ObjectInputStream(socket.getInputStream());
-				
-				Thread reading = new Thread(new Runnable() {
-					@Override
-					public void run() {
-						try {
-							object = (ObjectInOut) ois.readObject();
-							
-							if (object.getProtocol() == ObjectInOut.CHAT) {
-								Thread t1 = new Thread(new ChatServer(socket, object.getTitle()));
-								t1.start();
-								DataOutputStream out = new DataOutputStream(socket.getOutputStream());
-								out.writeUTF("채팅");
-								out.flush();
-							} else if (object.getProtocol() == ObjectInOut.REGISTRATION) {
-								
-							} else if (object.getProtocol() == ObjectInOut.LOGIN) {
-								System.out.println("로그인 시작!!");
-//								userDAO.idCheck(object.get)
-								
-								
-								ServerSignUp signUp = new ServerSignUp(socket);
-//								SignUpClient signUpClient = new SignUpClient(socket);
-								DataOutputStream out = new DataOutputStream(socket.getOutputStream());
-								out.writeUTF("성공");
-								out.flush();
-							}
-						} catch (ClassNotFoundException | IOException e) {
-							e.printStackTrace();
-						}
-					}
-				});
-				reading.start();
+				Thread controller = new Thread(new Controller(socket));
+				controller.start();
 			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		} 
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
 	}
 }
 

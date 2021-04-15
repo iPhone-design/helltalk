@@ -24,6 +24,7 @@ import javax.swing.JButton;
 public class ChatPanel extends JPanel {
 	private JTextField textField;
 	private JLabel titleLbl;
+	private JTextArea textArea;
 	public ChatPanel(String title) {
 		setBorder(new LineBorder(Color.LIGHT_GRAY, 1));
 		setPreferredSize(new Dimension(583, 583));
@@ -48,7 +49,7 @@ public class ChatPanel extends JPanel {
 		btnNewButton.setBounds(12, 45, 97, 23);
 		panel.add(btnNewButton);
 		
-		JTextArea textArea = new JTextArea();
+		textArea = new JTextArea();
 		textArea.setBounds(12, 102, 559, 396);
 		textArea.setBorder(new LineBorder(Color.LIGHT_GRAY, 1));
 //		textArea.setText(t);
@@ -68,6 +69,16 @@ public class ChatPanel extends JPanel {
 	public void setTitleLbl(JLabel titleLbl) {
 		this.titleLbl = titleLbl;
 	}
-	
-	
+	public JTextArea getTextArea() {
+		return textArea;
+	}
+	public void setTextArea(JTextArea textArea) {
+		this.textArea = textArea;
+	}
+	public JTextField getTextField() {
+		return textField;
+	}
+	public void setTextField(JTextField textField) {
+		this.textField = textField;
+	}
 }
