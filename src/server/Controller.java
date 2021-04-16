@@ -19,11 +19,11 @@ public class Controller implements Runnable {
 	private ObjectInOut object;
 	private ObjectInputStream ois;
 	private ObjectOutputStream oos;
+	private UserDAO userDAO;
 	
 	public Controller(Socket socket) {
-		System.out.println("사용자 접속 성공");
+		userDAO = new UserDAO();
 		this.socket = socket;
-		this.title = title;
 		ChatMap.createRoom("firstRoom");
 		ChatMap.createRoom("secondRoom");
 		ChatMap.createRoom("thirdRoom");
@@ -39,17 +39,14 @@ public class Controller implements Runnable {
 
 	@Override
 	public void run() {
-		Thread t1 = new Thread(new Runnable() {
+		Thread reading = new Thread(new Runnable() {
 			@Override
 			public void run() {
 				while (true) {
-					String id = null;
 					try {
 						object = (ObjectInOut) ois.readObject();
-						System.out.print("처음부분 : ");
 						if (object.getProtocol() == ObjectInOut.CHAT) {
 							try {
-								id = "마스터";
 								ChatMap.enterUser(object.getTitle(), object.getNickName(), dos);
 								ChatMap.messageToAll(object.getTitle(), object.getNickName() + " 님이 입장하셨습니다.");
 								String read = null;
@@ -58,7 +55,6 @@ public class Controller implements Runnable {
 									if (read.equals("/종료")) {
 										ChatMap.messageToAll(object.getTitle(), object.getNickName() + " 님이 퇴장하셨습니다.");
 										ChatMap.removeUser(object.getTitle(), object.getNickName());
-										System.out.println("방지움!!!");
 										break;
 									} else if (read.startsWith("/w ")) {
 										ChatMap.sendMessageToOne(object.getTitle(), object.getNickName(), read);
@@ -66,14 +62,38 @@ public class Controller implements Runnable {
 										ChatMap.messageToAll(object.getTitle(), object.getNickName() + " : " + read);
 									}
 								}
-								System.out.print("끝 부분 : ");
 							} catch (IOException e) {
 								e.printStackTrace();
 							} 
 						} else if (object.getProtocol() == ObjectInOut.REGISTRATION) {
-							
+							if ((userDAO.idCheck(object.getId())) == 0) {
+								userDAO.addUser(object.getId(), object.getPw(), object.getNickName(), object.getAge());
+								object = new ObjectInOut(ObjectInOut.REGISTRATION, 0);
+								oos.writeObject(object);
+								oos.flush();
+							} else if ((userDAO.idCheck(object.getId())) == 1) {
+								object = new ObjectInOut(ObjectInOut.REGISTRATION, 1);
+								oos.writeObject(object);
+								oos.flush();
+							}
 						} else if (object.getProtocol() == ObjectInOut.LOGIN) {
-							ServerSignUp signUp = new ServerSignUp(socket);
+							int result = userDAO.login(object.getId(), object.getPw());
+							if (result == 0) {
+								// 계정없음
+								object = new ObjectInOut(ObjectInOut.LOGIN, object.getId(), object.getPw(), 0);
+								oos.writeObject(object);
+								oos.flush();
+							} else if (result == 1) {
+								// 로그인 성공
+								object = new ObjectInOut(ObjectInOut.LOGIN, object.getId(), object.getPw(), 1);
+								oos.writeObject(object);
+								oos.flush();
+							} else {
+								// 비밀번호 틀림
+								object = new ObjectInOut(ObjectInOut.LOGIN, object.getId(), object.getPw(), 2);
+								oos.writeObject(object);
+								oos.flush();
+							}
 						} else {
 							System.out.println("아무것도 안댐 !!");
 						}
@@ -83,16 +103,6 @@ public class Controller implements Runnable {
 				}
 			}
 		});
-		t1.start();
+		reading.start();
 	}
-
-	public DataOutputStream getDos() {
-		return dos;
-	}
-
-	public void setDos(DataOutputStream dos) {
-		this.dos = dos;
-	}
-	
-	
 }

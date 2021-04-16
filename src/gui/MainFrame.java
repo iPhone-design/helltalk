@@ -15,6 +15,7 @@ import java.nio.channels.AcceptPendingException;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.xml.ws.soap.AddressingFeature;
 
 import client.ChatClient;
@@ -32,27 +33,30 @@ public class MainFrame extends JFrame {
 	
 	private Socket socket;
 	private CardLayout cards = new CardLayout();
-	private SignUpPanel signUpPanel;
+	private RegistrationPanel registrationPanel;
 	private FirstPanel firstPanel;
 	private LoginPanel loginPanel;
 	private BufferedChatPanel bufferedChatPanel;
 	private SignUpClient signUpClient;
 	private RoomPanel roomPanel;
+	private ObjectInOut object;
 
 
 	public MainFrame(Socket socket) {
 		this.socket = socket;
 		setLayout(cards);
-		signUpPanel = new SignUpPanel(this);
-		firstPanel = new FirstPanel(this, signUpPanel);
+		setResizable(false);
+		bufferedChatPanel = new BufferedChatPanel("닉네임");
+		registrationPanel = new RegistrationPanel(this, socket);
+		firstPanel = new FirstPanel(this, registrationPanel);
 		loginPanel = new LoginPanel(MainFrame.this, signUpClient);
-		bufferedChatPanel = new BufferedChatPanel("임시");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1000, 650);
+		getContentPane().add("First", firstPanel);
 		getContentPane().add("Login", loginPanel);
 		getContentPane().add("Chat", bufferedChatPanel);
-		getContentPane().add("First", firstPanel);
-		getContentPane().add("SignUp", signUpPanel);
+		getContentPane().add("SignUp", registrationPanel);
+		setLocationRelativeTo(null);
 		setVisible(true);
 		
 		try {
@@ -69,7 +73,9 @@ public class MainFrame extends JFrame {
 						oos.writeObject(new ObjectInOut(ObjectInOut.CHAT, "firstRoom", bufferedChatPanel.getRoomlistPanel().getNickNameLbl().getText()));
 						oos.flush();
 						ChatClient chat = new ChatClient(socket, bufferedChatPanel);
-						bufferedChatPanel.getChatText().setVisible(true);
+						bufferedChatPanel.getChatPanel().setVisible(true);
+						bufferedChatPanel.getRoomlistPanel().getExitRoomButton().setEnabled(true);
+						bufferedChatPanel.getRoomlistPanel().getLogoutButton().setEnabled(false);
 						bufferedChatPanel.getRoomlistPanel().getFirstRoom().getEnterRoomButton().setEnabled(false);
 						bufferedChatPanel.getRoomlistPanel().getSecondRoom().getEnterRoomButton().setEnabled(false);
 						bufferedChatPanel.getRoomlistPanel().getThirdRoom().getEnterRoomButton().setEnabled(false);
@@ -86,7 +92,9 @@ public class MainFrame extends JFrame {
 						oos.writeObject(new ObjectInOut(ObjectInOut.CHAT, "secondRoom", bufferedChatPanel.getRoomlistPanel().getNickNameLbl().getText()));
 						oos.flush();
 						ChatClient chat = new ChatClient(socket, bufferedChatPanel);
-						bufferedChatPanel.getChatText().setVisible(true);
+						bufferedChatPanel.getChatPanel().setVisible(true);
+						bufferedChatPanel.getRoomlistPanel().getExitRoomButton().setEnabled(true);
+						bufferedChatPanel.getRoomlistPanel().getLogoutButton().setEnabled(false);
 						bufferedChatPanel.getRoomlistPanel().getFirstRoom().getEnterRoomButton().setEnabled(false);
 						bufferedChatPanel.getRoomlistPanel().getSecondRoom().getEnterRoomButton().setEnabled(false);
 						bufferedChatPanel.getRoomlistPanel().getThirdRoom().getEnterRoomButton().setEnabled(false);
@@ -103,7 +111,9 @@ public class MainFrame extends JFrame {
 						oos.writeObject(new ObjectInOut(ObjectInOut.CHAT, "thirdRoom", bufferedChatPanel.getRoomlistPanel().getNickNameLbl().getText()));
 						oos.flush();
 						ChatClient chat = new ChatClient(socket, bufferedChatPanel);
-						bufferedChatPanel.getChatText().setVisible(true);
+						bufferedChatPanel.getChatPanel().setVisible(true);
+						bufferedChatPanel.getRoomlistPanel().getExitRoomButton().setEnabled(true);
+						bufferedChatPanel.getRoomlistPanel().getLogoutButton().setEnabled(false);
 						bufferedChatPanel.getRoomlistPanel().getFirstRoom().getEnterRoomButton().setEnabled(false);
 						bufferedChatPanel.getRoomlistPanel().getSecondRoom().getEnterRoomButton().setEnabled(false);
 						bufferedChatPanel.getRoomlistPanel().getThirdRoom().getEnterRoomButton().setEnabled(false);
@@ -120,6 +130,11 @@ public class MainFrame extends JFrame {
 					try {
 						dos.writeUTF("/종료");
 						dos.flush();
+						bufferedChatPanel.getChatPanel().setVisible(false);
+						bufferedChatPanel.getChatPanel().getTextArea().setText("");
+						bufferedChatPanel.getChatPanel().getTextField().setText("");
+						bufferedChatPanel.getRoomlistPanel().getLogoutButton().setEnabled(true);
+						bufferedChatPanel.getRoomlistPanel().getExitRoomButton().setEnabled(false);
 						bufferedChatPanel.getRoomlistPanel().getFirstRoom().getEnterRoomButton().setEnabled(true);
 						bufferedChatPanel.getRoomlistPanel().getSecondRoom().getEnterRoomButton().setEnabled(true);
 						bufferedChatPanel.getRoomlistPanel().getThirdRoom().getEnterRoomButton().setEnabled(true);
@@ -129,52 +144,92 @@ public class MainFrame extends JFrame {
 				}
 			});
 			
-			// 로그아웃
-//			bufferedChatPanel.getRoomlistPanel().getExitRoomButton().addActionListener(new ActionListener() {
-//				@Override
-//				public void actionPerformed(ActionEvent e) {
-//					bufferedChatPanel.getRoomlistPanel().getPanelRoom().getEnterRoomButton().setEnabled(true);
-//					changeLoginPanel();
-//				}
-//			});
+			//로그아웃
+			bufferedChatPanel.getRoomlistPanel().getLogoutButton().addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					try {
+						changeFirstPanel();
+					} catch (IOException e1) {
+						e1.printStackTrace();
+					}
+				}
+			});
 			
 			// 로그인
 			loginPanel.getLoginBtn().addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					try {
-						oos.writeObject(new ObjectInOut(ObjectInOut.LOGIN));
-						oos.flush();
-						signUpClient = new SignUpClient(socket);
+						if (loginPanel.getIdText().getText().equals("") || loginPanel.getPwText().getPassword().length == 0) {
+							JOptionPane.showMessageDialog(null, "빈 칸을 채워주세요.");
+						} else {
+							System.out.println(loginPanel.getIdText().getText() + " " + loginPanel.getPassword(loginPanel.getPwText().getPassword()));
+							object = new ObjectInOut(ObjectInOut.LOGIN, loginPanel.getIdText().getText(), loginPanel.getPassword(loginPanel.getPwText().getPassword()), 0);
+							System.out.println(object.getProtocol() + " " + object.getId() + " " + object.getPw());
+							oos.writeObject(object);
+							oos.flush();
+							object = (ObjectInOut) ois.readObject();
+							if (object.getProtocol() == ObjectInOut.LOGIN) {
+								if (object.getResult() == 0) {
+									JOptionPane.showMessageDialog(registrationPanel, "로그인 실패 존재하지 않는 계정", "로그인", JOptionPane.WARNING_MESSAGE);
+								} else if (object.getResult() == 1) {
+									JOptionPane.showMessageDialog(registrationPanel, "로그인 성공", "로그인", JOptionPane.INFORMATION_MESSAGE);
+									bufferedChatPanel.getRoomlistPanel().getNickNameLbl().setText(loginPanel.getIdText().getText());
+									loginPanel.clearField();
+									changeChatPanel();
+								} else if (object.getResult() == 2) {
+									JOptionPane.showMessageDialog(registrationPanel, "비밀번호가 틀렸습니다", "로그인", JOptionPane.WARNING_MESSAGE);
+								}
+							}
+						}
 					} catch (IOException e1) {
 						e1.printStackTrace();
+					} catch (ClassNotFoundException e1) {
+						e1.printStackTrace();
 					}
-					
-					System.out.println("클라 로그인 시도중");
-					User user = null;
-					String message = "";
-
-					user = new User(loginPanel.getIdText().getText(), loginPanel.getPassword(loginPanel.getPwText().getPassword()));
-					LoginResult response = signUpClient.login(user);
-					
-					int result = response.getResult();
-					
-					if (loginPanel.getIdText().getText().equals("") || loginPanel.getPwText().getPassword().length == 0) {
-						JOptionPane.showMessageDialog(null, "빈 칸을 채워주세요.");
-					} else {
-						if (result == LoginResult.OK) {
-							message = "로그인 완료";
-							bufferedChatPanel.getRoomlistPanel().getNickNameLbl().setText(loginPanel.getIdText().getText());
-							loginPanel.clearField();
-							changeChatPanel();
-						} else if (result == LoginResult.NOT_EXIST) {
-							message = "존재하지 않는 아이디 입니다.";
-							loginPanel.clearField();
-						} else if (result == LoginResult.WRONG_PASSWORD) {
-							message = "비밀번호를 다시 확인해주세요.";
-							loginPanel.getPwText().setText("");
+				}
+			});
+			
+			// 회원가입
+			registrationPanel.getAddUserButton().addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					try {
+						String message = "";
+						if (registrationPanel.checkData() == 1) {
+							message = "빈칸을 채워주세요.";
+							registrationPanel.showMessage("Error", message);
+						} else if (registrationPanel.checkData() == 2) {
+							message = "공백을 제거해주세요.";
+							registrationPanel.showMessage("Error", message);
+						} else if (!registrationPanel.checkPassword()) {
+							message = "비밀번호가 틀립니다.";
+							registrationPanel.showMessage("Error", message);
+						} else {
+							object = new ObjectInOut(ObjectInOut.REGISTRATION, registrationPanel.getIdText().getText(),
+									registrationPanel.getPassword(registrationPanel.getPwText().getPassword()),
+									registrationPanel.getNickNameText().getText(),
+									Integer.valueOf(registrationPanel.getAgeText().getText()));
+							oos.writeObject(object);
+							oos.flush();
+							System.out.println("가입보냄!!");
+							
+							object = (ObjectInOut) ois.readObject();
+							if (object.getProtocol() == ObjectInOut.REGISTRATION) {
+								if (object.getResult() == 0) {
+									JOptionPane.showMessageDialog(registrationPanel, "회원가입 성공", "회원가입", JOptionPane.INFORMATION_MESSAGE);
+									registrationPanel.clearField();
+									changeLoginPanel();
+								} else if (object.getResult() == 1) {
+									JOptionPane.showMessageDialog(registrationPanel, "이미 존재하는 계정 입니다.", "회원가입", JOptionPane.WARNING_MESSAGE);
+								}
+							}
 						}
-						JOptionPane.showMessageDialog(loginPanel, message);
+					} catch (IOException e1) {
+						e1.printStackTrace();
+					} catch (ClassNotFoundException e1) {
+						e1.printStackTrace();
 					}
 				}
 			});
@@ -200,12 +255,12 @@ public class MainFrame extends JFrame {
 		cards.show(this.getContentPane(), "Chat");
 	}
 	
-	public SignUpPanel getSignUpPanel() {
-		return signUpPanel;
+	public RegistrationPanel getSignUpPanel() {
+		return registrationPanel;
 	}
 
-	public void setSignUpPanel(SignUpPanel signUpPanel) {
-		this.signUpPanel = signUpPanel;
+	public void setSignUpPanel(RegistrationPanel signUpPanel) {
+		this.registrationPanel = signUpPanel;
 	}
 
 	public FirstPanel getFirstPanel() {

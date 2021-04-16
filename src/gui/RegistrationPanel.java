@@ -11,6 +11,8 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,19 +31,23 @@ import com.mysql.cj.protocol.Warning;
 
 import client.SignUpClient;
 import library.LoginResult;
+import library.ObjectInOut;
 import library.User;
 
-public class SignUpPanel extends JPanel implements KeyListener {
-	private SignUpClient socket;
-	
-	List<JTextField> list = new ArrayList<>();
+public class RegistrationPanel extends JPanel implements KeyListener {
+	private List<JTextField> list = new ArrayList<>();
+	private Socket socket;
 	private JTextField idText;
 	private JPasswordField pwText;
 	private JPasswordField conPwText;
 	private JTextField nickNameText;
 	private JFormattedTextField ageText;
+	private JButton addUserButton;
+	private ObjectOutputStream oos;
 	
-	public SignUpPanel(MainFrame frame) {
+	public RegistrationPanel(MainFrame frame, Socket socket) {
+		this.socket = socket;
+		
 		setBackground(new Color(255, 228, 225));
 		JLabel idLbl = new JLabel("ID");
 		idLbl.setFont(new Font("함초롬바탕", Font.PLAIN, 23));
@@ -123,51 +129,18 @@ public class SignUpPanel extends JPanel implements KeyListener {
 		lblNewLabel.setBounds(457, 23, 124, 45);
 		add(lblNewLabel);
 		
-		JButton btnNewButton = new JButton("회원가입");
-		btnNewButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				String message = "";
-				if (checkData() == 1) {
-					message = "빈칸을 채워주세요.";
-					showMessage("Error", message);
-				} else if (checkData() == 2) {
-					message = "공백을 제거해주세요.";
-					showMessage("Error", message);
-				} else if (!checkPassword()) {
-					message = "비밀번호가 틀립니다.";
-					showMessage("Error", message);
-				} else {
-					User user = new User(idText.getText()
-										, getPassword(pwText.getPassword())
-										, nickNameText.getText()
-										, Integer.parseInt(ageText.getText()));
-					LoginResult response = socket.add(user);
-					
-					int result = response.getResult();
-					if (result == LoginResult.ID_EXIST) {
-						message = "아이디가 중복되었습니다.";
-						idText.setText("");
-					} else if (result == LoginResult.OK) {
-						message = "가입이 완료되었습니다.";
-						clearField();
-					}
-					showMessage("회원가입", message);
-//					socket.closeSocket();
-//					try {
-//						socket = new SignUpClient();
-//					} catch (IOException e1) {
-//						e1.printStackTrace();
-//					}
-				}
-			}
-		});
-		btnNewButton.setFont(new Font("함초롬바탕", Font.PLAIN, 20));
-		btnNewButton.setBackground(new Color(255, 182, 193));
-		btnNewButton.setForeground(new Color(255, 255, 255));
-		btnNewButton.setBounds(457, 520, 150, 45);
-		add(btnNewButton);
+		addUserButton = new JButton("회원가입");
+		addUserButton.setFont(new Font("함초롬바탕", Font.PLAIN, 20));
+		addUserButton.setBackground(new Color(255, 182, 193));
+		addUserButton.setForeground(new Color(255, 255, 255));
+		addUserButton.setBounds(457, 520, 150, 45);
+		add(addUserButton);
 		
-		JButton btnNewButton_1 = new JButton("대충 집모양");
+		JButton btnNewButton_1 = new JButton("홈");
+		btnNewButton_1.setFont(new Font("함초롬바탕", Font.PLAIN, 20));
+		btnNewButton_1.setBackground(new Color(255, 182, 193));
+		btnNewButton_1.setForeground(new Color(255, 255, 255));
+		btnNewButton_1.setBounds(27, 23, 70, 70);
 		btnNewButton_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
@@ -177,15 +150,37 @@ public class SignUpPanel extends JPanel implements KeyListener {
 				}
 			}
 		});
-		btnNewButton_1.setBounds(27, 23, 97, 23);
 		add(btnNewButton_1);
 	}
-	public SignUpClient getSocket() {
-		return socket;
+	
+	public JButton getAddUserButton() {
+		return addUserButton;
 	}
-	public void setSocket(SignUpClient socket) {
-		this.socket = socket;
+
+	public JTextField getIdText() {
+		return idText;
 	}
+
+	public JPasswordField getPwText() {
+		return pwText;
+	}
+
+	public JPasswordField getConPwText() {
+		return conPwText;
+	}
+
+	public JTextField getNickNameText() {
+		return nickNameText;
+	}
+
+	public JFormattedTextField getAgeText() {
+		return ageText;
+	}
+	
+	public List<JTextField> getList() {
+		return list;
+	}
+
 	// 텍스트 필드 입력 수 제한
 	@Override
 	public void keyTyped(KeyEvent e) {
@@ -219,8 +214,9 @@ public class SignUpPanel extends JPanel implements KeyListener {
 		}
 		return 0;
 	}
+	
 	// 비밀번호 String 변환
-	private String getPassword(char[] pw) {
+	public String getPassword(char[] pw) {
 		String password = "";
 		for (char p : pw) {
 			Character.toString(p);
@@ -228,6 +224,7 @@ public class SignUpPanel extends JPanel implements KeyListener {
 		}
 		return password;
 	}
+	
 	// 비밀번호 일치 여부 체크
 	public boolean checkPassword() {
 		String pw = getPassword(pwText.getPassword());
@@ -239,7 +236,8 @@ public class SignUpPanel extends JPanel implements KeyListener {
 		conPwText.setText("");
 		return false;
 	}
+	
 	public void showMessage(String type, String message) {
-		JOptionPane.showMessageDialog(SignUpPanel.this, message, type, JOptionPane.WARNING_MESSAGE);
+		JOptionPane.showMessageDialog(RegistrationPanel.this, message, type, JOptionPane.WARNING_MESSAGE);
 	}
 }

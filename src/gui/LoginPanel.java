@@ -27,6 +27,7 @@ public class LoginPanel extends JPanel implements KeyListener {
 	private JTextField idText;
 	private JPasswordField pwText;
 	private JButton loginBtn;
+	private JButton registrationBtn;
 	
 	public LoginPanel(MainFrame frame, SignUpClient signUpClient) {
 		this.frame = frame;
@@ -59,20 +60,23 @@ public class LoginPanel extends JPanel implements KeyListener {
 		setPreferredSize(new Dimension(1000, 600));
 		setMaximumSize(new Dimension(1000, 600));
 		
-		JLabel lblNewLabel = new JLabel("로그인");
+		JLabel lblNewLabel = new JLabel("Login");
 		lblNewLabel.setFont(new Font("함초롬바탕", Font.BOLD, 30));
-		lblNewLabel.setBounds(495, 33, 116, 40);
+		lblNewLabel.setBounds(495, 33, 400, 40);
 		add(lblNewLabel);
 		
 		loginBtn = new JButton("로그인");
-		
 		loginBtn.setFont(new Font("함초롬바탕", Font.PLAIN, 20));
 		loginBtn.setBackground(new Color(255, 182, 193));
 		loginBtn.setForeground(new Color(255, 255, 255));
-		loginBtn.setBounds(488, 381, 128, 45);
+		loginBtn.setBounds(583, 381, 125, 45);
 		add(loginBtn);
 		
-		JButton btnNewButton = new JButton("대충 집");
+		JButton btnNewButton = new JButton("홈");
+		btnNewButton.setFont(new Font("함초롬바탕", Font.PLAIN, 20));
+		btnNewButton.setBackground(new Color(255, 182, 193));
+		btnNewButton.setForeground(new Color(255, 255, 255));
+		btnNewButton.setBounds(23, 21, 70, 70);
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
@@ -82,7 +86,6 @@ public class LoginPanel extends JPanel implements KeyListener {
 				}
 			}
 		});
-		btnNewButton.setBounds(23, 21, 97, 23);
 		add(btnNewButton);
 	}
 	

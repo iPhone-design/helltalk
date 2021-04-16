@@ -29,6 +29,7 @@ public class ChatClient {
 					try {
 						while ((read = dis.readUTF()) != null) {
 							bufferedChatPanel.getChatPanel().getTextArea().setText(bufferedChatPanel.getChatPanel().getTextArea().getText() + read + "\n");
+							bufferedChatPanel.getChatPanel().getScroll().getVerticalScrollBar().setValue(bufferedChatPanel.getChatPanel().getScroll().getVerticalScrollBar().getMaximum());
 							bufferedChatPanel.getChatPanel().getTextField().setText("");
 						}
 					} catch (IOException e) {
@@ -43,9 +44,7 @@ public class ChatClient {
 				@Override
 				public void keyPressed(KeyEvent e) {
 					if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-						System.out.println("kaafao");
 						String write = bufferedChatPanel.getChatPanel().getTextField().getText();
-						System.out.println("write임" + write);
 						try {
 							dos.writeUTF(write);
 							dos.flush();
