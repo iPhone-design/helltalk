@@ -88,9 +88,10 @@ public class SignUpClient {
 	}
 	
 	// User 정보 업데이트
-	public void updateUserData(User user) {
+	public LoginResult updateUserData(User user) {
 		LoginResult result = null;
 		try {
+			System.out.println("클라 : " + user);
 			oos.writeObject(new UserRequest(user, 3));
 			oos.flush();
 			result = (LoginResult) ois.readObject();
@@ -102,6 +103,7 @@ public class SignUpClient {
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
+		return result;
 	}
 }
 

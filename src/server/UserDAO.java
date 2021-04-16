@@ -154,7 +154,7 @@ public class UserDAO {
 			pstmt.setString(3, userid);
 			int result = pstmt.executeUpdate(); 
 			System.out.println("수정된 행 개수: " + result);
-			return result;
+			return 5;
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
