@@ -53,7 +53,6 @@ public class UserDAO {
 			return result;
 		} catch (SQLException e) {
 			e.printStackTrace();
-			System.out.println("몬가 잘못됨.");
 		}
 		return -1;
 	}
@@ -65,16 +64,15 @@ public class UserDAO {
 			pstmt.setString(1, id);
 			try (ResultSet rs = pstmt.executeQuery()) {
 				if (rs.next()) {
-					result = 0; // 가입가능한 아이디일때
+					result = 1; // 가입불가
 					return result;
 				} else {
-					result = 1; // 이미 존재하는 아이디일때
+					result = 0; // 가입가능
 					return result;
 				}
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			System.out.println("몬가 잘못됨.");
 		}
 		return -1;
 	}
@@ -96,8 +94,8 @@ public class UserDAO {
 					System.out.println("닉네임: " + rs.getString("nickname"));
 					System.out.println("나이: " + rs.getInt("age"));
 					System.out.println("유저상태(0:로그아웃, 1:로그인, 2:방장");
-
 					System.out.println("↳" + dbStatus);
+					
 					if (id.equals(dbId) && !password.equals(dbPw)) {
 						result = 2; // 비번틀리면 2 출력
 						return result;
@@ -112,7 +110,6 @@ public class UserDAO {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			System.out.println("몬가 잘못됨.");
 		}
 		return -1;
 	}
@@ -142,7 +139,6 @@ public class UserDAO {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
-			System.out.println("몬가 잘못됨.");
 		}
 		return null;
 	}
@@ -185,10 +181,8 @@ public class UserDAO {
 			System.out.println("DB에 이미지 저장 완료!");
 		} catch (SQLException e) {
 			e.printStackTrace();
-			System.out.println("몬가 잘못됨.");
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
-			System.out.println("몬가 잘못됨.");
 		}
 	}
 
@@ -215,13 +209,10 @@ public class UserDAO {
 			System.out.println("DB에서 이미지 불러오기 완료!");
 		} catch (SQLException e) {
 			e.printStackTrace();
-			System.out.println("몬가 잘못됨.1");
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
-			System.out.println("몬가 잘못됨.2");
 		} catch (IOException e) {
 			e.printStackTrace();
-			System.out.println("몬가 잘못됨.3");
 		}
 	}
 }

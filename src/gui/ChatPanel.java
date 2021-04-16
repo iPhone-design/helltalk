@@ -6,6 +6,7 @@ import java.awt.Graphics;
 import java.awt.Insets;
 
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
 import java.awt.Panel;
@@ -25,6 +26,7 @@ public class ChatPanel extends JPanel {
 	private JTextField textField;
 	private JLabel titleLbl;
 	private JTextArea textArea;
+	private JScrollPane scroll;
 	public ChatPanel(String title) {
 		setBorder(new LineBorder(Color.LIGHT_GRAY, 1));
 		setPreferredSize(new Dimension(583, 583));
@@ -50,19 +52,23 @@ public class ChatPanel extends JPanel {
 		panel.add(btnNewButton);
 		
 		textArea = new JTextArea();
-		textArea.setBounds(12, 102, 559, 396);
 		textArea.setBorder(new LineBorder(Color.LIGHT_GRAY, 1));
-//		textArea.setText(t);
-		add(textArea);
 		
 		textField = new JTextField();
 		textField.setBounds(14, 508, 559, 49);
-//		textField.addKeyListener(new KeyAdapter() {
-//			
-//		};
 		add(textField);
 		textField.setColumns(10);
+		
+		scroll = new JScrollPane(textArea);
+		scroll.setBounds(12, 102, 559, 396);
+		scroll.setVerticalScrollBarPolicy(scroll.VERTICAL_SCROLLBAR_AS_NEEDED);
+		add(scroll);
 	}
+	
+	public JScrollPane getScroll() {
+		return scroll;
+	}
+
 	public JLabel getTitleLbl() {
 		return titleLbl;
 	}

@@ -2,6 +2,7 @@ package gui;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -35,17 +36,16 @@ import java.awt.event.ActionEvent;
 public class RoomListPanel extends JPanel {
 	private JTextField textField;
 	private JPanel panelBackground;
-	private RoomListDAO roomlistDAO;
 	private Socket socket;
 	private int panelY = 5;
 	private RoomPanel panelRoom;
 	private JButton exitRoomButton;
 	private JButton logoutButton;
-	private BufferedChatPanel bufferedChatPanel;
 	private RoomPanel firstRoom;
 	private RoomPanel secondRoom;
 	private RoomPanel thirdRoom;
 	private JLabel nickNameLbl;
+	private JButton myPage;
 	
 	public RoomListPanel() {
 		panelBackground = new JPanel();
@@ -86,21 +86,33 @@ public class RoomListPanel extends JPanel {
 	    thirdRoom.setBounds(8, 175, 330, 80);
 	    panelBackground.add(thirdRoom);
 	    
-	    createRoomButton.setBounds(54, 498, 97, 23);
+	    createRoomButton.setBounds(54, 498, 120, 23);
 	    add(createRoomButton);
 	    
 	    logoutButton = new JButton("로그아웃");
-	    logoutButton.setBounds(206, 498, 97, 23);
+	    logoutButton.setBounds(206, 498, 120, 23);
 	    add(logoutButton);
-	    add(panelBackground);
 	    
 	    exitRoomButton = new JButton("나가기");
-	    exitRoomButton.setBounds(206, 526, 97, 23);
+	    exitRoomButton.setBounds(206, 526, 120, 23);
+	    exitRoomButton.setEnabled(false);
 	    add(exitRoomButton);
+	    
 	    add(panelBackground);
 	    
+	    myPage = new JButton("마이페이지");
+		myPage.setBounds(206, 554, 120, 23);
+		myPage.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				UserProfile userProfile = new UserProfile();
+				userProfile.setVisible(true);
+			}
+		});
+		add(myPage);
+	    
 	    nickNameLbl = new JLabel();
-	    nickNameLbl.setBounds(173, 526, 97, 23);
+	    nickNameLbl.setBounds(54, 526, 97, 40);
 	    add(nickNameLbl);
 	}
 	

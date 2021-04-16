@@ -42,10 +42,7 @@ public class UserProfile extends JDialog {
 		lbl_mainNickName.setText(user.getNickname());
 	}
 	
-	public UserProfile(SignUpPanel signUp) {
-		
-		socket = signUp.getSocket();
-		
+	public UserProfile() {
 		User user = new User();
 		user = socket.getUserData();
 		System.out.println("패널 : " + user.toString());
@@ -140,8 +137,6 @@ public class UserProfile extends JDialog {
 			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
 			{
-				
-				
 				JButton btn_edit = new JButton("프로필 수정");
 				btn_edit.setFont(new Font("함초롬바탕", Font.BOLD, 14));
 				
@@ -159,7 +154,6 @@ public class UserProfile extends JDialog {
 				// 동기화? 새로고침 or 필드내용 자체 변경?
 
 				btn_confirm.addActionListener(new ActionListener() {
-					User user;
 					@Override
 					public void actionPerformed(ActionEvent e) {
 						pnl_fake.setVisible(true);
@@ -169,9 +163,6 @@ public class UserProfile extends JDialog {
 						// 클라로 데이터 보내기
 						
 						// 기존 패스워드와 동일한 경우 거르기
-							
-						// 
-						
 					}
 				});
 				

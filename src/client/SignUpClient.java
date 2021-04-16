@@ -103,13 +103,6 @@ public class SignUpClient {
 			e.printStackTrace();
 		}
 	}
-	public void closeSocket() {
-		try {
-			socket.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
 }
 
 
