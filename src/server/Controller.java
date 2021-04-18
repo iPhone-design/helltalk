@@ -10,6 +10,7 @@ import java.net.Socket;
 import gui.BufferedChatPanel;
 import library.ChatMap;
 import library.ObjectInOut;
+import library.User;
 
 public class Controller implements Runnable {
 	private Socket socket;
@@ -80,22 +81,31 @@ public class Controller implements Runnable {
 							int result = userDAO.login(object.getId(), object.getPw());
 							if (result == 0) {
 								// 계정없음
-								object = new ObjectInOut(ObjectInOut.LOGIN, object.getId(), object.getPw(), 0);
+								object = new ObjectInOut(ObjectInOut.LOGIN, 0);
 								oos.writeObject(object);
 								oos.flush();
 							} else if (result == 1) {
 								// 로그인 성공
-								object = new ObjectInOut(ObjectInOut.LOGIN, object.getId(), object.getPw(), 1);
+								User user = userDAO.myProfile(object.getId());
+								object = new ObjectInOut(ObjectInOut.LOGIN, user.getId(),"null", 1, user.getNickname());
 								oos.writeObject(object);
 								oos.flush();
 							} else {
 								// 비밀번호 틀림
-								object = new ObjectInOut(ObjectInOut.LOGIN, object.getId(), object.getPw(), 2);
+								object = new ObjectInOut(ObjectInOut.LOGIN, 2);
 								oos.writeObject(object);
 								oos.flush();
 							}
-						} else {
-							System.out.println("아무것도 안댐 !!");
+						} else if (object.getProtocol() == ObjectInOut.MYPAGE) {
+							User user = userDAO.myProfile(object.getId());
+							object = new ObjectInOut(ObjectInOut.MYPAGE, user.getId(), "null", user.getNickname(), 0);
+							oos.writeObject(object);
+							oos.flush();
+						} else if (object.getProtocol() == ObjectInOut.INFOCHANGE) {
+							int result = userDAO.updateUserData(object.getId(), object.getPw(), object.getNickName());
+							object =  new ObjectInOut(ObjectInOut.INFOCHANGE, result);
+							oos.writeObject(object);
+							oos.flush();
 						}
 					} catch (ClassNotFoundException | IOException e) {
 						e.printStackTrace();

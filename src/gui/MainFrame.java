@@ -39,13 +39,15 @@ public class MainFrame extends JFrame {
 	private BufferedChatPanel bufferedChatPanel;
 	private SignUpClient signUpClient;
 	private RoomPanel roomPanel;
+	private RoomListPanel roomListPanel;
 	private ObjectInOut object;
-
+	private UserProfile userProfile;
 
 	public MainFrame(Socket socket) {
 		this.socket = socket;
 		setLayout(cards);
 		setResizable(false);
+		roomListPanel = new RoomListPanel();
 		bufferedChatPanel = new BufferedChatPanel("닉네임");
 		registrationPanel = new RegistrationPanel(this, socket);
 		firstPanel = new FirstPanel(this, registrationPanel);
@@ -70,7 +72,7 @@ public class MainFrame extends JFrame {
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					try {
-						oos.writeObject(new ObjectInOut(ObjectInOut.CHAT, "firstRoom", bufferedChatPanel.getRoomlistPanel().getNickNameLbl().getText()));
+						oos.writeObject(new ObjectInOut(ObjectInOut.CHAT, "firstRoom", bufferedChatPanel.getRoomlistPanel().getAccountNicNameText().getText()));
 						oos.flush();
 						ChatClient chat = new ChatClient(socket, bufferedChatPanel);
 						bufferedChatPanel.getChatPanel().setVisible(true);
@@ -89,7 +91,7 @@ public class MainFrame extends JFrame {
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					try {
-						oos.writeObject(new ObjectInOut(ObjectInOut.CHAT, "secondRoom", bufferedChatPanel.getRoomlistPanel().getNickNameLbl().getText()));
+						oos.writeObject(new ObjectInOut(ObjectInOut.CHAT, "secondRoom", bufferedChatPanel.getRoomlistPanel().getAccountNicNameText().getText()));
 						oos.flush();
 						ChatClient chat = new ChatClient(socket, bufferedChatPanel);
 						bufferedChatPanel.getChatPanel().setVisible(true);
@@ -108,7 +110,7 @@ public class MainFrame extends JFrame {
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					try {
-						oos.writeObject(new ObjectInOut(ObjectInOut.CHAT, "thirdRoom", bufferedChatPanel.getRoomlistPanel().getNickNameLbl().getText()));
+						oos.writeObject(new ObjectInOut(ObjectInOut.CHAT, "thirdRoom", bufferedChatPanel.getRoomlistPanel().getAccountNicNameText().getText()));
 						oos.flush();
 						ChatClient chat = new ChatClient(socket, bufferedChatPanel);
 						bufferedChatPanel.getChatPanel().setVisible(true);
@@ -164,9 +166,7 @@ public class MainFrame extends JFrame {
 						if (loginPanel.getIdText().getText().equals("") || loginPanel.getPwText().getPassword().length == 0) {
 							JOptionPane.showMessageDialog(null, "빈 칸을 채워주세요.");
 						} else {
-							System.out.println(loginPanel.getIdText().getText() + " " + loginPanel.getPassword(loginPanel.getPwText().getPassword()));
 							object = new ObjectInOut(ObjectInOut.LOGIN, loginPanel.getIdText().getText(), loginPanel.getPassword(loginPanel.getPwText().getPassword()), 0);
-							System.out.println(object.getProtocol() + " " + object.getId() + " " + object.getPw());
 							oos.writeObject(object);
 							oos.flush();
 							object = (ObjectInOut) ois.readObject();
@@ -175,7 +175,8 @@ public class MainFrame extends JFrame {
 									JOptionPane.showMessageDialog(registrationPanel, "로그인 실패 존재하지 않는 계정", "로그인", JOptionPane.WARNING_MESSAGE);
 								} else if (object.getResult() == 1) {
 									JOptionPane.showMessageDialog(registrationPanel, "로그인 성공", "로그인", JOptionPane.INFORMATION_MESSAGE);
-									bufferedChatPanel.getRoomlistPanel().getNickNameLbl().setText(loginPanel.getIdText().getText());
+									bufferedChatPanel.getRoomlistPanel().getAccountIdText().setText(object.getId());
+									bufferedChatPanel.getRoomlistPanel().getAccountNicNameText().setText(object.getNickName());
 									loginPanel.clearField();
 									changeChatPanel();
 								} else if (object.getResult() == 2) {
@@ -213,7 +214,6 @@ public class MainFrame extends JFrame {
 									Integer.valueOf(registrationPanel.getAgeText().getText()));
 							oos.writeObject(object);
 							oos.flush();
-							System.out.println("가입보냄!!");
 							
 							object = (ObjectInOut) ois.readObject();
 							if (object.getProtocol() == ObjectInOut.REGISTRATION) {
@@ -233,12 +233,40 @@ public class MainFrame extends JFrame {
 					}
 				}
 			});
+			
+			// 마이페이지
+			bufferedChatPanel.getRoomlistPanel().getMyPageButton().addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					try {
+						object = new ObjectInOut(ObjectInOut.MYPAGE, bufferedChatPanel.getRoomlistPanel().getAccountIdText().getText());
+						oos.writeObject(object);
+						oos.flush();
+						object = (ObjectInOut) ois.readObject();
+						if (object.getProtocol() == ObjectInOut.MYPAGE) {
+							userProfile = new UserProfile(oos, ois, MainFrame.this, object.getId(), object.getNickName());
+							userProfile.setVisible(true);
+						}
+					} catch (ClassNotFoundException e1) {
+						e1.printStackTrace();
+					} catch (IOException e1) {
+						e1.printStackTrace();
+					}
+				}
+			});
+			
+			// 방개설
+			bufferedChatPanel.getRoomlistPanel().getCreateRoomButton().addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					System.out.println("동작중?");
+				}
+			});
 		} catch (IOException e) {
 			e.printStackTrace();
 		} 
 	}
 	
-
 	public void changeFirstPanel() throws IOException {
 		cards.show(this.getContentPane(), "First");
 	}

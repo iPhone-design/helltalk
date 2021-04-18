@@ -109,8 +109,6 @@ public class LoginPanel extends JPanel implements KeyListener {
 		return loginBtn;
 	}
 	
-	///////////////////////////////////////////////////////////
-	
 	public String getPassword(char[] pw) {
 		String password = "";
 		for (char p : pw) {
@@ -134,9 +132,11 @@ public class LoginPanel extends JPanel implements KeyListener {
 			e.consume();
 		}
 	}
+	
 	@Override
 	public void keyPressed(KeyEvent e) {
 	}
+	
 	@Override
 	public void keyReleased(KeyEvent e) {
 	}

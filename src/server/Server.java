@@ -23,7 +23,6 @@ public class Server {
 	
 	public static void main(String[] args) {
 		roomList = new ArrayList<>();
-		roomlistDAO = new RoomListDAO();
 		userDAO = new UserDAO();
 		try (ServerSocket server = new ServerSocket(PORT)){
 			System.out.println("서버 오픈");

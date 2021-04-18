@@ -1,3 +1,5 @@
+CREATE DATABASE  IF NOT EXISTS `hell_db` /*!40100 DEFAULT CHARACTER SET utf8mb4 */;
+USE `hell_db`;
 -- MySQL dump 10.13  Distrib 8.0.22, for Win64 (x86_64)
 --
 -- Host: localhost    Database: hell_db
@@ -83,7 +85,7 @@ CREATE TABLE `user` (
   `img_num` int(11) NOT NULL DEFAULT '1',
   PRIMARY KEY (`usernum`),
   UNIQUE KEY `id_UNIQUE` (`userid`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -92,7 +94,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (2,'1','1','1',1,0,1),(3,'a','a','a',1,0,1),(4,'b','b','b',1,0,1);
+INSERT INTO `user` VALUES (2,'1','1','1',1,0,1),(3,'a','a','a',1,0,1),(4,'b','b','b',1,0,1),(5,'g','g','g',1,0,1),(7,'test','test','test',123,0,1),(8,'ppp','ppp','ppp',123,0,1),(9,'pp','pp','pp',45,0,1),(10,'aaa','test','test',1,0,1),(11,'test123','a','a',23,0,1),(12,'ppp123','ppp','ppp',34,0,1),(13,'123','123','123',123,0,1),(14,'test123123','test123123','1',1,0,1),(15,'new','new','new',11,0,1),(16,'iii','iii','iii',123,0,1),(17,'ff','ff','ff',13,0,1);
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -109,4 +111,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-04-15 17:56:27
+-- Dump completed on 2021-04-18 12:03:55
