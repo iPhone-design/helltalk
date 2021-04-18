@@ -88,14 +88,6 @@ public class UserDAO {
 					String dbId = rs.getString("userid");
 					String dbPw = rs.getString("password");
 					int dbStatus = rs.getInt("status");
-
-					System.out.println("입력한 아이디: " + id + ", 저장된 아이디: " + dbId);
-					System.out.println("입력한 비밀번호: " + password + ", 저장된 비밀번호: " + dbPw);
-					System.out.println("닉네임: " + rs.getString("nickname"));
-					System.out.println("나이: " + rs.getInt("age"));
-					System.out.println("유저상태(0:로그아웃, 1:로그인, 2:방장");
-					System.out.println("↳" + dbStatus);
-					
 					if (id.equals(dbId) && !password.equals(dbPw)) {
 						result = 2; // 비번틀리면 2 출력
 						return result;
@@ -143,18 +135,15 @@ public class UserDAO {
 		return null;
 	}
 	
-	public int updateUserData (String nickname, String password, String userid) {
-		String query = "UPDATE user SET nickname = ?, password = ?"
-				+ " WHERE userid = ?";
+	public int updateUserData (String userid, String password, String nickname) {
+		String query = "UPDATE user SET nickname = ?, password = ? WHERE userid = ?";
 		
-		try (Connection conn = getConnection();
-				PreparedStatement pstmt = conn.prepareStatement(query);) {
+		try (Connection conn = getConnection();PreparedStatement pstmt = conn.prepareStatement(query);) {
 			pstmt.setString(1, nickname);
 			pstmt.setString(2, password);
 			pstmt.setString(3, userid);
 			int result = pstmt.executeUpdate(); 
-			System.out.println("수정된 행 개수: " + result);
-			return 5;
+			return 1;
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -184,6 +173,25 @@ public class UserDAO {
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public User myProfile(String id) {
+		String sql = "SELECT userid, nickname FROM user WHERE userid = ?";
+		try (Connection conn = getConnection();	PreparedStatement pstmt = conn.prepareStatement(sql);) {
+			pstmt.setString(1, id);
+			
+			try (ResultSet rs = pstmt.executeQuery()) {
+				while (rs.next()) {
+					String dbId = rs.getString("userid");
+					String dbNn = rs.getString("nickname");
+					User user = new User(dbId, "null", dbNn);
+					return user;
+				}
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 	public void extractImage() {

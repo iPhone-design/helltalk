@@ -4,10 +4,12 @@ import java.io.Serializable;
 
 public class ObjectInOut implements Serializable {
 	private static final long serialVersionUID = 1L;
-	public static final int CHAT = 100;
-	public static final int EXIT = 101;
 	public static final int LOGIN = 0;
 	public static final int REGISTRATION = 1;
+	public static final int CHAT = 100;
+	public static final int EXIT = 101;
+	public static final int MYPAGE = 200;
+	public static final int INFOCHANGE = 201;
 	
 	private int protocol;
 	private String id;
@@ -21,6 +23,12 @@ public class ObjectInOut implements Serializable {
 		super();
 	}
 	
+	public ObjectInOut(int protocol, String id) {
+		super();
+		this.protocol = protocol;
+		this.id = id;
+	}
+
 	public ObjectInOut(int protocol, String id, String pw, String nickName, int age) {
 		super();
 		this.protocol = protocol;
@@ -54,6 +62,15 @@ public class ObjectInOut implements Serializable {
 		this.id = id;
 		this.pw = pw;
 		this.result = result;
+	}
+	
+	public ObjectInOut(int protocol, String id, String pw, int result, String nicName) {
+		super();
+		this.protocol = protocol;
+		this.id = id;
+		this.pw = pw;
+		this.result = result;
+		this.nickName = nicName;
 	}
 
 	public int getResult() {

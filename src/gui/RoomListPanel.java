@@ -32,9 +32,8 @@ import javax.swing.JTextField;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
- 
 public class RoomListPanel extends JPanel {
-	private JTextField textField;
+	private JTextField jTextField;
 	private JPanel panelBackground;
 	private Socket socket;
 	private int panelY = 5;
@@ -44,8 +43,10 @@ public class RoomListPanel extends JPanel {
 	private RoomPanel firstRoom;
 	private RoomPanel secondRoom;
 	private RoomPanel thirdRoom;
-	private JLabel nickNameLbl;
-	private JButton myPage;
+	private JLabel accountIdText;
+	private JButton myPageButton;
+	private JButton createRoomButton;
+	private JLabel accountNicNameText;
 	
 	public RoomListPanel() {
 		panelBackground = new JPanel();
@@ -59,20 +60,18 @@ public class RoomListPanel extends JPanel {
 	    panelBackground.setBorder(new LineBorder(Color.LIGHT_GRAY, 1));
 	    panelBackground.setLayout(null);	 	
 	     
-	    textField = new JTextField();
-	    textField.setBounds(12, 10, 265, 31);
-	    add(textField);
-	    textField.setColumns(10);
+	    jTextField = new JTextField();
+	    jTextField.setBounds(12, 10, 265, 31);
+	    add(jTextField);
+	    jTextField.setColumns(10);
+	    
 	    JButton btnNewButton = new JButton("검색");
 	    btnNewButton.setBounds(279, 10, 79, 31);
 	    add(btnNewButton);
-	    JButton createRoomButton = new JButton("방 개설");
-	    createRoomButton.addActionListener(new ActionListener() {
-	     	public void actionPerformed(ActionEvent e) {
-	     		CreateRoomFrame create = new CreateRoomFrame(socket);
-	     	}
-	    });
 	    
+	    createRoomButton = new JButton("방 개설");
+	    createRoomButton.setBounds(54, 498, 120, 23);
+	    add(createRoomButton);
 	    
 	    firstRoom = new RoomPanel("firstRoom", "방장1");
 	    firstRoom.setBounds(8, 5, 330, 80);
@@ -86,8 +85,6 @@ public class RoomListPanel extends JPanel {
 	    thirdRoom.setBounds(8, 175, 330, 80);
 	    panelBackground.add(thirdRoom);
 	    
-	    createRoomButton.setBounds(54, 498, 120, 23);
-	    add(createRoomButton);
 	    
 	    logoutButton = new JButton("로그아웃");
 	    logoutButton.setBounds(206, 498, 120, 23);
@@ -100,29 +97,39 @@ public class RoomListPanel extends JPanel {
 	    
 	    add(panelBackground);
 	    
-	    myPage = new JButton("마이페이지");
-		myPage.setBounds(206, 554, 120, 23);
-		myPage.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				UserProfile userProfile = new UserProfile();
-				userProfile.setVisible(true);
-			}
-		});
-		add(myPage);
+	    myPageButton = new JButton("마이페이지");
+		myPageButton.setBounds(206, 554, 120, 23);
+		add(myPageButton);
 	    
-	    nickNameLbl = new JLabel();
-	    nickNameLbl.setBounds(54, 526, 97, 40);
-	    add(nickNameLbl);
+	    accountIdText = new JLabel();
+	    accountIdText.setBounds(54, 526, 97, 40);
+	    accountIdText.setForeground(Color.white);
+	    add(accountIdText);
+	    
+	    accountNicNameText = new JLabel();
+	    accountNicNameText.setBounds(54, 526, 97, 40);
+	    accountNicNameText.setForeground(Color.white);
+	    add(accountNicNameText);
 	}
 	
-	
-	public JLabel getNickNameLbl() {
-		return nickNameLbl;
+	public JLabel getAccountNicNameText() {
+		return accountNicNameText;
 	}
 
-	public void setNickNameLbl(JLabel nickNameLbl) {
-		this.nickNameLbl = nickNameLbl;
+	public JButton getCreateRoomButton() {
+		return createRoomButton;
+	}
+
+	public JButton getMyPageButton() {
+		return myPageButton;
+	}
+
+	public JLabel getAccountIdText() {
+		return accountIdText;
+	}
+
+	public void setAccountIdText(JLabel accountIdText) {
+		this.accountIdText = accountIdText;
 	}
 
 	public RoomPanel getPanelRoom() {
