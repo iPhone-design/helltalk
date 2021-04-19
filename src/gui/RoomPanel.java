@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.awt.event.ActionEvent;
+import javax.swing.SwingConstants;
 
 public class RoomPanel extends JPanel {
 	private JLabel titleLbl;
@@ -27,7 +28,7 @@ public class RoomPanel extends JPanel {
 	private JLabel nameLbl;
 	private JButton enterRoomButton;
 	
-	public RoomPanel(String roomTitle, String name) {
+	public RoomPanel(String roomTitle, String name, int headCount) {
 		setPreferredSize(new Dimension(330, 80));
 		setMaximumSize(new Dimension(330, 80));
 		setBackground(Color.WHITE);
@@ -36,18 +37,19 @@ public class RoomPanel extends JPanel {
 		nameLbl = new JLabel();
 		nameLbl.setText(name);
 		nameLbl.setFont(new Font("함초롬바탕", Font.BOLD, 15));
-		nameLbl.setBounds(213, 5, 69, 24);
+		nameLbl.setBounds(12, 39, 143, 24);
 		add(nameLbl);
 		
 		titleLbl = new JLabel();
 		titleLbl.setText(roomTitle);
 		titleLbl.setFont(new Font("함초롬바탕", Font.BOLD, 15));
-		titleLbl.setBounds(20, 5, 69, 24);
+		titleLbl.setBounds(12, 12, 225, 24);
 		add(titleLbl);
 		
-		amountLbl = new JLabel("2/10");
+		amountLbl = new JLabel(String.valueOf(headCount));
+		amountLbl.setHorizontalAlignment(SwingConstants.CENTER);
 		amountLbl.setFont(new Font("함초롬바탕", Font.BOLD, 15));
-		amountLbl.setBounds(12, 33, 69, 24);
+		amountLbl.setBounds(249, 12, 69, 24);
 		add(amountLbl);
 		
 		enterRoomButton = new JButton("입장");

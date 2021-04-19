@@ -27,7 +27,7 @@ public class BufferedChatPanel extends JPanel{
 		setBackground(new Color(255, 228, 225));
 		setLayout(null);
 		 
-		chatPanel = new ChatPanel("방제목");
+		chatPanel = new ChatPanel();
 		chatPanel.setBounds(10, 10, 583, 583);
 		chatPanel.setVisible(false);
 		add(chatPanel, null);

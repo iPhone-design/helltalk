@@ -1,6 +1,7 @@
 package library;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class ObjectInOut implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -10,6 +11,9 @@ public class ObjectInOut implements Serializable {
 	public static final int EXIT = 101;
 	public static final int MYPAGE = 200;
 	public static final int INFOCHANGE = 201;
+	public static final int CREATEROOM = 300;
+	public static final int REMOVEROOM = 301;
+	public static final int REFRESHROOM = 400;
 	
 	private int protocol;
 	private String id;
@@ -18,6 +22,8 @@ public class ObjectInOut implements Serializable {
 	private int age;
 	private String title;
 	private int result;
+	private int headCount;
+	private List<Room> roomlist;
 	
 	public ObjectInOut() {
 		super();
@@ -27,6 +33,12 @@ public class ObjectInOut implements Serializable {
 		super();
 		this.protocol = protocol;
 		this.id = id;
+	}
+	
+	public ObjectInOut(int protocol, List<Room> roomlist) {
+		super();
+		this.protocol = protocol;
+		this.roomlist = roomlist;
 	}
 
 	public ObjectInOut(int protocol, String id, String pw, String nickName, int age) {
@@ -64,6 +76,15 @@ public class ObjectInOut implements Serializable {
 		this.result = result;
 	}
 	
+	public ObjectInOut(int protocol, String title, String nickName, int headCount, int result) {
+		super();
+		this.protocol = protocol;
+		this.title = title;
+		this.nickName = nickName;
+		this.headCount = headCount;
+		this.result = result;
+	}
+	
 	public ObjectInOut(int protocol, String id, String pw, int result, String nicName) {
 		super();
 		this.protocol = protocol;
@@ -71,6 +92,10 @@ public class ObjectInOut implements Serializable {
 		this.pw = pw;
 		this.result = result;
 		this.nickName = nicName;
+	}
+	
+	public int getHeadCount() {
+		return headCount;
 	}
 
 	public int getResult() {
@@ -119,5 +144,9 @@ public class ObjectInOut implements Serializable {
 
 	public String getNickName() {
 		return nickName;
+	}
+
+	public List<Room> getRoomlist() {
+		return roomlist;
 	}
 }

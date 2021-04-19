@@ -25,46 +25,23 @@ public class RoomListDAO {
 	}
 	
 	public Connection getConnection() throws SQLException {
-		Connection conn = DriverManager
-				.getConnection(DB_URL, ID, PASSWORD);
+		Connection conn = DriverManager.getConnection(DB_URL, ID, PASSWORD);
 		return conn;
 	}
 	
-	public int addRoom(String title, String roomMasterName) {
+	public int createRoom(String title, String roomMasterName, int headCount) {
 		try (Connection conn = getConnection();
-			PreparedStatement pstmt = conn.prepareStatement("INSERT INTO roomlist (title, roomMasterName) VALUE (?, ?)")) {
-			
+			PreparedStatement pstmt = conn.prepareStatement("INSERT INTO roomlist (title, roomMasterName, headcount) VALUE (?, ?, ?)")) {
 			pstmt.setString(1, title);
 			pstmt.setString(2, roomMasterName);
-			
+			pstmt.setInt(3, headCount);
 			int result = pstmt.executeUpdate();
-			return result;
+			return 1;
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		return -1;
 	}
-	
-//	public int idCheck(String id) {
-//		int result = 0;
-//		String query = "SELECT * FROM user WHERE id = ?";
-//		try (Connection conn = getConnection();
-//				PreparedStatement pstmt = conn.prepareStatement(query)) {
-//			pstmt.setString(1, id);
-//			try (ResultSet rs = pstmt.executeQuery()) {
-//				if (rs.next()) {
-//					result = 0; // 가입가능한 아이디일때
-//					return result;
-//				} else {
-//					result = 1; // 이미 존재하는 아이디일때
-//					return result;
-//				}
-//			}
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
-//		return -1;
-//	}
 	
 	public List<Room> RoomlistAll() {
 		List<Room> roomList = new ArrayList<>();
@@ -76,8 +53,8 @@ public class RoomListDAO {
 				while (rs.next()) {
 					String title = rs.getString("title");
 					String roomMasterName = rs.getString("roomMasterName");
-					int amount = rs.getInt("amount");
-					roomList.add(new Room(title, roomMasterName, amount));
+					int headCount = rs.getInt("headcount");
+					roomList.add(new Room(title, roomMasterName, headCount));
 				}
 			}
 			return roomList;

@@ -1,46 +1,37 @@
 package library;
 
-public class Room {
+import java.io.Serializable;
+
+public class Room implements Serializable {
+	private static final long serialVersionUID = 1L;
 	private String title;
 	private String roomMasterName;
-	private int amount;
+	private int headCount;
 	
-	public Room(String title, String roomMasterName, int amount) {
+	public Room(String title, String roomMasterName, int headCount) {
 		super();
 		this.title = title;
 		this.roomMasterName = roomMasterName;
-		this.amount = amount;
+		this.headCount = headCount;
 	}
 
-	public synchronized String getTitle() {
+	public String getTitle() {
 		return title;
 	}
 
-	public synchronized void setTitle(String title) {
-		this.title = title;
-	}
-
-	public synchronized String getRoomMasterName() {
+	public String getRoomMasterName() {
 		return roomMasterName;
 	}
 
-	public synchronized void setRoomMasterName(String roomMasterName) {
-		this.roomMasterName = roomMasterName;
-	}
-
-	public synchronized int getAmount() {
-		return amount;
-	}
-
-	public synchronized void setAmount(int amount) {
-		this.amount = amount;
+	public synchronized int getHeadCount() {
+		return headCount;
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + amount;
+		result = prime * result + headCount;
 		result = prime * result + ((roomMasterName == null) ? 0 : roomMasterName.hashCode());
 		result = prime * result + ((title == null) ? 0 : title.hashCode());
 		return result;
@@ -50,10 +41,12 @@ public class Room {
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
-		if (!(obj instanceof Room))
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
 			return false;
 		Room other = (Room) obj;
-		if (amount != other.amount)
+		if (headCount != other.headCount)
 			return false;
 		if (roomMasterName == null) {
 			if (other.roomMasterName != null)
@@ -70,6 +63,6 @@ public class Room {
 
 	@Override
 	public String toString() {
-		return "Room [title=" + title + ", roomMasterName=" + roomMasterName + ", amount=" + amount + "]";
+		return "Room [title=" + title + ", roomMasterName=" + roomMasterName + ", headCount=" + headCount + "]";
 	}
 }

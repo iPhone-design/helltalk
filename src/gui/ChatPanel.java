@@ -24,10 +24,10 @@ import javax.swing.JButton;
 
 public class ChatPanel extends JPanel {
 	private JTextField textField;
-	private JLabel titleLbl;
+	private JLabel rommtitleLable;
 	private JTextArea textArea;
 	private JScrollPane scroll;
-	public ChatPanel(String title) {
+	public ChatPanel() {
 		setBorder(new LineBorder(Color.LIGHT_GRAY, 1));
 		setPreferredSize(new Dimension(583, 583));
 		setMaximumSize(new Dimension(583, 583));
@@ -41,10 +41,10 @@ public class ChatPanel extends JPanel {
 		add(panel);
 		panel.setLayout(null);
 		
-		titleLbl = new JLabel(title);
-		titleLbl.setFont(new Font("굴림", Font.PLAIN, 18));
-		titleLbl.setBounds(12, 10, 294, 32);
-		panel.add(titleLbl);
+		rommtitleLable = new JLabel();
+		rommtitleLable.setFont(new Font("굴림", Font.PLAIN, 18));
+		rommtitleLable.setBounds(12, 10, 294, 32);
+		panel.add(rommtitleLable);
 		
 		JButton btnNewButton = new JButton("유저 리스트");
 		btnNewButton.setBackground(new Color(255, 182, 193));
@@ -69,21 +69,22 @@ public class ChatPanel extends JPanel {
 		return scroll;
 	}
 
-	public JLabel getTitleLbl() {
-		return titleLbl;
+	public JLabel getRommtitleLable() {
+		return rommtitleLable;
 	}
-	public void setTitleLbl(JLabel titleLbl) {
-		this.titleLbl = titleLbl;
-	}
+	
 	public JTextArea getTextArea() {
 		return textArea;
 	}
+	
 	public void setTextArea(JTextArea textArea) {
 		this.textArea = textArea;
 	}
+	
 	public JTextField getTextField() {
 		return textField;
 	}
+	
 	public void setTextField(JTextField textField) {
 		this.textField = textField;
 	}

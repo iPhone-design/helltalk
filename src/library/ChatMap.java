@@ -47,7 +47,7 @@ public class ChatMap {
 			roomMap.remove(roomName);
 		}
 	}
-	//("님의 귓속말: ")앞에 id어케 붙이지 ㅠ
+	
 	public static void sendMessageToOne(String roomName, String id, String read) {
 		int start = read.indexOf(" ") + 1;
 		int end = read.indexOf(" ", start);
@@ -56,6 +56,7 @@ public class ChatMap {
 			String targetId = read.substring(start, end);
 			String message = read.substring(end + 1);
 			ChatMap.messageToOne(roomName, targetId, id + " 님의 귓속말: " + message);
+			ChatMap.messageToOne(roomName, id, targetId + " 에게 귓속말: " + message);
 		}
 	}
 	

@@ -11,54 +11,37 @@ import java.net.UnknownHostException;
 import gui.BufferedChatPanel;
 
 public class ChatClient {
-	private Socket socket;
+	private DataOutputStream dos;
+	private DataInputStream dis;
 	private BufferedChatPanel bufferedChatPanel;
+	private Thread writeTextThead;
 	
-	public ChatClient(Socket socket, BufferedChatPanel bufferedChatPanel) {
+	public ChatClient(DataOutputStream dos, DataInputStream dis, BufferedChatPanel bufferedChatPanel) {
 		this.bufferedChatPanel = bufferedChatPanel;
-		this.socket = socket;
-		try {
-			System.out.println("클라접속");
-			DataOutputStream dos = new DataOutputStream(socket.getOutputStream());
-			DataInputStream dis = new DataInputStream(socket.getInputStream());
-			
-			Thread writeTextThead = new Thread(new Runnable() {
-				@Override
-				public void run() {
-					String read = null;
-					try {
-						while ((read = dis.readUTF()) != null) {
-							bufferedChatPanel.getChatPanel().getTextArea().setText(bufferedChatPanel.getChatPanel().getTextArea().getText() + read + "\n");
-							bufferedChatPanel.getChatPanel().getScroll().getVerticalScrollBar().setValue(bufferedChatPanel.getChatPanel().getScroll().getVerticalScrollBar().getMaximum());
-							bufferedChatPanel.getChatPanel().getTextField().setText("");
+		this.dos = dos;
+		this.dis = dis;
+		System.out.println("클라접속");
+		writeTextThead = new Thread(new Runnable() {
+			@Override
+			public void run() {
+				String read = null;
+				try {
+					while ((read = dis.readUTF()) != null) {
+						if (read.equals("/종료")) {
+							break;
 						}
-					} catch (IOException e) {
-						e.printStackTrace();
+						bufferedChatPanel.getChatPanel().getTextArea().setText(bufferedChatPanel.getChatPanel().getTextArea().getText() + read + "\n");
+						bufferedChatPanel.getChatPanel().getScroll().getVerticalScrollBar().setValue(bufferedChatPanel.getChatPanel().getScroll().getVerticalScrollBar().getMaximum());
 					}
+				} catch (IOException e) {
+					e.printStackTrace();
 				}
-			});
-			writeTextThead.start();
-			
-			bufferedChatPanel.getChatPanel().getTextField().addKeyListener(new KeyAdapter() {
-				
-				@Override
-				public void keyPressed(KeyEvent e) {
-					if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-						String write = bufferedChatPanel.getChatPanel().getTextField().getText();
-						try {
-							dos.writeUTF(write);
-							dos.flush();
-						} catch (IOException e1) {
-							e1.printStackTrace();
-						}
-					}
-				}
-			});
-		} catch (UnknownHostException e) {
-			// 어케 해결함?????????????????????????!!#@!#!@#@!#!@
-//			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+			}
+		});
+		writeTextThead.start();
+	}
+
+	public Thread getWriteTextThead() {
+		return writeTextThead;
 	}
 }
