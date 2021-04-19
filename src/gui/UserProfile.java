@@ -56,17 +56,17 @@ public class UserProfile extends JDialog {
 	private ObjectInputStream ois;
 	private ObjectInOut object;
 	
-	public UserProfile(ObjectOutputStream oos, ObjectInputStream ois, JFrame jframe, String id, String nicName) {
+	public UserProfile(ObjectOutputStream oos, ObjectInputStream ois, JFrame mainFrame, String id, String nicName) {
 		this.oos = oos;
 		this.ois = ois;
-		this.jFrame = jframe;
+		this.jFrame = mainFrame;
 		this.id = id;
 		this.nicName = nicName;
 		
 		setBounds(100, 100, 350, 480);
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		setResizable(false);
-		setLocationRelativeTo(jframe);
+		setLocationRelativeTo(mainFrame);
 		setModal(true);
 
 		getContentPane().setLayout(new BorderLayout());
@@ -147,7 +147,7 @@ public class UserProfile extends JDialog {
 		imageFileButton.setFont(new Font("함초롬바탕", Font.BOLD, 13));
 		contentPanel.add(imageFileButton);
 		
-		JButton infoChangeButton = new JButton("비밀번호 변경");
+		JButton infoChangeButton = new JButton("정보 변경");
 		infoChangeButton.setBounds(181, 404, 125, 20);
 		infoChangeButton.setFont(new Font("함초롬바탕", Font.BOLD, 13));
 		contentPanel.add(infoChangeButton);
@@ -176,10 +176,10 @@ public class UserProfile extends JDialog {
 						if (object.getProtocol() == ObjectInOut.INFOCHANGE) {
 							if (object.getResult() == 1) {
 								message = "변경 성공 재 접속 후 반영됩니다.!";
-								showMessage("Error", message);
+								showMessage("Success", message);
 							} else if(object.getResult() == -1){
 								message = "변경 실패";
-								showMessage("Error", message);
+								showMessage("Fail", message);
 							}
 						}
 					} catch (IOException e1) {
@@ -267,17 +267,5 @@ public class UserProfile extends JDialog {
 				, getPassword(tfd_pw.getPassword())
 				, tfd_nickName.getText());
 		return user;
-	}
-	
-	public void hideField() {
-		List<JTextField> temp = new ArrayList();
-		lbl_id.setVisible(false);
-		lbl_pw.setVisible(false);
-		lbl_confirm_pw.setVisible(false);
-		lbl_nickName.setVisible(false);
-		tfd_id.setVisible(false);
-		tfd_pw.setVisible(false);
-		tfd_confirm_pw.setVisible(false);
-		tfd_nickName.setVisible(false);
 	}
 }

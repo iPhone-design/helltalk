@@ -80,8 +80,7 @@ public class UserDAO {
 	public int login(String id, String password) {
 		int result = 0;
 		String query = "SELECT * FROM user WHERE userid = ?";
-		try (Connection conn = getConnection();
-				PreparedStatement pstmt = conn.prepareStatement(query)) {
+		try (Connection conn = getConnection();PreparedStatement pstmt = conn.prepareStatement(query)) {
 			pstmt.setString(1, id);
 			try (ResultSet rs = pstmt.executeQuery()) {
 				if (rs.next()) {
@@ -108,8 +107,7 @@ public class UserDAO {
 
 	public User getUserData(String id) { // 마이페이지, 프로필보기용 유저데이터 조회
 		String sql = "SELECT * FROM user WHERE userid = ?";
-		try (Connection conn = getConnection();
-				PreparedStatement pstmt = conn.prepareStatement(sql);) {
+		try (Connection conn = getConnection();PreparedStatement pstmt = conn.prepareStatement(sql);) {
 			pstmt.setString(1, id);
 			
 			try (ResultSet rs = pstmt.executeQuery()) {
@@ -135,6 +133,7 @@ public class UserDAO {
 		return null;
 	}
 	
+	// 유저 정보 변경
 	public int updateUserData (String userid, String password, String nickname) {
 		String query = "UPDATE user SET nickname = ?, password = ? WHERE userid = ?";
 		
@@ -150,7 +149,8 @@ public class UserDAO {
 		return -1;
 	}
 	
-	public void insertImage() { // db에 이미지 저장하는 메소드
+	// db에 이미지 저장하는 메소드
+	public void insertImage() { 
 		String query = "INSERT INTO profile_img (userid, filename, image) VALUES (?, ?, ?)";
 		String id = "id";
 		String password = "password";
@@ -158,8 +158,7 @@ public class UserDAO {
 		
 		String fileName; // 파일명
 
-		try (Connection conn = DriverManager.getConnection(DB_URL, ID, PASSWORD);
-				PreparedStatement pstmt = conn.prepareStatement(query);) {
+		try (Connection conn = DriverManager.getConnection(DB_URL, ID, PASSWORD);PreparedStatement pstmt = conn.prepareStatement(query);) {
 			FileInputStream fis = new FileInputStream(defaultUserImg);
 
 			pstmt.setString(1, "1");
@@ -175,6 +174,7 @@ public class UserDAO {
 		}
 	}
 	
+	// 프로필 확인
 	public User myProfile(String id) {
 		String sql = "SELECT userid, nickname FROM user WHERE userid = ?";
 		try (Connection conn = getConnection();	PreparedStatement pstmt = conn.prepareStatement(sql);) {
@@ -201,9 +201,7 @@ public class UserDAO {
 		String id = "1";
 
 		FileOutputStream fos = null;
-		try (Connection conn = DriverManager.getConnection(DB_URL, ID, PASSWORD);
-				PreparedStatement pstmt = conn.prepareStatement(query);) {
-
+		try (Connection conn = DriverManager.getConnection(DB_URL, ID, PASSWORD);PreparedStatement pstmt = conn.prepareStatement(query);) {
 			pstmt.setString(1, id);
 			ResultSet rs = pstmt.executeQuery();
 			rs.next();

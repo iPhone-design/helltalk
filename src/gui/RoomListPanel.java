@@ -37,12 +37,9 @@ public class RoomListPanel extends JPanel {
 	private JPanel panelBackground;
 	private Socket socket;
 	private int panelY = 5;
-	private RoomPanel panelRoom;
 	private JButton exitRoomButton;
 	private JButton logoutButton;
-	private RoomPanel firstRoom;
-	private RoomPanel secondRoom;
-	private RoomPanel thirdRoom;
+	private RoomPanel roomPanel;
 	private JLabel accountIdText;
 	private JButton myPageButton;
 	private JButton createRoomButton;
@@ -73,19 +70,6 @@ public class RoomListPanel extends JPanel {
 	    createRoomButton.setBounds(54, 498, 120, 23);
 	    add(createRoomButton);
 	    
-	    firstRoom = new RoomPanel("firstRoom", "방장1");
-	    firstRoom.setBounds(8, 5, 330, 80);
-	    panelBackground.add(firstRoom);
-	    
-	    secondRoom = new RoomPanel("SecondRoom", "방장2");
-	    secondRoom.setBounds(8, 90, 330, 80);
-	    panelBackground.add(secondRoom);
-	    
-	    thirdRoom = new RoomPanel("thirdRoom", "방장3");
-	    thirdRoom.setBounds(8, 175, 330, 80);
-	    panelBackground.add(thirdRoom);
-	    
-	    
 	    logoutButton = new JButton("로그아웃");
 	    logoutButton.setBounds(206, 498, 120, 23);
 	    add(logoutButton);
@@ -102,13 +86,13 @@ public class RoomListPanel extends JPanel {
 		add(myPageButton);
 	    
 	    accountIdText = new JLabel();
-	    accountIdText.setBounds(54, 526, 97, 40);
+	    accountIdText.setBounds(54, 536, 97, 40);
 	    accountIdText.setForeground(Color.white);
 	    add(accountIdText);
 	    
 	    accountNicNameText = new JLabel();
 	    accountNicNameText.setBounds(54, 526, 97, 40);
-	    accountNicNameText.setForeground(Color.white);
+	    accountNicNameText.setForeground(Color.black);
 	    add(accountNicNameText);
 	}
 	
@@ -132,10 +116,6 @@ public class RoomListPanel extends JPanel {
 		this.accountIdText = accountIdText;
 	}
 
-	public RoomPanel getPanelRoom() {
-		return panelRoom;
-	}
-	
 	public JButton getExitRoomButton() {
 		return exitRoomButton;
 	}
@@ -144,27 +124,11 @@ public class RoomListPanel extends JPanel {
 		return logoutButton;
 	}
 
-	public RoomPanel getFirstRoom() {
-		return firstRoom;
+	public RoomPanel getRoomPanel() {
+		return roomPanel;
 	}
 
-	public void setFirstRoom(RoomPanel firstRoom) {
-		this.firstRoom = firstRoom;
-	}
-
-	public RoomPanel getSecondRoom() {
-		return secondRoom;
-	}
-
-	public void setSecondRoom(RoomPanel secondRoom) {
-		this.secondRoom = secondRoom;
-	}
-
-	public RoomPanel getThirdRoom() {
-		return thirdRoom;
-	}
-
-	public void setThirdRoom(RoomPanel thirdRoom) {
-		this.thirdRoom = thirdRoom;
+	public JPanel getPanelBackground() {
+		return panelBackground;
 	}
 }

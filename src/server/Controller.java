@@ -6,10 +6,12 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.List;
 
 import gui.BufferedChatPanel;
 import library.ChatMap;
 import library.ObjectInOut;
+import library.Room;
 import library.User;
 
 public class Controller implements Runnable {
@@ -21,9 +23,11 @@ public class Controller implements Runnable {
 	private ObjectInputStream ois;
 	private ObjectOutputStream oos;
 	private UserDAO userDAO;
+	private RoomListDAO roomListDAO;
 	
 	public Controller(Socket socket) {
 		userDAO = new UserDAO();
+		roomListDAO = new RoomListDAO();
 		this.socket = socket;
 		ChatMap.createRoom("firstRoom");
 		ChatMap.createRoom("secondRoom");
@@ -52,10 +56,11 @@ public class Controller implements Runnable {
 								ChatMap.messageToAll(object.getTitle(), object.getNickName() + " 님이 입장하셨습니다.");
 								String read = null;
 								while ((read = dis.readUTF())!= null) {
-									System.out.println(read);
 									if (read.equals("/종료")) {
 										ChatMap.messageToAll(object.getTitle(), object.getNickName() + " 님이 퇴장하셨습니다.");
 										ChatMap.removeUser(object.getTitle(), object.getNickName());
+										dos.writeUTF("/종료");
+										dos.flush();
 										break;
 									} else if (read.startsWith("/w ")) {
 										ChatMap.sendMessageToOne(object.getTitle(), object.getNickName(), read);
@@ -106,8 +111,21 @@ public class Controller implements Runnable {
 							object =  new ObjectInOut(ObjectInOut.INFOCHANGE, result);
 							oos.writeObject(object);
 							oos.flush();
+						} else if (object.getProtocol() == ObjectInOut.CREATEROOM) {
+							System.out.println(object.getTitle() + " " + object.getNickName() + " " + object.getHeadCount());
+							int result = roomListDAO.createRoom(object.getTitle(), object.getNickName(), object.getHeadCount());
+							object = new ObjectInOut(ObjectInOut.CREATEROOM, result);
+							oos.writeObject(object);
+							oos.flush();
+						} else if (object.getProtocol() == ObjectInOut.REFRESHROOM) {
+							List<Room> roomlist = roomListDAO.RoomlistAll();
+							object = new ObjectInOut(ObjectInOut.REFRESHROOM, roomlist);
+							oos.writeObject(object);
+							oos.flush();
 						}
-					} catch (ClassNotFoundException | IOException e) {
+					} catch (ClassNotFoundException e) {
+						e.printStackTrace();
+					} catch (IOException e) {
 						e.printStackTrace();
 					}
 				}
