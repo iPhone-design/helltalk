@@ -119,6 +119,9 @@ public class Controller implements Runnable {
 							oos.flush();
 						} else if (object.getProtocol() == ObjectInOut.REFRESHROOM) {
 							List<Room> roomlist = roomListDAO.RoomlistAll();
+							for (int i = 0; i <= roomlist.size() - 1; i++) {
+								ChatMap.createRoom(roomlist.get(i).getTitle());
+							}
 							object = new ObjectInOut(ObjectInOut.REFRESHROOM, roomlist);
 							oos.writeObject(object);
 							oos.flush();

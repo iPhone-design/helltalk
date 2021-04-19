@@ -16,7 +16,10 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import java.awt.Font;
 import java.awt.event.ActionListener;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.awt.event.ActionEvent;
@@ -27,15 +30,32 @@ public class RoomPanel extends JPanel {
 	private JLabel amountLbl;
 	private JLabel nameLbl;
 	private JButton enterRoomButton;
+	private ObjectOutputStream oos;
+	private ObjectInputStream ois;
+	private DataOutputStream dos;
+	private DataInputStream dis;
+	private BufferedChatPanel bufferedChatPanel;
+	private String roomTile;
+	private String roomMaterName;
+	private int headCount;
 	
-	public RoomPanel(String roomTitle, String name, int headCount) {
+	public RoomPanel(String roomTitle, String roomMaterName, int headCount, ObjectOutputStream oos, ObjectInputStream ois, DataOutputStream dos, DataInputStream dis ,BufferedChatPanel bufferedChatPanel) {
+		this.oos = oos;
+		this.ois = ois;
+		this.dos = dos;
+		this.dis = dis;
+		this.bufferedChatPanel = bufferedChatPanel;
+		this.roomTile = roomTitle;
+		this.roomMaterName = roomMaterName;
+		this.headCount = headCount;
+		
 		setPreferredSize(new Dimension(330, 80));
 		setMaximumSize(new Dimension(330, 80));
 		setBackground(Color.WHITE);
 		setLayout(null);
 		
 		nameLbl = new JLabel();
-		nameLbl.setText(name);
+		nameLbl.setText(roomMaterName);
 		nameLbl.setFont(new Font("함초롬바탕", Font.BOLD, 15));
 		nameLbl.setBounds(12, 39, 143, 24);
 		add(nameLbl);
@@ -55,9 +75,22 @@ public class RoomPanel extends JPanel {
 		enterRoomButton = new JButton("입장");
 		enterRoomButton.setBounds(249, 46, 69, 24);
 		add(enterRoomButton);
-	}
-
-	public JButton getEnterRoomButton() {
-		return enterRoomButton;
+		
+		enterRoomButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				try {
+					oos.writeObject(new ObjectInOut(ObjectInOut.CHAT, roomTitle, bufferedChatPanel.getRoomlistPanel().getAccountNicNameText().getText()));
+					ChatClient chatClient = new ChatClient(dos, dis, bufferedChatPanel);
+					bufferedChatPanel.getChatPanel().getRommtitleLable().setText(roomTitle);
+					bufferedChatPanel.getChatPanel().setVisible(true);
+					bufferedChatPanel.getRoomlistPanel().getExitRoomButton().setEnabled(true);
+					bufferedChatPanel.getRoomlistPanel().getLogoutButton().setEnabled(false);
+					oos.flush();
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
+			}
+		});
 	}
 }
