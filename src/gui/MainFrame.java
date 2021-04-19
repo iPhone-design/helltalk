@@ -17,6 +17,7 @@ import javax.swing.JOptionPane;
 
 import client.ChatClient;
 import client.SignUpClient;
+import library.ChatMap;
 import library.ObjectInOut;
 import library.Room;
 
@@ -34,7 +35,6 @@ public class MainFrame extends JFrame {
 	private BufferedChatPanel bufferedChatPanel;
 	private SignUpClient signUpClient;
 	private ObjectInOut object;
-	private ChatClient chatClient;
 	private UserProfile userProfile;
 	private CreateRoomFrame createRoomFrame;
 	private Thread refreshRoomList;
@@ -63,67 +63,6 @@ public class MainFrame extends JFrame {
 			ois = new ObjectInputStream(socket.getInputStream());
 			dos = new DataOutputStream(socket.getOutputStream());
 			dis = new DataInputStream(socket.getInputStream());
-			
-//			// 채팅
-//			bufferedChatPanel.getRoomlistPanel().getFirstRoom().getEnterRoomButton().addActionListener(new ActionListener() {
-//				@Override
-//				public void actionPerformed(ActionEvent e) {
-//					try {
-//						oos.writeObject(new ObjectInOut(ObjectInOut.CHAT, "firstRoom", bufferedChatPanel.getRoomlistPanel().getAccountNicNameText().getText()));
-//						oos.flush();
-//						chatClient = new ChatClient(dos, dis, bufferedChatPanel);
-//						bufferedChatPanel.getChatPanel().getRommtitleLable().setText("firstRoom");
-//						bufferedChatPanel.getChatPanel().setVisible(true);
-//						bufferedChatPanel.getRoomlistPanel().getExitRoomButton().setEnabled(true);
-//						bufferedChatPanel.getRoomlistPanel().getLogoutButton().setEnabled(false);
-//						bufferedChatPanel.getRoomlistPanel().getFirstRoom().getEnterRoomButton().setEnabled(false);
-//						bufferedChatPanel.getRoomlistPanel().getSecondRoom().getEnterRoomButton().setEnabled(false);
-//						bufferedChatPanel.getRoomlistPanel().getThirdRoom().getEnterRoomButton().setEnabled(false);
-//					} catch (IOException e1) {
-//						e1.printStackTrace();
-//					}
-//				}
-//			});
-//			
-//			bufferedChatPanel.getRoomlistPanel().getSecondRoom().getEnterRoomButton().addActionListener(new ActionListener() {
-//				@Override
-//				public void actionPerformed(ActionEvent e) {
-//					try {
-//						oos.writeObject(new ObjectInOut(ObjectInOut.CHAT, "secondRoom", bufferedChatPanel.getRoomlistPanel().getAccountNicNameText().getText()));
-//						oos.flush();
-//						chatClient = new ChatClient(dos, dis, bufferedChatPanel);
-//						bufferedChatPanel.getChatPanel().getRommtitleLable().setText("secondRoom");
-//						bufferedChatPanel.getChatPanel().setVisible(true);
-//						bufferedChatPanel.getRoomlistPanel().getExitRoomButton().setEnabled(true);
-//						bufferedChatPanel.getRoomlistPanel().getLogoutButton().setEnabled(false);
-//						bufferedChatPanel.getRoomlistPanel().getFirstRoom().getEnterRoomButton().setEnabled(false);
-//						bufferedChatPanel.getRoomlistPanel().getSecondRoom().getEnterRoomButton().setEnabled(false);
-//						bufferedChatPanel.getRoomlistPanel().getThirdRoom().getEnterRoomButton().setEnabled(false);
-//					} catch (IOException e1) {
-//						e1.printStackTrace();
-//					}
-//				}
-//			});
-//			
-//			bufferedChatPanel.getRoomlistPanel().getThirdRoom().getEnterRoomButton().addActionListener(new ActionListener() {
-//				@Override
-//				public void actionPerformed(ActionEvent e) {
-//					try {
-//						oos.writeObject(new ObjectInOut(ObjectInOut.CHAT, "thirdRoom", bufferedChatPanel.getRoomlistPanel().getAccountNicNameText().getText()));
-//						oos.flush();
-//						chatClient = new ChatClient(dos, dis, bufferedChatPanel);
-//						bufferedChatPanel.getChatPanel().setVisible(true);
-//						bufferedChatPanel.getChatPanel().getRommtitleLable().setText("thirdRoom");
-//						bufferedChatPanel.getRoomlistPanel().getExitRoomButton().setEnabled(true);
-//						bufferedChatPanel.getRoomlistPanel().getLogoutButton().setEnabled(false);
-//						bufferedChatPanel.getRoomlistPanel().getFirstRoom().getEnterRoomButton().setEnabled(false);
-//						bufferedChatPanel.getRoomlistPanel().getSecondRoom().getEnterRoomButton().setEnabled(false);
-//						bufferedChatPanel.getRoomlistPanel().getThirdRoom().getEnterRoomButton().setEnabled(false);
-//					} catch (IOException e1) {
-//						e1.printStackTrace();
-//					}
-//				}
-//			});
 			
 			// 채팅 쓰기 부분
 			bufferedChatPanel.getChatPanel().getTextField().addKeyListener(new KeyAdapter() {
@@ -310,6 +249,7 @@ public class MainFrame extends JFrame {
 			e.printStackTrace();
 		} 
 		
+		// 방 새로고침
 	    refreshRoomList = new Thread(new Runnable() {
 			@Override
 			public void run() {
@@ -326,19 +266,20 @@ public class MainFrame extends JFrame {
 						e.printStackTrace();
 					}
 					if (object.getProtocol() == ObjectInOut.REFRESHROOM) {
+						// TODO 고쳐야함 시부레!
 						bufferedChatPanel.getRoomlistPanel().getPanelBackground().removeAll();
 						bufferedChatPanel.getRoomlistPanel().getPanelBackground().repaint();
 						bufferedChatPanel.getRoomlistPanel().getPanelBackground().revalidate();
 						java.util.List<Room> roomlist = object.getRoomlist();
 						for (int i = 0; i <= roomlist.size() - 1; i++) {
-							RoomPanel roomPanel = new RoomPanel(roomlist.get(i).getTitle(), roomlist.get(i).getRoomMasterName(), roomlist.get(i).getHeadCount());
+							RoomPanel roomPanel = new RoomPanel(roomlist.get(i).getTitle(), roomlist.get(i).getRoomMasterName(), roomlist.get(i).getHeadCount(), oos, ois, dos, dis, bufferedChatPanel);
 							roomPanel.setBounds(8, 5 + (i * 85), 330, 80);
 							bufferedChatPanel.getRoomlistPanel().getPanelBackground().add(roomPanel);
 							bufferedChatPanel.getRoomlistPanel().getPanelBackground().repaint();
 							bufferedChatPanel.getRoomlistPanel().getPanelBackground().revalidate();
 						}
 						try {
-							Thread.sleep(3000);
+							Thread.sleep(300000);
 						} catch (InterruptedException e) {
 							e.printStackTrace();
 						}
