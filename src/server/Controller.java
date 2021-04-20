@@ -112,7 +112,6 @@ public class Controller implements Runnable {
 							oos.writeObject(object);
 							oos.flush();
 						} else if (object.getProtocol() == ObjectInOut.CREATEROOM) {
-							System.out.println(object.getTitle() + " " + object.getNickName() + " " + object.getHeadCount());
 							int result = roomListDAO.createRoom(object.getTitle(), object.getNickName(), object.getHeadCount());
 							object = new ObjectInOut(ObjectInOut.CREATEROOM, result);
 							oos.writeObject(object);
