@@ -18,12 +18,14 @@ import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 
 import library.ObjectInOut;
+import javax.swing.JComboBox;
+import javax.swing.DefaultComboBoxModel;
 
 public class CreateRoomFrame extends JDialog {
 	private JFrame mainFrame;
 	private JButton createButton;
 	private JTextField roomName;
-	private JTextField headCount;
+	private JComboBox headCount;
 
 	public CreateRoomFrame(JFrame mainFrame) {
 		this.mainFrame = mainFrame;
@@ -38,10 +40,6 @@ public class CreateRoomFrame extends JDialog {
 		roomName = new JTextField(10);
 		roomName.setBounds(92, 34 , 184, 35);
 		getContentPane().add(roomName);
-		
-		headCount = new JTextField(10);
-		headCount.setBounds(92, 87 , 38, 35);
-		getContentPane().add(headCount);
 		
 		createButton = new JButton("생성");
 		createButton.setBounds(192, 172, 84, 35);
@@ -59,6 +57,12 @@ public class CreateRoomFrame extends JDialog {
 		lblNewLabel_1.setFont(new Font("함초롬바탕", Font.BOLD, 15));
 		lblNewLabel_1.setBounds(12, 97, 57, 15);
 		getContentPane().add(lblNewLabel_1);
+		
+		headCount = new JComboBox();
+		headCount.setModel(new DefaultComboBoxModel(new String[] {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10"}));
+		headCount.setMaximumRowCount(10);
+		headCount.setBounds(92, 94, 43, 21);
+		getContentPane().add(headCount);
 	}
 	
 	public JButton getCreateButton() {
@@ -73,17 +77,12 @@ public class CreateRoomFrame extends JDialog {
 		this.roomName = roomName;
 	}
 
-	public JTextField getHeadCount() {
+	public JComboBox getHeadCount() {
 		return headCount;
-	}
-
-	public void setHeadCount(JTextField headCount) {
-		this.headCount = headCount;
 	}
 
 	// 메세지 띄우는 메서드
 	public void showMessage(String type, String message) {
 		JOptionPane.showMessageDialog(null, message, type, JOptionPane.WARNING_MESSAGE);
 	}
-
 }
