@@ -85,6 +85,8 @@ public class RoomPanel extends JPanel {
 					bufferedChatPanel.getChatPanel().getRommtitleLable().setText(roomTitle);
 					bufferedChatPanel.getChatPanel().setVisible(true);
 					bufferedChatPanel.getRoomlistPanel().getExitRoomButton().setEnabled(true);
+					bufferedChatPanel.getRoomlistPanel().getCreateRoomButton().setEnabled(false);
+					bufferedChatPanel.getRoomlistPanel().getMyPageButton().setEnabled(false);
 					bufferedChatPanel.getRoomlistPanel().getLogoutButton().setEnabled(false);
 					oos.flush();
 				} catch (IOException e1) {
