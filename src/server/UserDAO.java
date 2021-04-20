@@ -134,14 +134,39 @@ public class UserDAO {
 	}
 	
 	// 유저 정보 변경
-	public int updateUserData (String userid, String password, String nickname) {
-		String query = "UPDATE user SET nickname = ?, password = ? WHERE userid = ?";
+//	public int updateUserData (String userid, String password, String nickname) {
+//		String query = "UPDATE user SET nickname = ?, password = ? WHERE userid = ?";
+//		
+//		try (Connection conn = getConnection();PreparedStatement pstmt = conn.prepareStatement(query);) {
+//			pstmt.setString(1, nickname);
+//			pstmt.setString(2, password);
+//			pstmt.setString(3, userid);
+//			int result = pstmt.executeUpdate(); 
+//			return 1;
+//		} catch (SQLException e) {
+//			e.printStackTrace();
+//		}
+//		return -1;
+//	}
+	
+	public int updateUserData (String userid, String nickname, String password, File file) {
+		String query = "UPDATE user SET nickname = ?, password = ?"
+				+ " WHERE userid = ?";
 		
-		try (Connection conn = getConnection();PreparedStatement pstmt = conn.prepareStatement(query);) {
+		try (Connection conn = getConnection();
+				PreparedStatement pstmt = conn.prepareStatement(query);) {
 			pstmt.setString(1, nickname);
 			pstmt.setString(2, password);
 			pstmt.setString(3, userid);
+			
+			/*
+			 * 바로 밑에있는 메소드 불러와서, 유저데이터 업데이트할때
+			 * profile_img테이블에 INSERT INTO 같이 실행되도록 함
+			 */
+			insertImage(userid, file);
+			
 			int result = pstmt.executeUpdate(); 
+			System.out.println("수정된 행 개수: " + result);
 			return 1;
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -150,27 +175,28 @@ public class UserDAO {
 	}
 	
 	// db에 이미지 저장하는 메소드
-	public void insertImage() { 
-		String query = "INSERT INTO profile_img (userid, filename, image) VALUES (?, ?, ?)";
-		String id = "id";
-		String password = "password";
-		String nickname = "nickname";
-		
-		String fileName; // 파일명
+	public void insertImage(String userid, File file) { // db에 이미지 저장하는 메소드
+		String query = "INSERT INTO profile_img (userid, filename, image)"
+				+ " VALUES (?, ?, ?)"
+				+ "ON DUPLICATE KEY UPDATE userid=?, image=?;";
+		try (Connection conn = getConnection();
+				PreparedStatement pstmt = conn.prepareStatement(query);) {
+			FileInputStream fis = new FileInputStream(file);
 
-		try (Connection conn = DriverManager.getConnection(DB_URL, ID, PASSWORD);PreparedStatement pstmt = conn.prepareStatement(query);) {
-			FileInputStream fis = new FileInputStream(defaultUserImg);
-
-			pstmt.setString(1, "1");
-			pstmt.setString(2, "default_user_img");
-			pstmt.setBinaryStream(3, fis, (int) defaultUserImg.length()); // Stream형의 파일 업로드
+			pstmt.setString(1, userid);
+			pstmt.setString(2, "profileImg_" + userid);
+			pstmt.setBinaryStream(3, fis, (int) file.length()); // Stream형의 파일 업로드
+			pstmt.setString(4, userid);
+			pstmt.setBinaryStream(5, fis, (int) file.length());
 			pstmt.executeUpdate();
 
 			System.out.println("DB에 이미지 저장 완료!");
 		} catch (SQLException e) {
 			e.printStackTrace();
+			System.out.println("DB에 이미지 저장하다가 몬가 잘못됨.");
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
+			System.out.println("DB에 이미지 저장하다가 몬가 잘못됨.");
 		}
 	}
 	
@@ -194,31 +220,36 @@ public class UserDAO {
 		return null;
 	}
 
-	public void extractImage() {
+	public void extractImage(String userid) {
 		String query = "SELECT * FROM profile_img WHERE userid = ?";
 
-		String fileName = "user_img_";
-		String id = "1";
+		String fileName = "profileImg_";
 
 		FileOutputStream fos = null;
-		try (Connection conn = DriverManager.getConnection(DB_URL, ID, PASSWORD);PreparedStatement pstmt = conn.prepareStatement(query);) {
-			pstmt.setString(1, id);
+		try (Connection conn = DriverManager.getConnection(DB_URL, ID, PASSWORD);
+				PreparedStatement pstmt = conn.prepareStatement(query);) {
+
+			pstmt.setString(1, userid);
 			ResultSet rs = pstmt.executeQuery();
 			rs.next();
 			InputStream is = rs.getBinaryStream("image"); // 파라미터 = 칼럼이름
-			fos = new FileOutputStream(".\\img\\" + fileName + "1.png"); // 저장될 경로와 파일이름
+			fos = new FileOutputStream(".\\img\\" + fileName + userid + ".png"); // 저장될 경로와 파일이름
 			byte[] byteArrays = new byte[BUFFER_SIZE * 4];
 			int n;
 			while ((n = is.read(byteArrays)) > 0) {
 				fos.write(byteArrays, 0, n);
 			}
+			
 			System.out.println("DB에서 이미지 불러오기 완료!");
 		} catch (SQLException e) {
 			e.printStackTrace();
+			System.out.println("DB에서 이미지 불러오다가 몬가 잘못됨.1");
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
+			System.out.println("DB에서 이미지 불러오다가 몬가 잘못됨.2");
 		} catch (IOException e) {
 			e.printStackTrace();
+			System.out.println("DB에서 이미지 불러오다가 몬가 잘못됨.3");
 		}
 	}
 }
