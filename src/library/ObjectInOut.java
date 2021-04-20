@@ -1,5 +1,6 @@
 package library;
 
+import java.io.File;
 import java.io.Serializable;
 import java.util.List;
 
@@ -24,6 +25,7 @@ public class ObjectInOut implements Serializable {
 	private int result;
 	private int headCount;
 	private List<Room> roomlist;
+	private File file;
 	
 	public ObjectInOut() {
 		super();
@@ -148,5 +150,13 @@ public class ObjectInOut implements Serializable {
 
 	public List<Room> getRoomlist() {
 		return roomlist;
+	}
+
+	public File getFile() {
+		return file;
+	}
+
+	public void setFile(File file) {
+		this.file = file;
 	}
 }

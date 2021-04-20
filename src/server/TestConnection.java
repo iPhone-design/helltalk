@@ -21,7 +21,7 @@ public class TestConnection {
 			
 //			dao.insertImage("1", file); // db에 이미지 저장테스트, 테스트할때 db에서 이미지 지우고 할것
 //			dao.extractImage(); // db에 저장된 이미지 불러오기 테스트
-			dao.updateUserData("1", "1", file, "1");
+			dao.updateUserData("1", "1", "1", file);
 			
 //			System.out.println(dao.getUserData("1").toString()); // db에 저장된 id가 1이라는 유저의 칼럼들을 toString
 		} catch (SQLException e) {

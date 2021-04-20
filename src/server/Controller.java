@@ -107,7 +107,7 @@ public class Controller implements Runnable {
 							oos.writeObject(object);
 							oos.flush();
 						} else if (object.getProtocol() == ObjectInOut.INFOCHANGE) {
-							int result = userDAO.updateUserData(object.getId(), object.getPw(), object.getNickName());
+							int result = userDAO.updateUserData(object.getId(), object.getPw(), object.getNickName(), object.getFile());
 							object =  new ObjectInOut(ObjectInOut.INFOCHANGE, result);
 							oos.writeObject(object);
 							oos.flush();
@@ -126,9 +126,11 @@ public class Controller implements Runnable {
 							oos.flush();
 						}
 					} catch (ClassNotFoundException e) {
-						e.printStackTrace();
+						System.out.println("몬가 잘못됨!");
+						break;
 					} catch (IOException e) {
-						e.printStackTrace();
+						System.out.println("클라이언트 비정상적 종료.");
+						break;
 					}
 				}
 			}
