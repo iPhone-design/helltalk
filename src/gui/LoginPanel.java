@@ -35,20 +35,20 @@ public class LoginPanel extends JPanel implements KeyListener {
 		
 		setBackground(new Color(255, 228, 225));
 		JLabel idLbl = new JLabel("ID");
-		idLbl.setFont(new Font("함초롬바탕", Font.PLAIN, 23));
+		idLbl.setFont(new Font("맑은 고딕", Font.PLAIN, 23));
 		idLbl.setBounds(351, 205, 24, 31);
 		
 		JLabel pwLbl = new JLabel("PASSWORD");
-		pwLbl.setFont(new Font("함초롬바탕", Font.PLAIN, 23));
+		pwLbl.setFont(new Font("맑은 고딕", Font.PLAIN, 23));
 		pwLbl.setBounds(247, 282, 128, 31);
 		
 		idText = new JTextField();
-		idText.setFont(new Font("굴림", Font.PLAIN, 16));
+		idText.setFont(new Font("맑은 고딕", Font.PLAIN, 16));
 		idText.setBounds(405, 202, 309, 45);
 		idText.addKeyListener(this);
 		
 		pwText = new JPasswordField();
-		pwText.setFont(new Font("굴림", Font.PLAIN, 16));
+		pwText.setFont(new Font("맑은 고딕", Font.PLAIN, 16));
 		pwText.setBounds(405, 279, 309, 45);
 		pwText.addKeyListener(this);
 		setLayout(null);

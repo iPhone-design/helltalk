@@ -253,11 +253,10 @@ public class MainFrame extends JFrame {
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					try {
-						int index = bufferedChatPanel.getRoomNameList().getSelectedIndex();
 						oos.writeObject(new ObjectInOut(ObjectInOut.CHAT, bufferedChatPanel.getRoomNameList().getSelectedValue().toString(), bufferedChatPanel.getRoomlistPanel().getAccountNicNameText().getText()));
 						oos.flush();
 						ChatClient chatClient = new ChatClient(dos, dis, bufferedChatPanel);
-						bufferedChatPanel.getChatPanel().getRommtitleLable().setText(bufferedChatPanel.getRoomNameList().getSelectedValuesList().toString());
+						bufferedChatPanel.getChatPanel().getRommtitleLable().setText(bufferedChatPanel.getRoomNameList().getSelectedValue().toString());
 						bufferedChatPanel.getChatPanel().setVisible(true);
 						bufferedChatPanel.getRoomlistPanel().getExitRoomButton().setEnabled(true);
 						bufferedChatPanel.getRoomlistPanel().getCreateRoomButton().setEnabled(false);
@@ -271,6 +270,7 @@ public class MainFrame extends JFrame {
 				}
 			});
 			
+			// 방 새로고침
 			refreshRoomList = new Thread(new Runnable() {
 				@Override
 				public void run() {
@@ -352,5 +352,9 @@ public class MainFrame extends JFrame {
 
 	public void setLoginPanel(LoginPanel loginPanel) {
 		this.loginPanel = loginPanel;
+	}
+
+	public BufferedChatPanel getBufferedChatPanel() {
+		return bufferedChatPanel;
 	}
 }

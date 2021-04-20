@@ -101,6 +101,11 @@ public class Controller implements Runnable {
 								oos.writeObject(object);
 								oos.flush();
 							}
+						} else if (object.getProtocol() == ObjectInOut.USERLEAVE) {
+							int result = userDAO.userDelete(object.getId());
+							object = new ObjectInOut(ObjectInOut.USERLEAVE, result);
+							oos.writeObject(object);
+							oos.flush();
 						} else if (object.getProtocol() == ObjectInOut.MYPAGE) {
 							User user = userDAO.myProfile(object.getId());
 							object = new ObjectInOut(ObjectInOut.MYPAGE, user.getId(), "null", user.getNickname(), 0);
@@ -126,10 +131,10 @@ public class Controller implements Runnable {
 							oos.flush();
 						}
 					} catch (ClassNotFoundException e) {
-						System.out.println("몬가 잘못됨!");
+						e.printStackTrace();
 						break;
 					} catch (IOException e) {
-						System.out.println("클라이언트 비정상적 종료.");
+						e.printStackTrace();
 						break;
 					}
 				}

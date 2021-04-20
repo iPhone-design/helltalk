@@ -48,7 +48,7 @@ public class UserProfile extends JDialog {
 	private JLabel lbl_pw;
 	private JLabel lbl_nickName;
 	private JLabel lbl_confirm_pw;
-	private JFrame jFrame;
+	private MainFrame mainFrame;
 	private String id;
 	private String nicName;
 	private Socket socket;
@@ -56,14 +56,14 @@ public class UserProfile extends JDialog {
 	private ObjectInputStream ois;
 	private ObjectInOut object;
 	
-	public UserProfile(ObjectOutputStream oos, ObjectInputStream ois, JFrame mainFrame, String id, String nicName) {
+	public UserProfile(ObjectOutputStream oos, ObjectInputStream ois, MainFrame mainFrame, String id, String nicName) {
 		this.oos = oos;
 		this.ois = ois;
-		this.jFrame = mainFrame;
+		this.mainFrame = mainFrame;
 		this.id = id;
 		this.nicName = nicName;
 		
-		setBounds(100, 100, 350, 480);
+		setBounds(100, 100, 360, 490);
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		setResizable(false);
 		setLocationRelativeTo(mainFrame);
@@ -77,14 +77,14 @@ public class UserProfile extends JDialog {
 		
 		JPanel panel = new JPanel();
 		panel.setBackground(Color.WHITE);
-		panel.setBounds(0, 35, 334, 359);
+		panel.setBounds(12, 10, 320, 359);
 		contentPanel.add(panel);
 		panel.setLayout(null);
 		
 		lbl_mainNickName = new JLabel(nicName);
 		lbl_mainNickName.setBounds(85, 167, 170, 47);
 		panel.add(lbl_mainNickName);
-		lbl_mainNickName.setFont(new Font("함초롬바탕", Font.BOLD, 21));
+		lbl_mainNickName.setFont(new Font("맑은 고딕", Font.BOLD, 21));
 		lbl_mainNickName.setHorizontalAlignment(SwingConstants.CENTER);
 		
 		tfd_pw = new JPasswordField();
@@ -99,7 +99,7 @@ public class UserProfile extends JDialog {
 		
 		lbl_id = new JLabel("계정");
 		lbl_id.setHorizontalAlignment(SwingConstants.CENTER);
-		lbl_id.setFont(new Font("함초롬바탕", Font.BOLD, 13));
+		lbl_id.setFont(new Font("맑은 고딕", Font.BOLD, 13));
 		lbl_id.setBounds(21, 253, 98, 15);
 		panel.add(lbl_id);
 		
@@ -111,7 +111,7 @@ public class UserProfile extends JDialog {
 		
 		lbl_pw = new JLabel("비밀번호");
 		lbl_pw.setHorizontalAlignment(SwingConstants.CENTER);
-		lbl_pw.setFont(new Font("함초롬바탕", Font.BOLD, 13));
+		lbl_pw.setFont(new Font("맑은 고딕", Font.BOLD, 13));
 		lbl_pw.setBounds(21, 284, 97, 15);
 		panel.add(lbl_pw);
 		
@@ -127,7 +127,7 @@ public class UserProfile extends JDialog {
 		
 		lbl_nickName = new JLabel("닉네임");
 		lbl_nickName.setHorizontalAlignment(SwingConstants.CENTER);
-		lbl_nickName.setFont(new Font("함초롬바탕", Font.BOLD, 13));
+		lbl_nickName.setFont(new Font("맑은 고딕", Font.BOLD, 13));
 		lbl_nickName.setBounds(22, 224, 97, 15);
 		panel.add(lbl_nickName);
 		
@@ -138,19 +138,24 @@ public class UserProfile extends JDialog {
 		
 		lbl_confirm_pw = new JLabel("비밀번호 확인");
 		lbl_confirm_pw.setHorizontalAlignment(SwingConstants.CENTER);
-		lbl_confirm_pw.setFont(new Font("함초롬바탕", Font.BOLD, 13));
+		lbl_confirm_pw.setFont(new Font("맑은 고딕", Font.BOLD, 13));
 		lbl_confirm_pw.setBounds(21, 316, 88, 15);
 		panel.add(lbl_confirm_pw);
 		
-		JButton imageFileButton = new JButton("이미지 변경");
-		imageFileButton.setBounds(28, 404, 125, 20);
-		imageFileButton.setFont(new Font("함초롬바탕", Font.BOLD, 13));
+		JButton imageFileButton = new JButton("이미지변경");
+		imageFileButton.setBounds(12, 382, 102, 59);
+		imageFileButton.setFont(new Font("맑은 고딕", Font.BOLD, 13));
 		contentPanel.add(imageFileButton);
 		
-		JButton infoChangeButton = new JButton("정보 변경");
-		infoChangeButton.setBounds(181, 404, 125, 20);
-		infoChangeButton.setFont(new Font("함초롬바탕", Font.BOLD, 13));
+		JButton infoChangeButton = new JButton("정보수정");
+		infoChangeButton.setBounds(135, 382, 89, 59);
+		infoChangeButton.setFont(new Font("맑은 고딕", Font.BOLD, 13));
 		contentPanel.add(infoChangeButton);
+		
+		JButton userLeave = new JButton("회원탈퇴");
+		userLeave.setFont(new Font("맑은 고딕", Font.BOLD, 13));
+		userLeave.setBounds(242, 382, 90, 59);
+		contentPanel.add(userLeave);
 		
 		// 비밀번호 변경
 		infoChangeButton.addActionListener(new ActionListener() {
@@ -188,6 +193,31 @@ public class UserProfile extends JDialog {
 						e1.printStackTrace();
 					}
 				}
+			}
+		});
+		
+		// 회원 탈퇴
+		userLeave.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				try {
+					object = new ObjectInOut(ObjectInOut.USERLEAVE, id);
+					oos.writeObject(object);
+					oos.flush();
+					object = (ObjectInOut) ois.readObject();
+					if (object.getProtocol() == ObjectInOut.USERLEAVE && object.getResult() == 1) {
+						showMessage("회원탈퇴", "탈퇴 완료");
+						dispose();
+						mainFrame.changeFirstPanel();
+					} else if (object.getProtocol() == ObjectInOut.USERLEAVE && object.getResult() == -1) {
+						showMessage("회원탈퇴", "탈퇴 실패");
+					}
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				} catch (ClassNotFoundException e1) {
+					e1.printStackTrace();
+				}
+				
 			}
 		});
 		
