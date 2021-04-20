@@ -221,7 +221,7 @@ public class MainFrame extends JFrame {
 			createRoomFrame.getCreateButton().addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					ObjectInOut object = new ObjectInOut(ObjectInOut.CREATEROOM, createRoomFrame.getRoomName().getText(), bufferedChatPanel.getRoomlistPanel().getAccountNicNameText().getText(), Integer.valueOf(createRoomFrame.getHeadCount().getText()), 0);
+					ObjectInOut object = new ObjectInOut(ObjectInOut.CREATEROOM, createRoomFrame.getRoomName().getText(), bufferedChatPanel.getRoomlistPanel().getAccountNicNameText().getText(), Integer.valueOf(createRoomFrame.getHeadCount().getSelectedItem().toString()), 0);
 					try {
 						oos.writeObject(object);
 						oos.flush();
@@ -230,7 +230,6 @@ public class MainFrame extends JFrame {
 							if (object.getResult() == 1) {
 								createRoomFrame.showMessage("Success", "방 생성 성공");
 								createRoomFrame.getRoomName().setText("");
-								createRoomFrame.getHeadCount().setText("");
 								createRoomFrame.setVisible(false);
 							} else {
 								createRoomFrame.showMessage("Fail", "이미 존재하는 방입니다.");
@@ -265,9 +264,9 @@ public class MainFrame extends JFrame {
 					}
 					if (object.getProtocol() == ObjectInOut.REFRESHROOM) {
 						// TODO 고쳐야함 시부레!
-						bufferedChatPanel.getRoomlistPanel().getPanelBackground().removeAll();
-						bufferedChatPanel.getRoomlistPanel().getPanelBackground().repaint();
-						bufferedChatPanel.getRoomlistPanel().getPanelBackground().revalidate();
+//						bufferedChatPanel.getRoomlistPanel().getPanelBackground().removeAll();
+//						bufferedChatPanel.getRoomlistPanel().getPanelBackground().repaint();
+//						bufferedChatPanel.getRoomlistPanel().getPanelBackground().revalidate();
 						java.util.List<Room> roomlist = object.getRoomlist();
 						for (int i = 0; i <= roomlist.size() - 1; i++) {
 							RoomPanel roomPanel = new RoomPanel(roomlist.get(i).getTitle(), roomlist.get(i).getRoomMasterName(), roomlist.get(i).getHeadCount(), oos, ois, dos, dis, bufferedChatPanel);
@@ -277,7 +276,7 @@ public class MainFrame extends JFrame {
 							bufferedChatPanel.getRoomlistPanel().getPanelBackground().revalidate();
 						}
 						try {
-							Thread.sleep(300000);
+							Thread.sleep(3000);
 						} catch (InterruptedException e) {
 							e.printStackTrace();
 						}

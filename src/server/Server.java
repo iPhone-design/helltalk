@@ -17,13 +17,8 @@ public class Server {
 	public static List<RoomPanel> roomList;
 	private static ObjectOutputStream oos;
 	private static ObjectInputStream ois;
-	private static RoomListDAO roomlistDAO;
-	private static UserDAO userDAO;
-	private static ObjectInOut object;
 	
 	public static void main(String[] args) {
-		roomList = new ArrayList<>();
-		userDAO = new UserDAO();
 		try (ServerSocket server = new ServerSocket(PORT)){
 			System.out.println("서버 오픈");
 			while (true) {
