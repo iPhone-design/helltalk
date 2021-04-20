@@ -8,6 +8,7 @@ public class ObjectInOut implements Serializable {
 	private static final long serialVersionUID = 1L;
 	public static final int LOGIN = 0;
 	public static final int REGISTRATION = 1;
+	public static final int USERLEAVE = 2;
 	public static final int CHAT = 100;
 	public static final int EXIT = 101;
 	public static final int MYPAGE = 200;

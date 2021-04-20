@@ -42,7 +42,7 @@ public class ChatPanel extends JPanel {
 		panel.setLayout(null);
 		
 		rommtitleLable = new JLabel();
-		rommtitleLable.setFont(new Font("굴림", Font.PLAIN, 18));
+		rommtitleLable.setFont(new Font("맑은 고딕", Font.PLAIN, 18));
 		rommtitleLable.setBounds(12, 10, 294, 32);
 		panel.add(rommtitleLable);
 		
@@ -53,12 +53,12 @@ public class ChatPanel extends JPanel {
 		
 		textArea = new JTextArea();
 		textArea.setBorder(new LineBorder(Color.LIGHT_GRAY, 1));
-		textArea.setFont(new Font("맑은 고딕", Font.BOLD, 15));
+		textArea.setFont(new Font("맑은 고딕", Font.PLAIN, 15));
 		textArea.setEnabled(false);
 		
 		textField = new JTextField();
 		textField.setBounds(14, 508, 559, 49);
-		textField.setFont(new Font("맑은 고딕", Font.BOLD, 15));
+		textField.setFont(new Font("맑은 고딕", Font.PLAIN, 15));
 		add(textField);
 		textField.setColumns(10);
 		

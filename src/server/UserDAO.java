@@ -133,6 +133,18 @@ public class UserDAO {
 		return null;
 	}
 	
+	public int userDelete(String id) { // 마이페이지, 프로필보기용 유저데이터 조회
+		String sql = "DELETE FROM user WHERE userid = ?";
+		try (Connection conn = getConnection();PreparedStatement pstmt = conn.prepareStatement(sql);) {
+			pstmt.setString(1, id);
+			int rs = pstmt.executeUpdate();
+			return rs;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return -1;
+	}
+	
 	// 유저 정보 변경
 //	public int updateUserData (String userid, String password, String nickname) {
 //		String query = "UPDATE user SET nickname = ?, password = ? WHERE userid = ?";
