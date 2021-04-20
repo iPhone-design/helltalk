@@ -134,22 +134,22 @@ public class UserDAO {
 	}
 	
 	// 유저 정보 변경
-	public int updateUserData (String userid, String password, String nickname) {
-		String query = "UPDATE user SET nickname = ?, password = ? WHERE userid = ?";
-		
-		try (Connection conn = getConnection();PreparedStatement pstmt = conn.prepareStatement(query);) {
-			pstmt.setString(1, nickname);
-			pstmt.setString(2, password);
-			pstmt.setString(3, userid);
-			int result = pstmt.executeUpdate(); 
-			return 1;
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return -1;
-	}
+//	public int updateUserData (String userid, String password, String nickname) {
+//		String query = "UPDATE user SET nickname = ?, password = ? WHERE userid = ?";
+//		
+//		try (Connection conn = getConnection();PreparedStatement pstmt = conn.prepareStatement(query);) {
+//			pstmt.setString(1, nickname);
+//			pstmt.setString(2, password);
+//			pstmt.setString(3, userid);
+//			int result = pstmt.executeUpdate(); 
+//			return 1;
+//		} catch (SQLException e) {
+//			e.printStackTrace();
+//		}
+//		return -1;
+//	}
 	
-	public int updateUserData (String nickname, String password, File file, String userid) {
+	public int updateUserData (String userid, String nickname, String password, File file) {
 		String query = "UPDATE user SET nickname = ?, password = ?"
 				+ " WHERE userid = ?";
 		
