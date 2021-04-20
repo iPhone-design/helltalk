@@ -53,9 +53,12 @@ public class ChatPanel extends JPanel {
 		
 		textArea = new JTextArea();
 		textArea.setBorder(new LineBorder(Color.LIGHT_GRAY, 1));
+		textArea.setFont(new Font("맑은 고딕", Font.BOLD, 15));
+		textArea.setEnabled(false);
 		
 		textField = new JTextField();
 		textField.setBounds(14, 508, 559, 49);
+		textField.setFont(new Font("맑은 고딕", Font.BOLD, 15));
 		add(textField);
 		textField.setColumns(10);
 		

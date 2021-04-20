@@ -128,7 +128,7 @@ public class Controller implements Runnable {
 					} catch (ClassNotFoundException e) {
 						e.printStackTrace();
 					} catch (IOException e) {
-						e.printStackTrace();
+						break;
 					}
 				}
 			}

@@ -43,18 +43,18 @@ public class CreateRoomFrame extends JDialog {
 		
 		createButton = new JButton("생성");
 		createButton.setBounds(192, 172, 84, 35);
-		createButton.setFont(new Font("함초롬바탕", Font.BOLD, 10));
+		createButton.setFont(new Font("맑은 고딕", Font.BOLD, 10));
 		getContentPane().add(createButton);
 		
 		JLabel lblNewLabel = new JLabel("\uBC29\uC81C\uBAA9");
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel.setFont(new Font("함초롬바탕", Font.BOLD, 15));
+		lblNewLabel.setFont(new Font("맑은 고딕", Font.BOLD, 15));
 		lblNewLabel.setBounds(12, 44, 57, 15);
 		getContentPane().add(lblNewLabel);
 		
 		JLabel lblNewLabel_1 = new JLabel("\uC778\uC6D0\uC218");
 		lblNewLabel_1.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel_1.setFont(new Font("함초롬바탕", Font.BOLD, 15));
+		lblNewLabel_1.setFont(new Font("맑은 고딕", Font.BOLD, 15));
 		lblNewLabel_1.setBounds(12, 97, 57, 15);
 		getContentPane().add(lblNewLabel_1);
 		
