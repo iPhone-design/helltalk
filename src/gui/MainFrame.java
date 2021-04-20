@@ -88,11 +88,10 @@ public class MainFrame extends JFrame {
 					try {
 						dos.writeUTF("/종료");
 						dos.flush();
-						bufferedChatPanel.getRoomlistPanel().getLogoutButton().setEnabled(true);
 						bufferedChatPanel.getRoomlistPanel().getExitRoomButton().setEnabled(false);
-//						bufferedChatPanel.getRoomlistPanel().getFirstRoom().getEnterRoomButton().setEnabled(true);
-//						bufferedChatPanel.getRoomlistPanel().getSecondRoom().getEnterRoomButton().setEnabled(true);
-//						bufferedChatPanel.getRoomlistPanel().getThirdRoom().getEnterRoomButton().setEnabled(true);
+						bufferedChatPanel.getRoomlistPanel().getCreateRoomButton().setEnabled(true);
+						bufferedChatPanel.getRoomlistPanel().getMyPageButton().setEnabled(true);
+						bufferedChatPanel.getRoomlistPanel().getLogoutButton().setEnabled(true);
 						bufferedChatPanel.getChatPanel().getTextArea().setText("");
 						bufferedChatPanel.getChatPanel().setVisible(false);
 					} catch (IOException e1) {
@@ -132,7 +131,6 @@ public class MainFrame extends JFrame {
 									JOptionPane.showMessageDialog(registrationPanel, "로그인 성공", "로그인", JOptionPane.INFORMATION_MESSAGE);
 									bufferedChatPanel.getRoomlistPanel().getAccountIdText().setText(object.getId());
 									bufferedChatPanel.getRoomlistPanel().getAccountNicNameText().setText(object.getNickName());
-									refreshRoomList.start();
 									loginPanel.clearField();
 									changeChatPanel();
 								} else if (object.getResult() == 2) {
@@ -287,6 +285,7 @@ public class MainFrame extends JFrame {
 				}
 			}
 		});
+	    refreshRoomList.start();
 	}
 	
 	public void changeFirstPanel() throws IOException {
