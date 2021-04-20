@@ -12,6 +12,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 
+import javax.swing.DefaultListModel;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
@@ -38,8 +39,10 @@ public class MainFrame extends JFrame {
 	private UserProfile userProfile;
 	private CreateRoomFrame createRoomFrame;
 	private Thread refreshRoomList;
+	private boolean stop;
 
 	public MainFrame(Socket socket) {
+		stop = true;
 		this.socket = socket;
 		setLayout(cards);
 		setResizable(false);
@@ -88,12 +91,14 @@ public class MainFrame extends JFrame {
 					try {
 						dos.writeUTF("/종료");
 						dos.flush();
-						bufferedChatPanel.getRoomlistPanel().getExitRoomButton().setEnabled(false);
 						bufferedChatPanel.getRoomlistPanel().getCreateRoomButton().setEnabled(true);
 						bufferedChatPanel.getRoomlistPanel().getMyPageButton().setEnabled(true);
 						bufferedChatPanel.getRoomlistPanel().getLogoutButton().setEnabled(true);
-						bufferedChatPanel.getChatPanel().getTextArea().setText("");
+						bufferedChatPanel.getEnterRoomButton().setEnabled(true);
+						bufferedChatPanel.getRoomlistPanel().getExitRoomButton().setEnabled(false);
 						bufferedChatPanel.getChatPanel().setVisible(false);
+						bufferedChatPanel.getChatPanel().getTextArea().setText("");
+						stop = true;
 					} catch (IOException e1) {
 						e1.printStackTrace();
 					}
@@ -242,49 +247,71 @@ public class MainFrame extends JFrame {
 					}
 				}
 			});
-		} catch (IOException e) {
-			e.printStackTrace();
-		} 
-		
-		// 방 새로고침
-	    refreshRoomList = new Thread(new Runnable() {
-			@Override
-			public void run() {
-				ObjectInOut object = new ObjectInOut();
-				while (true) {
+			
+			// 방 입장
+			bufferedChatPanel.getEnterRoomButton().addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
 					try {
-						object = new ObjectInOut(ObjectInOut.REFRESHROOM);
-						oos.writeObject(object);
+						int index = bufferedChatPanel.getRoomNameList().getSelectedIndex();
+						oos.writeObject(new ObjectInOut(ObjectInOut.CHAT, bufferedChatPanel.getRoomNameList().getSelectedValue().toString(), bufferedChatPanel.getRoomlistPanel().getAccountNicNameText().getText()));
 						oos.flush();
-						object = (ObjectInOut) ois.readObject();
+						ChatClient chatClient = new ChatClient(dos, dis, bufferedChatPanel);
+						bufferedChatPanel.getChatPanel().getRommtitleLable().setText(bufferedChatPanel.getRoomNameList().getSelectedValuesList().toString());
+						bufferedChatPanel.getChatPanel().setVisible(true);
+						bufferedChatPanel.getRoomlistPanel().getExitRoomButton().setEnabled(true);
+						bufferedChatPanel.getRoomlistPanel().getCreateRoomButton().setEnabled(false);
+						bufferedChatPanel.getRoomlistPanel().getMyPageButton().setEnabled(false);
+						bufferedChatPanel.getRoomlistPanel().getLogoutButton().setEnabled(false);
+						bufferedChatPanel.getEnterRoomButton().setEnabled(false);
+						stop = false;
 					} catch (IOException e1) {
 						e1.printStackTrace();
-					} catch (ClassNotFoundException e) {
-						e.printStackTrace();
 					}
-					if (object.getProtocol() == ObjectInOut.REFRESHROOM) {
-						// TODO 고쳐야함 시부레!
-//						bufferedChatPanel.getRoomlistPanel().getPanelBackground().removeAll();
-//						bufferedChatPanel.getRoomlistPanel().getPanelBackground().repaint();
-//						bufferedChatPanel.getRoomlistPanel().getPanelBackground().revalidate();
-						java.util.List<Room> roomlist = object.getRoomlist();
-						for (int i = 0; i <= roomlist.size() - 1; i++) {
-							RoomPanel roomPanel = new RoomPanel(roomlist.get(i).getTitle(), roomlist.get(i).getRoomMasterName(), roomlist.get(i).getHeadCount(), oos, ois, dos, dis, bufferedChatPanel);
-							roomPanel.setBounds(8, 5 + (i * 85), 330, 80);
-							bufferedChatPanel.getRoomlistPanel().getPanelBackground().add(roomPanel);
-							bufferedChatPanel.getRoomlistPanel().getPanelBackground().repaint();
-							bufferedChatPanel.getRoomlistPanel().getPanelBackground().revalidate();
-						}
+				}
+			});
+			
+			refreshRoomList = new Thread(new Runnable() {
+				@Override
+				public void run() {
+					while(true) {
 						try {
-							Thread.sleep(3000);
+							while (stop) {
+								DefaultListModel<String> model = new DefaultListModel<String>();
+								object = new ObjectInOut(ObjectInOut.REFRESHROOM);
+								oos.writeObject(object);
+								oos.flush();
+								object = (ObjectInOut) ois.readObject();
+								bufferedChatPanel.getRoomNameList().removeAll();
+								if (object.getProtocol() == ObjectInOut.REFRESHROOM) {
+									java.util.List<Room> roomlist = object.getRoomlist();
+									for (int i = 0; i <= roomlist.size() - 1; i++) {
+										for (int j = i + 1; j <= roomlist.size() - 1; j++) {
+											if (!roomlist.get(i).equals(roomlist.get(j))) {
+												ChatMap.createRoom(roomlist.get(i).getTitle());
+											}
+										}
+										model.addElement(roomlist.get(i).getTitle());
+									}
+									bufferedChatPanel.getRoomNameList().setModel(model);
+									Thread.sleep(5000);
+								}
+							}
+							Thread.sleep(5000);
+						} catch (IOException e) {
+							e.printStackTrace();
 						} catch (InterruptedException e) {
+							e.printStackTrace();
+						} catch (ClassNotFoundException e) {
 							e.printStackTrace();
 						}
 					}
 				}
-			}
-		});
-	    refreshRoomList.start();
+			});
+		    refreshRoomList.start();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} 
 	}
 	
 	public void changeFirstPanel() throws IOException {

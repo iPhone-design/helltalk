@@ -75,24 +75,5 @@ public class RoomPanel extends JPanel {
 		enterRoomButton = new JButton("입장");
 		enterRoomButton.setBounds(249, 46, 69, 24);
 		add(enterRoomButton);
-		
-		enterRoomButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				try {
-					oos.writeObject(new ObjectInOut(ObjectInOut.CHAT, roomTitle, bufferedChatPanel.getRoomlistPanel().getAccountNicNameText().getText()));
-					ChatClient chatClient = new ChatClient(dos, dis, bufferedChatPanel);
-					bufferedChatPanel.getChatPanel().getRommtitleLable().setText(roomTitle);
-					bufferedChatPanel.getChatPanel().setVisible(true);
-					bufferedChatPanel.getRoomlistPanel().getExitRoomButton().setEnabled(true);
-					bufferedChatPanel.getRoomlistPanel().getCreateRoomButton().setEnabled(false);
-					bufferedChatPanel.getRoomlistPanel().getMyPageButton().setEnabled(false);
-					bufferedChatPanel.getRoomlistPanel().getLogoutButton().setEnabled(false);
-					oos.flush();
-				} catch (IOException e1) {
-					e1.printStackTrace();
-				}
-			}
-		});
 	}
 }
