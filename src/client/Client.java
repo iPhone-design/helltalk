@@ -10,8 +10,8 @@ import gui.MainFrame;
 
 
 public class Client {
-	private static final String ADDRESS = "192.168.0.71";
-//	private static final String ADDRESS = "Localhost";
+//	private static final String ADDRESS = "192.168.0.71";
+	private static final String ADDRESS = "Localhost";
 	private static final int PORT = 2222;
 	
 	public static void main(String[] args) {

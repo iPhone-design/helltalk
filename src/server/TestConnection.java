@@ -1,9 +1,11 @@
 package server;
+import java.io.File;
 import java.sql.SQLException;
 
 public class TestConnection {
 	public static void main(String[] args) {
 		UserDAO dao = new UserDAO();
+		File file = new File(".\\img\\defaultUser1.png");
 		try {
 			dao.getConnection();
 			
@@ -17,8 +19,9 @@ public class TestConnection {
 //			System.out.println(dao.login("test1", "틀린비번")); // 비번틀리면 2출력
 //			System.out.println(dao.login("없는계정", "없는비번")); // 없는아이디일때 0출력
 			
-//			dao.insertImage(); // db에 이미지 저장테스트, 테스트할때 db에서 이미지 지우고 할것
+//			dao.insertImage("1", file); // db에 이미지 저장테스트, 테스트할때 db에서 이미지 지우고 할것
 //			dao.extractImage(); // db에 저장된 이미지 불러오기 테스트
+			dao.updateUserData("1", "1", file, "1");
 			
 //			System.out.println(dao.getUserData("1").toString()); // db에 저장된 id가 1이라는 유저의 칼럼들을 toString
 		} catch (SQLException e) {
