@@ -75,7 +75,6 @@ public class SignUpClient {
 			oos.writeObject(new UserRequest(user, 2));
 			oos.flush();
 			user = (User) ois.readObject();
-			System.out.println("클라 : " + user.toString());
 			Thread.sleep(1);
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
@@ -91,7 +90,6 @@ public class SignUpClient {
 	public LoginResult updateUserData(User user) {
 		LoginResult result = null;
 		try {
-			System.out.println("클라 : " + user);
 			oos.writeObject(new UserRequest(user, 3));
 			oos.flush();
 			result = (LoginResult) ois.readObject();

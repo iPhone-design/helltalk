@@ -29,9 +29,6 @@ public class Controller implements Runnable {
 		userDAO = new UserDAO();
 		roomListDAO = new RoomListDAO();
 		this.socket = socket;
-		ChatMap.createRoom("firstRoom");
-		ChatMap.createRoom("secondRoom");
-		ChatMap.createRoom("thirdRoom");
 		try {
 			dos = new DataOutputStream(socket.getOutputStream());
 			dis = new DataInputStream(socket.getInputStream());
@@ -40,8 +37,13 @@ public class Controller implements Runnable {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		List<Room> roomlist = roomListDAO.RoomlistAll();
+		for (int i = 0; i <= roomlist.size() - 1; i++) {
+			ChatMap.createRoom(roomlist.get(i).getTitle());
+		}
 	}
 
+	
 	@Override
 	public void run() {
 		Thread reading = new Thread(new Runnable() {
@@ -118,23 +120,19 @@ public class Controller implements Runnable {
 							oos.flush();
 						} else if (object.getProtocol() == ObjectInOut.CREATEROOM) {
 							int result = roomListDAO.createRoom(object.getTitle(), object.getNickName(), object.getHeadCount());
+							ChatMap.createRoom(object.getTitle());
 							object = new ObjectInOut(ObjectInOut.CREATEROOM, result);
 							oos.writeObject(object);
 							oos.flush();
 						} else if (object.getProtocol() == ObjectInOut.REFRESHROOM) {
 							List<Room> roomlist = roomListDAO.RoomlistAll();
-							for (int i = 0; i <= roomlist.size() - 1; i++) {
-								ChatMap.createRoom(roomlist.get(i).getTitle());
-							}
 							object = new ObjectInOut(ObjectInOut.REFRESHROOM, roomlist);
 							oos.writeObject(object);
 							oos.flush();
 						}
 					} catch (ClassNotFoundException e) {
-						e.printStackTrace();
 						break;
 					} catch (IOException e) {
-						e.printStackTrace();
 						break;
 					}
 				}

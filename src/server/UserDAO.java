@@ -178,7 +178,6 @@ public class UserDAO {
 			insertImage(userid, file);
 			
 			int result = pstmt.executeUpdate(); 
-			System.out.println("수정된 행 개수: " + result);
 			return 1;
 		} catch (SQLException e) {
 			e.printStackTrace();
