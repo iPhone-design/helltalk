@@ -253,17 +253,19 @@ public class MainFrame extends JFrame {
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					try {
-						oos.writeObject(new ObjectInOut(ObjectInOut.CHAT, bufferedChatPanel.getRoomNameList().getSelectedValue().toString(), bufferedChatPanel.getRoomlistPanel().getAccountNicNameText().getText()));
-						oos.flush();
-						ChatClient chatClient = new ChatClient(dos, dis, bufferedChatPanel);
-						bufferedChatPanel.getChatPanel().getRommtitleLable().setText(bufferedChatPanel.getRoomNameList().getSelectedValue().toString());
-						bufferedChatPanel.getChatPanel().setVisible(true);
-						bufferedChatPanel.getRoomlistPanel().getExitRoomButton().setEnabled(true);
-						bufferedChatPanel.getRoomlistPanel().getCreateRoomButton().setEnabled(false);
-						bufferedChatPanel.getRoomlistPanel().getMyPageButton().setEnabled(false);
-						bufferedChatPanel.getRoomlistPanel().getLogoutButton().setEnabled(false);
-						bufferedChatPanel.getEnterRoomButton().setEnabled(false);
-						stop = false;
+						if (bufferedChatPanel.getRoomNameList().getSelectedValue() != null) {
+							oos.writeObject(new ObjectInOut(ObjectInOut.CHAT, bufferedChatPanel.getRoomNameList().getSelectedValue().toString(), bufferedChatPanel.getRoomlistPanel().getAccountNicNameText().getText()));
+							oos.flush();
+							ChatClient chatClient = new ChatClient(dos, dis, bufferedChatPanel);
+							bufferedChatPanel.getChatPanel().getRommtitleLable().setText(bufferedChatPanel.getRoomNameList().getSelectedValue().toString());
+							bufferedChatPanel.getChatPanel().setVisible(true);
+							bufferedChatPanel.getRoomlistPanel().getExitRoomButton().setEnabled(true);
+							bufferedChatPanel.getRoomlistPanel().getCreateRoomButton().setEnabled(false);
+							bufferedChatPanel.getRoomlistPanel().getMyPageButton().setEnabled(false);
+							bufferedChatPanel.getRoomlistPanel().getLogoutButton().setEnabled(false);
+							bufferedChatPanel.getEnterRoomButton().setEnabled(false);
+							stop = false;
+						}
 					} catch (IOException e1) {
 						e1.printStackTrace();
 					}
