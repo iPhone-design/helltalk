@@ -1,10 +1,10 @@
-CREATE DATABASE  IF NOT EXISTS `hell_db` /*!40100 DEFAULT CHARACTER SET utf8mb4 */;
+CREATE DATABASE  IF NOT EXISTS `hell_db` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
 USE `hell_db`;
--- MySQL dump 10.13  Distrib 8.0.22, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.20, for Win64 (x86_64)
 --
 -- Host: localhost    Database: hell_db
 -- ------------------------------------------------------
--- Server version	5.7.32-log
+-- Server version	8.0.20
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -25,13 +25,13 @@ DROP TABLE IF EXISTS `profile_img`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `profile_img` (
-  `imgnum` int(11) NOT NULL AUTO_INCREMENT,
+  `imgnum` int NOT NULL AUTO_INCREMENT,
   `userid` varchar(20) NOT NULL,
   `filename` varchar(45) NOT NULL,
   `image` mediumblob NOT NULL,
   KEY `fk_user_idx` (`imgnum`),
   KEY `fk_user_idx1` (`userid`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -54,9 +54,9 @@ DROP TABLE IF EXISTS `roomlist`;
 CREATE TABLE `roomlist` (
   `title` varchar(45) NOT NULL,
   `roomMasterName` varchar(45) NOT NULL,
-  `amount` int(11) NOT NULL DEFAULT '4',
+  `headcount` int NOT NULL DEFAULT '4',
   PRIMARY KEY (`title`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -65,6 +65,7 @@ CREATE TABLE `roomlist` (
 
 LOCK TABLES `roomlist` WRITE;
 /*!40000 ALTER TABLE `roomlist` DISABLE KEYS */;
+INSERT INTO `roomlist` VALUES ('방만듬ㅎㅎ','a',4);
 /*!40000 ALTER TABLE `roomlist` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -76,16 +77,16 @@ DROP TABLE IF EXISTS `user`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `user` (
-  `usernum` int(11) NOT NULL AUTO_INCREMENT,
+  `usernum` int NOT NULL AUTO_INCREMENT,
   `userid` varchar(20) NOT NULL,
   `password` varchar(20) NOT NULL,
   `nickname` varchar(20) NOT NULL,
-  `age` int(11) NOT NULL,
-  `status` tinyint(9) NOT NULL DEFAULT '0',
-  `img_num` int(11) NOT NULL DEFAULT '1',
+  `age` int NOT NULL,
+  `status` tinyint NOT NULL DEFAULT '0',
+  `img_num` int NOT NULL DEFAULT '1',
   PRIMARY KEY (`usernum`),
   UNIQUE KEY `id_UNIQUE` (`userid`)
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -97,6 +98,10 @@ LOCK TABLES `user` WRITE;
 INSERT INTO `user` VALUES (2,'1','1','1',1,0,1),(3,'a','a','a',1,0,1),(4,'b','b','b',1,0,1),(5,'g','g','g',1,0,1),(7,'test','test','test',123,0,1),(8,'ppp','ppp','ppp',123,0,1),(9,'pp','pp','pp',45,0,1),(10,'aaa','test','test',1,0,1),(11,'test123','a','a',23,0,1),(12,'ppp123','ppp','ppp',34,0,1),(13,'123','123','123',123,0,1),(14,'test123123','test123123','1',1,0,1),(15,'new','new','new',11,0,1),(16,'iii','iii','iii',123,0,1),(17,'ff','ff','ff',13,0,1);
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Dumping events for database 'hell_db'
+--
 
 --
 -- Dumping routines for database 'hell_db'
@@ -111,4 +116,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-04-18 12:03:55
+-- Dump completed on 2021-04-20 10:08:41
