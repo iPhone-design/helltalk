@@ -89,14 +89,6 @@ public class LoginPanel extends JPanel implements KeyListener {
 		add(btnNewButton);
 	}
 	
-	public SignUpClient getSocket() {
-		return signUpClient;
-	}
-	
-	public void setSocket(SignUpClient socket) {
-		this.signUpClient = socket;
-	}
-	
 	public JTextField getIdText() {
 		return idText;
 	}
@@ -115,7 +107,6 @@ public class LoginPanel extends JPanel implements KeyListener {
 			Character.toString(p);
 			password += p;
 		}
-		System.out.println(password);
 		return password;
 	}
 	

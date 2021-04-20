@@ -85,7 +85,7 @@ public class ChatMap {
 	}
 	
 	public static void print() {
-		Iterator<String> iterator = roomMap.get("firstRoom").keySet().iterator();
+		Iterator<String> iterator = roomMap.keySet().iterator();
 		while (iterator.hasNext()) {
 			String key = iterator.next();
 			System.out.println(key);
