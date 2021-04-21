@@ -13,6 +13,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.border.EmptyBorder;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 import com.mysql.cj.result.BinaryStreamValueFactory;
 
@@ -22,6 +23,9 @@ import library.User;
 
 import javax.swing.SwingConstants;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
+import java.awt.event.WindowStateListener;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -47,7 +51,7 @@ import javax.swing.JOptionPane;
 import java.awt.Font;
 import java.awt.Image;
 
-public class UserProfile extends JDialog {
+public class UserProfile extends JDialog implements WindowListener {
 	private JPanel contentPanel = new JPanel();
 	private JPasswordField tfd_pw;
 	private JPasswordField tfd_confirm_pw;
@@ -254,6 +258,7 @@ public class UserProfile extends JDialog {
 	         @Override
 	         public void actionPerformed(ActionEvent e) {
 	            JDialog profileImage = new JDialog();
+	            profileImage.setLocationRelativeTo(mainFrame);
 	            JLabel jlabel = new JLabel();
 	            jlabel.setIcon(btnImage);
 	            profileImage.getContentPane().add(jlabel);
@@ -270,7 +275,10 @@ public class UserProfile extends JDialog {
 			private BufferedImage bufferedImage;
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				JFileChooser chooser = new JFileChooser(".");
+				JFileChooser chooser = new JFileChooser(".\\default_img\\");
+				FileNameExtensionFilter filter = new FileNameExtensionFilter("이미지 파일", "png", "jpg", "jpeg", "gif");
+				chooser.addChoosableFileFilter(filter);
+				chooser.setAcceptAllFileFilterUsed(false);
 				int i = chooser.showOpenDialog(null);
 				FileInputStream fis;
 				File filePath;
@@ -349,5 +357,44 @@ public class UserProfile extends JDialog {
 				, getPassword(tfd_pw.getPassword())
 				, tfd_nickName.getText());
 		return user;
+	}
+
+	@Override
+	public void windowOpened(WindowEvent e) {
+		
+	}
+
+	@Override
+	public void windowClosing(WindowEvent e) {
+		dispose();
+		System.out.println("닫아짐?");
+ 		mainFrame.setStop(true);
+	}
+
+	@Override
+	public void windowClosed(WindowEvent e) {
+		System.out.println("닫아짐?");
+ 		mainFrame.setStop(true);
+	}
+
+	@Override
+	public void windowIconified(WindowEvent e) {
+		
+	}
+
+	@Override
+	public void windowDeiconified(WindowEvent e) {
+		
+	}
+
+	@Override
+	public void windowActivated(WindowEvent e) {
+		
+	}
+
+	@Override
+	public void windowDeactivated(WindowEvent e) {
+		System.out.println("닫아짐?");
+ 		mainFrame.setStop(true);
 	}
 }

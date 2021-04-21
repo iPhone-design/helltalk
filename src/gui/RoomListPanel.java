@@ -22,8 +22,8 @@ import client.ChatClient;
 import library.ChatMap;
 import library.ObjectInOut;
 import library.Room;
+import library.RoomListDAO;
 import server.Controller;
-import server.RoomListDAO;
 import server.Server;
 
 import javax.swing.JButton;
