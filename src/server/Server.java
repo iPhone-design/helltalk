@@ -14,9 +14,6 @@ import library.ObjectInOut;
 public class Server {
 	private final static int PORT = 2222;
 	private static Socket socket;
-	public static List<RoomPanel> roomList;
-	private static ObjectOutputStream oos;
-	private static ObjectInputStream ois;
 	
 	public static void main(String[] args) {
 		try (ServerSocket server = new ServerSocket(PORT)){

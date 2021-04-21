@@ -16,6 +16,7 @@ import javax.swing.border.EmptyBorder;
 
 import com.mysql.cj.result.BinaryStreamValueFactory;
 
+import library.ImageFile;
 import library.ObjectInOut;
 import library.User;
 
@@ -290,7 +291,14 @@ public class UserProfile extends JDialog {
 						object = new ObjectInOut(ObjectInOut.IMAGECHANGE, id, chooser.getSelectedFile().getName(), fileArray);
 						oos.writeObject(object);
 						oos.flush();
+						object = (ObjectInOut) ois.readObject();
+						ImageFile imageFile = object.getImageFile();
+						FileOutputStream fos = new FileOutputStream(new File(".\\img\\" + imageFile.getImageName()));
+						fos.write(imageFile.getImageByte());
+						showMessage("이미지 변경", "이미지 변경 완료!");
 					} catch (IOException e1) {
+						e1.printStackTrace();
+					} catch (ClassNotFoundException e1) {
 						e1.printStackTrace();
 					}
 				}

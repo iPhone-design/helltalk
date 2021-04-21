@@ -7,6 +7,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -183,13 +184,9 @@ public class MainFrame extends JFrame {
 								if (object.getResult() == 0) {
 									JOptionPane.showMessageDialog(registrationPanel, "회원가입 성공", "회원가입", JOptionPane.INFORMATION_MESSAGE);
 									ImageFile imageFile = object.getImageFile();
-									FileOutputStream fos = new FileOutputStream(".\\img\\" + imageFile.getImageName());
-									byte[] byteArrays = new byte[1024 * 4];
-									int n;
-									// TODO 고쳐야함
-									while ((n = imageFile.getImageByte().length) > 0) {
-										fos.write(byteArrays, 0, n);
-									}
+									File file = new File(".\\img\\" + imageFile.getImageName());
+									FileOutputStream fos = new FileOutputStream(file);
+									fos.write(imageFile.getImageByte());
 									registrationPanel.clearField();
 									changeLoginPanel();
 								} else if (object.getResult() == 1) {
@@ -298,10 +295,12 @@ public class MainFrame extends JFrame {
 								object = (ObjectInOut) ois.readObject();
 								if (object.getProtocol() == ObjectInOut.REFRESHROOM) {
 									java.util.List<Room> roomlist = object.getRoomlist();
-									for (int i = 0; i <= roomlist.size() - 1; i++) {
-										model.addElement(roomlist.get(i).getTitle());
+									if (roomlist != null) {
+										for (int i = 0; i <= roomlist.size() - 1; i++) {
+											model.addElement(roomlist.get(i).getTitle());
+										}
+										bufferedChatPanel.getRoomNameList().setModel(model);
 									}
-									bufferedChatPanel.getRoomNameList().setModel(model);
 								}
 								Thread.sleep(5000);
 							}

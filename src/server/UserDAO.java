@@ -208,7 +208,7 @@ public class UserDAO {
 		}
 	}
 	
-	// DB 이미지 로드
+	// DB 이미지 다운로드
 		public ImageFile extractImage(String userid) {
 			String query = "SELECT filename, image FROM profile_img WHERE userid = ?";
 			String fileName = null;
@@ -221,50 +221,31 @@ public class UserDAO {
 				while(rs.next()) {
 					fileName = rs.getString("filename");
 					image = rs.getBlob("image");
-					imageByte = image.getBytes(0, (int) image.length());
+					imageByte = image.getBytes(1, (int) image.length());
 				}
 				imagefile = new ImageFile(fileName, imageByte);
-//				fos = new FileOutputStream(".\\img\\" + fileName); // 저장될 경로와 파일이름
-//				byte[] byteArrays = new byte[BUFFER_SIZE * 4];
-//				int n;
-//				while ((n = image.read(byteArrays)) > 0) {
-//					fos.write(byteArrays, 0, n);
-//				}
 			} catch (SQLException e) {
 				e.printStackTrace();
 			} 			
 			return imagefile;
 		}
+		
+	// DB 이미지 이름 로드
+	public String extractImageName(String userid) {
+		String query = "SELECT filename FROM profile_img WHERE userid = ?";
+		String fileName = null;
+		try (Connection conn = getConnection();PreparedStatement pstmt = conn.prepareStatement(query);) {
+			pstmt.setString(1, userid);
+			ResultSet rs = pstmt.executeQuery();
+			while(rs.next()) {
+				fileName = rs.getString("filename");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} 			
+		return fileName;
+	}
 
-//	// DB 이미지 로드
-//	public String extractImage(String userid) {
-//		String query = "SELECT filename, image FROM profile_img WHERE userid = ?";
-//		String fileName = null;
-//		InputStream image = null;
-//		FileOutputStream fos = null;
-//		try (Connection conn = getConnection();PreparedStatement pstmt = conn.prepareStatement(query);) {
-//			pstmt.setString(1, userid);
-//			ResultSet rs = pstmt.executeQuery();
-//			while(rs.next()) {
-//				fileName = rs.getString("filename");
-//				image = rs.getBinaryStream("image");
-//			}
-//			fos = new FileOutputStream(".\\img\\" + fileName); // 저장될 경로와 파일이름
-//			byte[] byteArrays = new byte[BUFFER_SIZE * 4];
-//			int n;
-//			while ((n = image.read(byteArrays)) > 0) {
-//				fos.write(byteArrays, 0, n);
-//			}
-//		} catch (SQLException e) {
-//			e.printStackTrace();
-//		} catch (FileNotFoundException e) {
-//			e.printStackTrace();
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		}
-//		return fileName;
-//	}
-	
 	// DB 이미지 변경
 	public void updateImage(String userid, String fileName, File file) {
 		String query = "UPDATE profile_img SET filename = ?, image = ? WHERE userid = ?";
