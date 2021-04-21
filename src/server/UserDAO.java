@@ -9,6 +9,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.sql.Blob;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -211,16 +212,18 @@ public class UserDAO {
 		public ImageFile extractImage(String userid) {
 			String query = "SELECT filename, image FROM profile_img WHERE userid = ?";
 			String fileName = null;
-			InputStream image = null;
+			Blob image = null;
 			FileOutputStream fos = null;
+			byte[] imageByte = null;
 			try (Connection conn = getConnection();PreparedStatement pstmt = conn.prepareStatement(query);) {
 				pstmt.setString(1, userid);
 				ResultSet rs = pstmt.executeQuery();
 				while(rs.next()) {
 					fileName = rs.getString("filename");
-					image = rs.getBinaryStream("image");
+					image = rs.getBlob("image");
+					imageByte = image.getBytes(0, (int) image.length());
 				}
-				imagefile = new ImageFile(fileName, image);
+				imagefile = new ImageFile(fileName, imageByte);
 //				fos = new FileOutputStream(".\\img\\" + fileName); // 저장될 경로와 파일이름
 //				byte[] byteArrays = new byte[BUFFER_SIZE * 4];
 //				int n;

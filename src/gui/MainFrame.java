@@ -178,7 +178,6 @@ public class MainFrame extends JFrame {
 									Integer.valueOf(registrationPanel.getAgeText().getText()));
 							oos.writeObject(object);
 							oos.flush();
-							
 							object = (ObjectInOut) ois.readObject();
 							if (object.getProtocol() == ObjectInOut.REGISTRATION) {
 								if (object.getResult() == 0) {
@@ -187,7 +186,8 @@ public class MainFrame extends JFrame {
 									FileOutputStream fos = new FileOutputStream(".\\img\\" + imageFile.getImageName());
 									byte[] byteArrays = new byte[1024 * 4];
 									int n;
-									while ((n = imageFile.getInputImage().read(byteArrays)) > 0) {
+									// TODO 고쳐야함
+									while ((n = imageFile.getImageByte().length) > 0) {
 										fos.write(byteArrays, 0, n);
 									}
 									registrationPanel.clearField();
