@@ -6,6 +6,7 @@ import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -37,7 +38,7 @@ public class Controller implements Runnable {
 	public Controller(Socket socket) {
 		userDAO = new UserDAO();
 		roomListDAO = new RoomListDAO();
-		file = new File(".\\img\\img.png");
+		file = new File(".\\default_img\\img.png");
 		this.socket = socket;
 		try {
 			dos = new DataOutputStream(socket.getOutputStream());
@@ -146,11 +147,12 @@ public class Controller implements Runnable {
 							oos.writeObject(object);
 							oos.flush();
 						} else if (object.getProtocol() == ObjectInOut.IMAGECHANGE) {
-							System.out.println(object.getFileArray().length);
-							BufferedImage imag = ImageIO.read(new ByteArrayInputStream(object.getFileArray()));
+							File tempFile = new File(".\\img\\" + object.getId() + "_" + object.getFileName());
+							ByteArrayInputStream bais = new ByteArrayInputStream(object.getFileArray());
 							String extension = object.getFileName().substring(object.getFileName().indexOf('.') + 1);
-				            ImageIO.write(imag, extension, new File(".\\img\\" + object.getFileName()));
-//							userDAO.updateImage(object.getId(), object.getFileName(), object.getFileArray());
+							BufferedImage bfImg = ImageIO.read(bais);
+				          	ImageIO.write(bfImg , extension, tempFile);
+				          	userDAO.updateImage(object.getId(), object.getFileName(), tempFile);
 						}
 					} catch (ClassNotFoundException e) {
 						break;
