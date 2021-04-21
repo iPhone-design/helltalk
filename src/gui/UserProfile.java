@@ -267,7 +267,6 @@ public class UserProfile extends JDialog {
 		// 이미지 변경
 		imageFileButton.addActionListener(new ActionListener() {
 			private BufferedImage bufferedImage;
-
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				JFileChooser chooser = new JFileChooser(".");

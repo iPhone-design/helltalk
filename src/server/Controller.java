@@ -8,6 +8,7 @@ import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
@@ -19,6 +20,7 @@ import javax.swing.ImageIcon;
 
 import gui.BufferedChatPanel;
 import library.ChatMap;
+import library.ImageFile;
 import library.ObjectInOut;
 import library.Room;
 import library.User;
@@ -88,7 +90,8 @@ public class Controller implements Runnable {
 							if ((userDAO.idCheck(object.getId())) == 0) {
 								userDAO.addUser(object.getId(), object.getPw(), object.getNickName(), object.getAge());
 								userDAO.insertImage(object.getId(), "img.png", file);
-								object = new ObjectInOut(ObjectInOut.REGISTRATION, 0);
+								ImageFile imageFile = userDAO.extractImage(object.getId());
+								object = new ObjectInOut(ObjectInOut.REGISTRATION, 0, imageFile);
 								oos.writeObject(object);
 								oos.flush();
 							} else if ((userDAO.idCheck(object.getId())) == 1) {
@@ -142,8 +145,8 @@ public class Controller implements Runnable {
 							oos.writeObject(object);
 							oos.flush();
 						} else if (object.getProtocol() == ObjectInOut.IMAGELOAD) {
-							String fileName = userDAO.extractImage(object.getId());
-							object = new ObjectInOut(ObjectInOut.IMAGELOAD, fileName, 0);
+							ImageFile imageFile = userDAO.extractImage(object.getId());
+							object = new ObjectInOut(ObjectInOut.IMAGELOAD, 0, imageFile);
 							oos.writeObject(object);
 							oos.flush();
 						} else if (object.getProtocol() == ObjectInOut.IMAGECHANGE) {
