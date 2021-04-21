@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 
 import javax.imageio.ImageIO;
+import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -12,6 +13,8 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.border.EmptyBorder;
+
+import com.mysql.cj.result.BinaryStreamValueFactory;
 
 import library.ObjectInOut;
 import library.User;
@@ -22,12 +25,16 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.awt.event.ActionEvent;
 import java.awt.Color;
 import javax.swing.JTextField;
@@ -43,9 +50,9 @@ public class UserProfile extends JDialog {
 	private JPasswordField tfd_confirm_pw;
 	private JTextField tfd_id;
 	private JTextField tfd_nickName;
-	private ImageIcon btnImage = new ImageIcon("btnImage1.png");
+	private ImageIcon btnImage;
 	private JLabel lbl_mainNickName;
-	private File currentFile;
+	private File imageFile;
 	private List<JTextField> list = new ArrayList();
 	private User user;
 	private JLabel lbl_id;
@@ -137,8 +144,20 @@ public class UserProfile extends JDialog {
 		
 		JButton btn_profile = new JButton("프로필 이미지");
 		btn_profile.setBounds(96, 31, 151, 138);
-		btn_profile.setIcon(btnImage);
-		panel.add(btn_profile);
+		try {
+			object = new ObjectInOut(ObjectInOut.IMAGELOAD, id);
+			oos.writeObject(object);
+			oos.flush();
+			object = (ObjectInOut) ois.readObject();
+			imageFile = new File(".\\img\\" + object.getFileName());
+			btnImage = new ImageIcon(imageFile.getPath());
+			btn_profile.setIcon(btnImage);
+			panel.add(btn_profile);
+		} catch (ClassNotFoundException e2) {
+			e2.printStackTrace();
+		} catch (IOException e2) {
+			e2.printStackTrace();
+		}
 		
 		lbl_confirm_pw = new JLabel("비밀번호 확인");
 		lbl_confirm_pw.setHorizontalAlignment(SwingConstants.CENTER);
@@ -161,7 +180,7 @@ public class UserProfile extends JDialog {
 		userLeave.setBounds(242, 382, 90, 59);
 		contentPanel.add(userLeave);
 		
-		// 비밀번호 변경
+		// 정보 수정
 		infoChangeButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -184,8 +203,10 @@ public class UserProfile extends JDialog {
 						object = (ObjectInOut) ois.readObject();
 						if (object.getProtocol() == ObjectInOut.INFOCHANGE) {
 							if (object.getResult() == 1) {
-								message = "변경 성공 재 접속 후 반영됩니다.!";
+								message = "변경 성공 재 로그인 하시면 됩니다.!";
 								showMessage("Success", message);
+								dispose();
+								mainFrame.changeLoginPanel();
 							} else if(object.getResult() == -1){
 								message = "변경 실패";
 								showMessage("Fail", message);
@@ -241,45 +262,43 @@ public class UserProfile extends JDialog {
 	         }
 	    });
 		
-		//파일 열기
+		// 이미지 변경
 		imageFileButton.addActionListener(new ActionListener() {
+			private BufferedImage bufferedImage;
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				JFileChooser chooser = new JFileChooser(".");
 				int i = chooser.showOpenDialog(null);
+				FileInputStream fis;
+				ByteArrayOutputStream baos = new ByteArrayOutputStream();
 				if (i == JFileChooser.APPROVE_OPTION) {
-					currentFile = chooser.getSelectedFile();
-					btn_profile.setIcon(new ImageIcon(currentFile.getPath()));
-					btnImage = new ImageIcon(currentFile.getPath());
-					
-					byte[] imageInByte;
-					
-					BufferedImage originalImage = null;
 					try {
-						originalImage = ImageIO.read(currentFile);
+						imageFile = new File(chooser.getSelectedFile().getPath());
+						btn_profile.setIcon(new ImageIcon(imageFile.getPath()));
+						btnImage = new ImageIcon(imageFile.getPath());
+						fis = new FileInputStream(imageFile);
+						
+						byte[] buf = new byte[1024 * 4];
+						int len = 0;
+						
+						while ((len = fis.read(buf)) != -1) {
+							baos.write(buf, 0, len);
+						}
+						byte[] fileArray = baos.toByteArray();
+						////////////////////////////
+						BufferedImage bfImg = ImageIO.read(imageFile);
+						baos = new ByteArrayOutputStream();
+						ImageIO.write(bfImg, "png", baos);
+						
+						baos.flush();
+						////////////////////////////
+						object = new ObjectInOut(ObjectInOut.IMAGECHANGE, id, chooser.getSelectedFile().getName(), fileArray);
+						oos.writeObject(object);
+						oos.flush();
 					} catch (IOException e1) {
 						e1.printStackTrace();
 					}
-					
-					ByteArrayOutputStream baos = new ByteArrayOutputStream();
-					try {
-						ImageIO.write(originalImage, "png", baos);
-						baos.flush();
-					} catch (IOException e2) {
-						e2.printStackTrace();
-					}
-					// 테스트 출력
-					imageInByte = baos.toByteArray();
-					System.out.println(Arrays.toString(imageInByte));
-					System.out.println(imageInByte);
-					
-					try {
-						baos.close();
-					} catch (IOException e3) {
-						e3.printStackTrace();
-					}
-				} else if (i == JFileChooser.CANCEL_OPTION) {
-					
 				}
 			}
 		});

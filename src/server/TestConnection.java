@@ -11,12 +11,12 @@ import javax.imageio.ImageIO;
 public class TestConnection {
 	public static void main(String[] args) {
 		UserDAO dao = new UserDAO();
-		File file = new File(".\\img\\defaultUser1.png");
+		File file = new File(".\\img\\img.png");
 		
 		try {
 			byte[] imageInByte;
 			
-			BufferedImage originalImage = ImageIO.read(new File(".\\img\\defaultUser1.png"));
+			BufferedImage originalImage = ImageIO.read(new File(".\\img\\img.png"));
 			ByteArrayOutputStream baos = new ByteArrayOutputStream();
 			ImageIO.write(originalImage, "png", baos);
 			baos.flush();

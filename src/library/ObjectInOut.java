@@ -1,5 +1,7 @@
 package library;
 
+import java.awt.Image;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.Serializable;
 import java.util.List;
@@ -13,25 +15,49 @@ public class ObjectInOut implements Serializable {
 	public static final int EXIT = 101;
 	public static final int MYPAGE = 200;
 	public static final int INFOCHANGE = 201;
-	public static final int IMG_CHANGE = 202;
+	public static final int IMAGELOAD = 202;
+	public static final int IMAGECHANGE = 203;
 	public static final int CREATEROOM = 300;
 	public static final int REMOVEROOM = 301;
 	public static final int REFRESHROOM = 400;
 	
 	private int protocol;
+	private int age;
+	private int result;
+	private int headCount;
 	private String id;
 	private String pw;
 	private String nickName;
-	private int age;
 	private String title;
-	private int result;
-	private int headCount;
+	private String fileName;
 	private List<Room> roomlist;
-	private File file;
+	private BufferedImage bufferedImage;
+	private byte[] fileArray;
 	
 	public ObjectInOut() {
 		super();
 	}
+	
+	public ObjectInOut(BufferedImage bufferedImage) {
+		super();
+		this.bufferedImage = bufferedImage;
+	}
+
+	public ObjectInOut(int protocol, String id, String fileName, byte[] fileArray) {
+		super();
+		this.protocol = protocol;
+		this.id = id;
+		this.fileName = fileName;
+		this.fileArray = fileArray;
+	}
+
+	public ObjectInOut(int protocol, String fileName, int result) {
+		super();
+		this.protocol = protocol;
+		this.fileName = fileName;
+		this.result = result;
+	}
+
 	
 	public ObjectInOut(int protocol, String id) {
 		super();
@@ -154,11 +180,15 @@ public class ObjectInOut implements Serializable {
 		return roomlist;
 	}
 
-	public File getFile() {
-		return file;
+	public String getFileName() {
+		return fileName;
 	}
 
-	public void setFile(File file) {
-		this.file = file;
+	public BufferedImage getBufferedImage() {
+		return bufferedImage;
+	}
+
+	public byte[] getFileArray() {
+		return fileArray;
 	}
 }

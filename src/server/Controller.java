@@ -1,13 +1,18 @@
 package server;
 
 import java.io.ByteArrayInputStream;
+import java.awt.Image;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.net.Socket;
 import java.util.List;
+
+import javax.imageio.ImageIO;
 
 import gui.BufferedChatPanel;
 import library.ChatMap;
@@ -25,10 +30,12 @@ public class Controller implements Runnable {
 	private ObjectOutputStream oos;
 	private UserDAO userDAO;
 	private RoomListDAO roomListDAO;
+	private File file;
 	
 	public Controller(Socket socket) {
 		userDAO = new UserDAO();
 		roomListDAO = new RoomListDAO();
+		file = new File(".\\img\\img.png");
 		this.socket = socket;
 		try {
 			dos = new DataOutputStream(socket.getOutputStream());
@@ -77,6 +84,7 @@ public class Controller implements Runnable {
 						} else if (object.getProtocol() == ObjectInOut.REGISTRATION) {
 							if ((userDAO.idCheck(object.getId())) == 0) {
 								userDAO.addUser(object.getId(), object.getPw(), object.getNickName(), object.getAge());
+								userDAO.insertImage(object.getId(), "img.png", file);
 								object = new ObjectInOut(ObjectInOut.REGISTRATION, 0);
 								oos.writeObject(object);
 								oos.flush();
@@ -115,7 +123,7 @@ public class Controller implements Runnable {
 							oos.writeObject(object);
 							oos.flush();
 						} else if (object.getProtocol() == ObjectInOut.INFOCHANGE) {
-							int result = userDAO.updateUserData(object.getId(), object.getPw(), object.getNickName(), object.getFile());
+							int result = userDAO.updateUserData(object.getId(), object.getPw(), object.getNickName());
 							object =  new ObjectInOut(ObjectInOut.INFOCHANGE, result);
 							oos.writeObject(object);
 							oos.flush();
@@ -130,9 +138,18 @@ public class Controller implements Runnable {
 							object = new ObjectInOut(ObjectInOut.REFRESHROOM, roomlist);
 							oos.writeObject(object);
 							oos.flush();
-						} else if (object.getProtocol() == ObjectInOut.IMG_CHANGE) {
-							ByteArrayInputStream bais;
-//							bais = new ByteArrayInputStream(buf);
+						} else if (object.getProtocol() == ObjectInOut.IMAGELOAD) {
+							String fileName = userDAO.extractImage(object.getId());
+							object = new ObjectInOut(ObjectInOut.IMAGELOAD, fileName, 0);
+							oos.writeObject(object);
+							oos.flush();
+						} else if (object.getProtocol() == ObjectInOut.IMAGECHANGE) {
+							object = (ObjectInOut) ois.readObject();
+							object.getFileArray();
+							String extension = object.getFileName().substring(object.getFileName().indexOf('.') + 1);
+							file = new File(".\\img\\" + object.getFileName());
+							ImageIO.write(object.getBufferedImage(), extension, file);
+//							userDAO.updateImage(object.getId(), object.getFileName(), object.getBufferedImage());
 						}
 					} catch (ClassNotFoundException e) {
 //						e.printStackTrace();
