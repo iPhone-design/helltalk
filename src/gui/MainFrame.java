@@ -139,7 +139,7 @@ public class MainFrame extends JFrame {
 									bufferedChatPanel.getRoomlistPanel().getAccountIdText().setText(object.getId());
 									bufferedChatPanel.getRoomlistPanel().getAccountNicNameText().setText(object.getNickName());
 									changeChatPanel();
-									loginPanel.clearField();
+//									loginPanel.clearField();
 								} else if (object.getResult() == 2) {
 									JOptionPane.showMessageDialog(registrationPanel, "비밀번호가 틀렸습니다", "로그인", JOptionPane.WARNING_MESSAGE);
 								}
