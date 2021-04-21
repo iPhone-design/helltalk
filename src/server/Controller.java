@@ -50,9 +50,12 @@ public class Controller implements Runnable {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		
 		List<Room> roomlist = roomListDAO.RoomlistAll();
-		for (int i = 0; i <= roomlist.size() - 1; i++) {
-			ChatMap.createRoom(roomlist.get(i).getTitle());
+		if (roomlist != null) {
+			for (int i = 0; i <= roomlist.size() - 1; i++) {
+				ChatMap.createRoom(roomlist.get(i).getTitle());
+			}
 		}
 	}
 
@@ -141,12 +144,14 @@ public class Controller implements Runnable {
 							oos.flush();
 						} else if (object.getProtocol() == ObjectInOut.REFRESHROOM) {
 							List<Room> roomlist = roomListDAO.RoomlistAll();
-							object = new ObjectInOut(ObjectInOut.REFRESHROOM, roomlist);
-							oos.writeObject(object);
-							oos.flush();
+							if (roomlist != null) {
+								object = new ObjectInOut(ObjectInOut.REFRESHROOM, roomlist);
+								oos.writeObject(object);
+								oos.flush();
+							}
 						} else if (object.getProtocol() == ObjectInOut.IMAGELOAD) {
-							ImageFile imageFile = userDAO.extractImage(object.getId());
-							object = new ObjectInOut(ObjectInOut.IMAGELOAD, 0, imageFile);
+							String fileName = userDAO.extractImageName(object.getId());
+							object = new ObjectInOut(ObjectInOut.IMAGELOAD, fileName, 0);
 							oos.writeObject(object);
 							oos.flush();
 						} else if (object.getProtocol() == ObjectInOut.IMAGECHANGE) {
@@ -156,6 +161,10 @@ public class Controller implements Runnable {
 							BufferedImage bfImg = ImageIO.read(bais);
 				          	ImageIO.write(bfImg , extension, tempFile);
 				          	userDAO.updateImage(object.getId(), object.getFileName(), tempFile);
+				          	ImageFile imageFile = userDAO.extractImage(object.getId());
+							object = new ObjectInOut(ObjectInOut.IMAGECHANGE, 0, imageFile);
+							oos.writeObject(object);
+							oos.flush();
 						}
 					} catch (ClassNotFoundException e) {
 						break;
