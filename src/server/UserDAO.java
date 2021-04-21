@@ -19,6 +19,7 @@ import javax.imageio.ImageIO;
 
 import com.mysql.cj.result.BinaryStreamValueFactory;
 
+import library.ImageFile;
 import library.User;
 
 public class UserDAO {
@@ -33,6 +34,7 @@ public class UserDAO {
 	private File defaultUserImg = new File(".\\img\\defaultUser1.png");
 	private User user;
 	private Image image;
+	private ImageFile imagefile;
 
 	static {
 		try {
@@ -204,35 +206,61 @@ public class UserDAO {
 			e.printStackTrace();
 		}
 	}
-
+	
 	// DB 이미지 로드
-	public String extractImage(String userid) {
-		String query = "SELECT filename, image FROM profile_img WHERE userid = ?";
-		String fileName = null;
-		InputStream image = null;
-		FileOutputStream fos = null;
-		try (Connection conn = getConnection();PreparedStatement pstmt = conn.prepareStatement(query);) {
-			pstmt.setString(1, userid);
-			ResultSet rs = pstmt.executeQuery();
-			while(rs.next()) {
-				fileName = rs.getString("filename");
-				image = rs.getBinaryStream("image");
-			}
-			fos = new FileOutputStream(".\\img\\" + fileName); // 저장될 경로와 파일이름
-			byte[] byteArrays = new byte[BUFFER_SIZE * 4];
-			int n;
-			while ((n = image.read(byteArrays)) > 0) {
-				fos.write(byteArrays, 0, n);
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
+		public ImageFile extractImage(String userid) {
+			String query = "SELECT filename, image FROM profile_img WHERE userid = ?";
+			String fileName = null;
+			InputStream image = null;
+			FileOutputStream fos = null;
+			try (Connection conn = getConnection();PreparedStatement pstmt = conn.prepareStatement(query);) {
+				pstmt.setString(1, userid);
+				ResultSet rs = pstmt.executeQuery();
+				while(rs.next()) {
+					fileName = rs.getString("filename");
+					image = rs.getBinaryStream("image");
+				}
+				imagefile = new ImageFile(fileName, image);
+//				fos = new FileOutputStream(".\\img\\" + fileName); // 저장될 경로와 파일이름
+//				byte[] byteArrays = new byte[BUFFER_SIZE * 4];
+//				int n;
+//				while ((n = image.read(byteArrays)) > 0) {
+//					fos.write(byteArrays, 0, n);
+//				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			} 			
+			return imagefile;
 		}
-		return fileName;
-	}
+
+//	// DB 이미지 로드
+//	public String extractImage(String userid) {
+//		String query = "SELECT filename, image FROM profile_img WHERE userid = ?";
+//		String fileName = null;
+//		InputStream image = null;
+//		FileOutputStream fos = null;
+//		try (Connection conn = getConnection();PreparedStatement pstmt = conn.prepareStatement(query);) {
+//			pstmt.setString(1, userid);
+//			ResultSet rs = pstmt.executeQuery();
+//			while(rs.next()) {
+//				fileName = rs.getString("filename");
+//				image = rs.getBinaryStream("image");
+//			}
+//			fos = new FileOutputStream(".\\img\\" + fileName); // 저장될 경로와 파일이름
+//			byte[] byteArrays = new byte[BUFFER_SIZE * 4];
+//			int n;
+//			while ((n = image.read(byteArrays)) > 0) {
+//				fos.write(byteArrays, 0, n);
+//			}
+//		} catch (SQLException e) {
+//			e.printStackTrace();
+//		} catch (FileNotFoundException e) {
+//			e.printStackTrace();
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
+//		return fileName;
+//	}
 	
 	// DB 이미지 변경
 	public void updateImage(String userid, String fileName, File file) {

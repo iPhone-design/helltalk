@@ -3,6 +3,7 @@ package library;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.InputStream;
 import java.io.Serializable;
 import java.util.List;
 
@@ -33,25 +34,18 @@ public class ObjectInOut implements Serializable {
 	private String title;
 	private String fileName;
 	private List<Room> roomlist;
-	private BufferedImage bufferedImage;
-	private Image image;
 	private byte[] fileArray;
+	private ImageFile imageFile;
 	
 	public ObjectInOut() {
 		super();
 	}
 	
-	public ObjectInOut(BufferedImage bufferedImage) {
-		super();
-		this.bufferedImage = bufferedImage;
-	}
-	
-	public ObjectInOut(int protocol, String id, String fileName, Image image) {
+	public ObjectInOut(int protocol, int result, ImageFile imageFile) {
 		super();
 		this.protocol = protocol;
-		this.id = id;
-		this.fileName = fileName;
-		this.image = image;
+		this.result = result;
+		this.imageFile = imageFile;
 	}
 
 	public ObjectInOut(int protocol, String id, String fileName, byte[] fileArray) {
@@ -195,15 +189,12 @@ public class ObjectInOut implements Serializable {
 		return fileName;
 	}
 
-	public BufferedImage getBufferedImage() {
-		return bufferedImage;
-	}
-
 	public byte[] getFileArray() {
 		return fileArray;
 	}
 
-	public Image getImage() {
-		return image;
+	public ImageFile getImageFile() {
+		return imageFile;
 	}
 }
+

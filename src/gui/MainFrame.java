@@ -7,7 +7,9 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
@@ -21,6 +23,7 @@ import javax.swing.JOptionPane;
 import client.ChatClient;
 import client.SignUpClient;
 import library.ChatMap;
+import library.ImageFile;
 import library.ObjectInOut;
 import library.Room;
 
@@ -180,6 +183,13 @@ public class MainFrame extends JFrame {
 							if (object.getProtocol() == ObjectInOut.REGISTRATION) {
 								if (object.getResult() == 0) {
 									JOptionPane.showMessageDialog(registrationPanel, "회원가입 성공", "회원가입", JOptionPane.INFORMATION_MESSAGE);
+									ImageFile imageFile = object.getImageFile();
+									FileOutputStream fos = new FileOutputStream(".\\img\\" + imageFile.getImageName());
+									byte[] byteArrays = new byte[1024 * 4];
+									int n;
+									while ((n = imageFile.getInputImage().read(byteArrays)) > 0) {
+										fos.write(byteArrays, 0, n);
+									}
 									registrationPanel.clearField();
 									changeLoginPanel();
 								} else if (object.getResult() == 1) {
