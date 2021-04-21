@@ -22,7 +22,6 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 import client.ChatClient;
-import client.SignUpClient;
 import library.ChatMap;
 import library.ImageFile;
 import library.ObjectInOut;
@@ -40,7 +39,6 @@ public class MainFrame extends JFrame {
 	private FirstPanel firstPanel;
 	private LoginPanel loginPanel;
 	private BufferedChatPanel bufferedChatPanel;
-	private SignUpClient signUpClient;
 	private ObjectInOut object;
 	private UserProfile userProfile;
 	private CreateRoomFrame createRoomFrame;
@@ -56,7 +54,7 @@ public class MainFrame extends JFrame {
 		bufferedChatPanel = new BufferedChatPanel("닉네임");
 		registrationPanel = new RegistrationPanel(this, socket);
 		firstPanel = new FirstPanel(this, registrationPanel);
-		loginPanel = new LoginPanel(MainFrame.this, signUpClient);
+		loginPanel = new LoginPanel(MainFrame.this);
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1000, 650);
@@ -139,11 +137,14 @@ public class MainFrame extends JFrame {
 								if (object.getResult() == 0) {
 									JOptionPane.showMessageDialog(registrationPanel, "로그인 실패 존재하지 않는 계정", "로그인", JOptionPane.WARNING_MESSAGE);
 								} else if (object.getResult() == 1) {
-									JOptionPane.showMessageDialog(registrationPanel, "로그인 성공", "로그인", JOptionPane.INFORMATION_MESSAGE);
-									bufferedChatPanel.getRoomlistPanel().getAccountIdText().setText(object.getId());
-									bufferedChatPanel.getRoomlistPanel().getAccountNicNameText().setText(object.getNickName());
-									changeChatPanel();
-//									loginPanel.clearField();
+									System.out.println(object.getId() + " " + object.getNickName());
+									if (object.getId() != null && object.getNickName() != null) {
+										bufferedChatPanel.getRoomlistPanel().getAccountIdText().setText(object.getId());
+										bufferedChatPanel.getRoomlistPanel().getAccountNicNameText().setText(object.getNickName());
+										JOptionPane.showMessageDialog(registrationPanel, "로그인 성공", "로그인", JOptionPane.INFORMATION_MESSAGE);
+										changeChatPanel();
+										loginPanel.clearField();
+									}
 								} else if (object.getResult() == 2) {
 									JOptionPane.showMessageDialog(registrationPanel, "비밀번호가 틀렸습니다", "로그인", JOptionPane.WARNING_MESSAGE);
 								}
@@ -182,13 +183,15 @@ public class MainFrame extends JFrame {
 							object = (ObjectInOut) ois.readObject();
 							if (object.getProtocol() == ObjectInOut.REGISTRATION) {
 								if (object.getResult() == 0) {
-									JOptionPane.showMessageDialog(registrationPanel, "회원가입 성공", "회원가입", JOptionPane.INFORMATION_MESSAGE);
 									ImageFile imageFile = object.getImageFile();
-									File file = new File(".\\img\\" + imageFile.getImageName());
-									FileOutputStream fos = new FileOutputStream(file);
-									fos.write(imageFile.getImageByte());
-									registrationPanel.clearField();
-									changeLoginPanel();
+									if (imageFile.getImageName() != null) {
+										JOptionPane.showMessageDialog(registrationPanel, "회원가입 성공", "회원가입", JOptionPane.INFORMATION_MESSAGE);
+										File file = new File(".\\img\\" + imageFile.getImageName());
+										FileOutputStream fos = new FileOutputStream(file);
+										fos.write(imageFile.getImageByte());
+										registrationPanel.clearField();
+										changeLoginPanel();
+									}
 								} else if (object.getResult() == 1) {
 									JOptionPane.showMessageDialog(registrationPanel, "이미 존재하는 계정 입니다.", "회원가입", JOptionPane.WARNING_MESSAGE);
 								}
@@ -207,6 +210,7 @@ public class MainFrame extends JFrame {
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					try {
+						stop = false;
 						object = new ObjectInOut(ObjectInOut.MYPAGE, bufferedChatPanel.getRoomlistPanel().getAccountIdText().getText());
 						oos.writeObject(object);
 						oos.flush();
@@ -288,6 +292,7 @@ public class MainFrame extends JFrame {
 					while(true) {
 						try {
 							while (stop) {
+								System.out.println("동작중?");
 								DefaultListModel<String> model = new DefaultListModel<String>();
 								object = new ObjectInOut(ObjectInOut.REFRESHROOM);
 								oos.writeObject(object);
@@ -363,5 +368,10 @@ public class MainFrame extends JFrame {
 
 	public BufferedChatPanel getBufferedChatPanel() {
 		return bufferedChatPanel;
+	}
+	
+	public void setStop(boolean stop) {
+		this.stop = stop;
+		System.out.println("트루로 변경");
 	}
 }

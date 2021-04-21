@@ -1,4 +1,4 @@
-package server;
+package library;
 
 import java.awt.Image;
 import java.awt.image.BufferedImage;
@@ -19,9 +19,6 @@ import java.sql.SQLException;
 import javax.imageio.ImageIO;
 
 import com.mysql.cj.result.BinaryStreamValueFactory;
-
-import library.ImageFile;
-import library.User;
 
 public class UserDAO {
 	private static String DRIVER = "com.mysql.jdbc.Driver";

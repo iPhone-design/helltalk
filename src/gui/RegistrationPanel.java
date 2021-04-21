@@ -29,7 +29,6 @@ import javax.swing.text.NumberFormatter;
 
 import com.mysql.cj.protocol.Warning;
 
-import client.SignUpClient;
 import library.LoginResult;
 import library.ObjectInOut;
 import library.User;

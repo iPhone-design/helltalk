@@ -17,21 +17,18 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.text.JTextComponent;
 
-import client.SignUpClient;
 import library.LoginResult;
 import library.User;
 
 public class LoginPanel extends JPanel implements KeyListener {
-	private SignUpClient signUpClient;
 	private MainFrame frame;
 	private JTextField idText;
 	private JPasswordField pwText;
 	private JButton loginBtn;
 	private JButton registrationBtn;
 	
-	public LoginPanel(MainFrame frame, SignUpClient signUpClient) {
+	public LoginPanel(MainFrame frame) {
 		this.frame = frame;
-		this.signUpClient = signUpClient;
 		
 		setBackground(new Color(255, 228, 225));
 		JLabel idLbl = new JLabel("ID");
