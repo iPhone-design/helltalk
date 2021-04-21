@@ -32,6 +32,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -271,27 +273,22 @@ public class UserProfile extends JDialog {
 				JFileChooser chooser = new JFileChooser(".");
 				int i = chooser.showOpenDialog(null);
 				FileInputStream fis;
+				File filePath;
 				ByteArrayOutputStream baos = new ByteArrayOutputStream();
 				if (i == JFileChooser.APPROVE_OPTION) {
 					try {
+						filePath = new File(chooser.getSelectedFile().getPath());
 						imageFile = new File(chooser.getSelectedFile().getPath());
 						btn_profile.setIcon(new ImageIcon(imageFile.getPath()));
 						btnImage = new ImageIcon(imageFile.getPath());
-						
-						fis = new FileInputStream(new File(chooser.getSelectedFile().getPath()));
-						
+						fis = new FileInputStream(filePath);
 						int len = 0;
-						
-						byte[] buf = new byte[1024 * 4];
-						
+						byte[] buf = new byte[(int) filePath.length()];
 						while ((len = fis.read(buf)) != -1) {
 							baos.write(buf, 0, len);
 						}
-						
 						byte[] fileArray = baos.toByteArray();
-						System.out.println(fileArray.length);
 						object = new ObjectInOut(ObjectInOut.IMAGECHANGE, id, chooser.getSelectedFile().getName(), fileArray);
-						System.out.println(object.getFileArray().length);
 						oos.writeObject(object);
 						oos.flush();
 					} catch (IOException e1) {
