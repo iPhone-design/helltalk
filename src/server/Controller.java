@@ -1,6 +1,8 @@
 package server;
 
 import java.awt.Image;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
@@ -12,6 +14,7 @@ import java.net.Socket;
 import java.util.List;
 
 import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 
 import gui.BufferedChatPanel;
 import library.ChatMap;
@@ -143,12 +146,11 @@ public class Controller implements Runnable {
 							oos.writeObject(object);
 							oos.flush();
 						} else if (object.getProtocol() == ObjectInOut.IMAGECHANGE) {
-							object = (ObjectInOut) ois.readObject();
-							object.getFileArray();
+							System.out.println(object.getFileArray().length);
+							BufferedImage imag = ImageIO.read(new ByteArrayInputStream(object.getFileArray()));
 							String extension = object.getFileName().substring(object.getFileName().indexOf('.') + 1);
-							file = new File(".\\img\\" + object.getFileName());
-							ImageIO.write(object.getBufferedImage(), extension, file);
-//							userDAO.updateImage(object.getId(), object.getFileName(), object.getBufferedImage());
+				            ImageIO.write(imag, extension, new File(".\\img\\" + object.getFileName()));
+//							userDAO.updateImage(object.getId(), object.getFileName(), object.getFileArray());
 						}
 					} catch (ClassNotFoundException e) {
 						break;
