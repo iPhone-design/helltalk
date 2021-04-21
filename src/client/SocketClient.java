@@ -69,8 +69,6 @@ public class SocketClient {
 		SocketClient client = new SocketClient();
 //		LoginResult result = client.login(new User("moderator1", "moderator1"));
 //		client.add(new User("8", "8", "8", 8));
-		System.out.println(result);
-		System.out.println("돼라 좀");
 		Thread.sleep(3000); //3초 뒤에 닫힘 
 	}
 }

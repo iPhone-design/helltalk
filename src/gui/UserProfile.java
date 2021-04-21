@@ -3,6 +3,7 @@ package gui;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -17,12 +18,15 @@ import library.User;
 
 import javax.swing.SwingConstants;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.awt.event.ActionEvent;
 import java.awt.Color;
@@ -247,6 +251,33 @@ public class UserProfile extends JDialog {
 					currentFile = chooser.getSelectedFile();
 					btn_profile.setIcon(new ImageIcon(currentFile.getPath()));
 					btnImage = new ImageIcon(currentFile.getPath());
+					
+					byte[] imageInByte;
+					
+					BufferedImage originalImage = null;
+					try {
+						originalImage = ImageIO.read(currentFile);
+					} catch (IOException e1) {
+						e1.printStackTrace();
+					}
+					
+					ByteArrayOutputStream baos = new ByteArrayOutputStream();
+					try {
+						ImageIO.write(originalImage, "png", baos);
+						baos.flush();
+					} catch (IOException e2) {
+						e2.printStackTrace();
+					}
+					// 테스트 출력
+					imageInByte = baos.toByteArray();
+					System.out.println(Arrays.toString(imageInByte));
+					System.out.println(imageInByte);
+					
+					try {
+						baos.close();
+					} catch (IOException e3) {
+						e3.printStackTrace();
+					}
 				} else if (i == JFileChooser.CANCEL_OPTION) {
 					
 				}

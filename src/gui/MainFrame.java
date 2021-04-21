@@ -11,6 +11,8 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JFrame;
@@ -136,8 +138,8 @@ public class MainFrame extends JFrame {
 									JOptionPane.showMessageDialog(registrationPanel, "로그인 성공", "로그인", JOptionPane.INFORMATION_MESSAGE);
 									bufferedChatPanel.getRoomlistPanel().getAccountIdText().setText(object.getId());
 									bufferedChatPanel.getRoomlistPanel().getAccountNicNameText().setText(object.getNickName());
-									loginPanel.clearField();
 									changeChatPanel();
+									loginPanel.clearField();
 								} else if (object.getResult() == 2) {
 									JOptionPane.showMessageDialog(registrationPanel, "비밀번호가 틀렸습니다", "로그인", JOptionPane.WARNING_MESSAGE);
 								}
@@ -284,27 +286,21 @@ public class MainFrame extends JFrame {
 								oos.writeObject(object);
 								oos.flush();
 								object = (ObjectInOut) ois.readObject();
-								bufferedChatPanel.getRoomNameList().removeAll();
 								if (object.getProtocol() == ObjectInOut.REFRESHROOM) {
 									java.util.List<Room> roomlist = object.getRoomlist();
 									for (int i = 0; i <= roomlist.size() - 1; i++) {
-										for (int j = i + 1; j <= roomlist.size() - 1; j++) {
-											if (!roomlist.get(i).equals(roomlist.get(j))) {
-												ChatMap.createRoom(roomlist.get(i).getTitle());
-											}
-										}
 										model.addElement(roomlist.get(i).getTitle());
 									}
 									bufferedChatPanel.getRoomNameList().setModel(model);
-									Thread.sleep(5000);
 								}
+								Thread.sleep(5000);
 							}
-							Thread.sleep(5000);
+						Thread.sleep(5000);
 						} catch (IOException e) {
 							e.printStackTrace();
-						} catch (InterruptedException e) {
-							e.printStackTrace();
 						} catch (ClassNotFoundException e) {
+							e.printStackTrace();
+						} catch (InterruptedException e) {
 							e.printStackTrace();
 						}
 					}

@@ -1,12 +1,31 @@
 package server;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.IOException;
 import java.sql.SQLException;
+import java.util.Arrays;
+
+import javax.imageio.ImageIO;
 
 public class TestConnection {
 	public static void main(String[] args) {
 		UserDAO dao = new UserDAO();
 		File file = new File(".\\img\\defaultUser1.png");
+		
 		try {
+			byte[] imageInByte;
+			
+			BufferedImage originalImage = ImageIO.read(new File(".\\img\\defaultUser1.png"));
+			ByteArrayOutputStream baos = new ByteArrayOutputStream();
+			ImageIO.write(originalImage, "png", baos);
+			baos.flush();
+			// 테스트 출력
+			imageInByte = baos.toByteArray();
+			System.out.println(Arrays.toString(imageInByte));
+			System.out.println(imageInByte);
+			
+			baos.close();
 			dao.getConnection();
 			
 			//addUser = 새로 추가됐을때 1 출력, 이미 있는 id일때 -1 출력
@@ -21,10 +40,12 @@ public class TestConnection {
 			
 //			dao.insertImage("1", file); // db에 이미지 저장테스트, 테스트할때 db에서 이미지 지우고 할것
 //			dao.extractImage(); // db에 저장된 이미지 불러오기 테스트
-			dao.updateUserData("1", "1", "1", file);
+//			dao.updateUserData("1", "1", "1", file);
 			
 //			System.out.println(dao.getUserData("1").toString()); // db에 저장된 id가 1이라는 유저의 칼럼들을 toString
 		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}

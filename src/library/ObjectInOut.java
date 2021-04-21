@@ -13,6 +13,7 @@ public class ObjectInOut implements Serializable {
 	public static final int EXIT = 101;
 	public static final int MYPAGE = 200;
 	public static final int INFOCHANGE = 201;
+	public static final int IMG_CHANGE = 202;
 	public static final int CREATEROOM = 300;
 	public static final int REMOVEROOM = 301;
 	public static final int REFRESHROOM = 400;
