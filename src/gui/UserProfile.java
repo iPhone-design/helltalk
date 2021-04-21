@@ -27,6 +27,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.net.Socket;
+import java.nio.channels.NonWritableChannelException;
 import java.util.ArrayList;
 import java.util.List;
 import java.io.ByteArrayInputStream;
@@ -276,16 +277,21 @@ public class UserProfile extends JDialog {
 						imageFile = new File(chooser.getSelectedFile().getPath());
 						btn_profile.setIcon(new ImageIcon(imageFile.getPath()));
 						btnImage = new ImageIcon(imageFile.getPath());
-						fis = new FileInputStream(imageFile);
+						
+						fis = new FileInputStream(new File(chooser.getSelectedFile().getPath()));
+						
+						int len = 0;
 						
 						byte[] buf = new byte[1024 * 4];
-						int len = 0;
 						
 						while ((len = fis.read(buf)) != -1) {
 							baos.write(buf, 0, len);
 						}
+						
 						byte[] fileArray = baos.toByteArray();
+						System.out.println(fileArray.length);
 						object = new ObjectInOut(ObjectInOut.IMAGECHANGE, id, chooser.getSelectedFile().getName(), fileArray);
+						System.out.println(object.getFileArray().length);
 						oos.writeObject(object);
 						oos.flush();
 					} catch (IOException e1) {

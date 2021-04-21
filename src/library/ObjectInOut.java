@@ -6,6 +6,8 @@ import java.io.File;
 import java.io.Serializable;
 import java.util.List;
 
+import javax.swing.ImageIcon;
+
 public class ObjectInOut implements Serializable {
 	private static final long serialVersionUID = 1L;
 	public static final int LOGIN = 0;
@@ -32,6 +34,7 @@ public class ObjectInOut implements Serializable {
 	private String fileName;
 	private List<Room> roomlist;
 	private BufferedImage bufferedImage;
+	private Image image;
 	private byte[] fileArray;
 	
 	public ObjectInOut() {
@@ -41,6 +44,14 @@ public class ObjectInOut implements Serializable {
 	public ObjectInOut(BufferedImage bufferedImage) {
 		super();
 		this.bufferedImage = bufferedImage;
+	}
+	
+	public ObjectInOut(int protocol, String id, String fileName, Image image) {
+		super();
+		this.protocol = protocol;
+		this.id = id;
+		this.fileName = fileName;
+		this.image = image;
 	}
 
 	public ObjectInOut(int protocol, String id, String fileName, byte[] fileArray) {
@@ -190,5 +201,9 @@ public class ObjectInOut implements Serializable {
 
 	public byte[] getFileArray() {
 		return fileArray;
+	}
+
+	public Image getImage() {
+		return image;
 	}
 }

@@ -235,18 +235,15 @@ public class UserDAO {
 	}
 	
 	// DB 이미지 변경
-//	public void updateImage(String userid, String fileName, BufferedImage bufferedImage) {
-//		String query = "UPDATE profile_img SET filename = ?, image = ? WHERE = ?;";
-//		try (Connection conn = getConnection();PreparedStatement pstmt = conn.prepareStatement(query);) {
-//			FileInputStream fis = new FileInputStream(bufferedImage);
-//			pstmt.setString(1, userid + "_" + fileName);
-//			pstmt.setBinaryStream(2, fis, (int) bufferedImage.length()); // Stream형의 파일 업로드
-//			pstmt.setString(3, userid);
-//			pstmt.executeUpdate();
-//		} catch (SQLException e) {
-//			e.printStackTrace();
-//		} catch (FileNotFoundException e) {
-//			e.printStackTrace();
-//		}
-//	}
+	public void updateImage(String userid, String fileName, byte[] filBytes) {
+		String query = "UPDATE profile_img SET filename = ?, image = ? WHERE = ?;";
+		try (Connection conn = getConnection();PreparedStatement pstmt = conn.prepareStatement(query);) {
+			pstmt.setString(1, userid + "_" + fileName);
+			pstmt.setBytes(2, filBytes);
+			pstmt.setString(3, userid);
+			pstmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} 
+	}
 }
