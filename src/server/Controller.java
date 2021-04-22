@@ -67,7 +67,6 @@ public class Controller implements Runnable {
 						if (object.getProtocol() == ObjectInOut.CHAT) {
 							try {
 								ChatMap.enterUser(object.getTitle(), object.getNickName(), dos);
-								userDAO.setEnterUserName(object.getTitle(), object.getNickName());
 								ChatMap.messageToAll(object.getTitle(), object.getNickName() + " 님이 입장하셨습니다.");
 								String read = null;
 								while ((read = dis.readUTF())!= null) {
