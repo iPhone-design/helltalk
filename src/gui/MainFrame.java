@@ -307,9 +307,9 @@ public class MainFrame extends JFrame {
 											model.addElement(roomlist.get(i).getTitle());
 										}
 										bufferedChatPanel.getRoomNameList().setModel(model);
+										Thread.sleep(10000);
 									}
 								}
-								Thread.sleep(5000);
 							}
 						Thread.sleep(5000);
 						} catch (IOException e) {

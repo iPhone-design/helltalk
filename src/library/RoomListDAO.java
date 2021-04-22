@@ -34,9 +34,9 @@ public class RoomListDAO {
 			pstmt.setString(2, roomMasterName);
 			pstmt.setInt(3, headCount);
 			int result = pstmt.executeUpdate();
-			return 1;
+			return result;
 		} catch (SQLException e) {
-			e.printStackTrace();
+			System.out.println("방 중복");
 		}
 		return -1;
 	}
