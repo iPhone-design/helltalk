@@ -76,9 +76,9 @@ public class BufferedChatPanel extends JPanel {
 		userListLabel.setBounds(27, 10, 101, 26);
 		roomlistPanel.getPanelBackground2().add(userListLabel);
 
-		roomlistPanel.getBacePannel().setLayout(card);
-		roomlistPanel.getBacePannel().add("roomNameList", roomlistPanel.getPanelBackground1());
-		roomlistPanel.getBacePannel().add("userNameList", roomlistPanel.getPanelBackground2());
+		roomlistPanel.getBasePannel().setLayout(card);
+		roomlistPanel.getBasePannel().add("roomNameList", roomlistPanel.getPanelBackground1());
+		roomlistPanel.getBasePannel().add("userNameList", roomlistPanel.getPanelBackground2());
 
 		enterRoomButton = new JButton("방 입장");
 		enterRoomButton.setBounds(54, 526, 120, 23);
@@ -93,11 +93,11 @@ public class BufferedChatPanel extends JPanel {
 	}
 
 	public void changeRoomNameList() throws IOException {
-		card.show(roomlistPanel.getBacePannel(), "roomNameList");
+		card.show(roomlistPanel.getBasePannel(), "roomNameList");
 	}
 
 	public void changeUserNameListl() {
-		card.show(roomlistPanel.getBacePannel(), "userNameList");
+		card.show(roomlistPanel.getBasePannel(), "userNameList");
 	}
 
 	public JButton getEnterRoomButton() {

@@ -13,7 +13,7 @@ import javax.swing.border.LineBorder;
 public class RoomListPanel extends JPanel {
 	private JPanel panelBackground1;
 	private JPanel panelBackground2;
-	private JPanel bacePannel;
+	private JPanel basePannel;
 	private Socket socket;
 	private int panelY = 5;
 	private JButton exitRoomButton;
@@ -26,7 +26,7 @@ public class RoomListPanel extends JPanel {
 	public RoomListPanel() {
 		panelBackground1 = new JPanel();
 		panelBackground2 = new JPanel();
-		bacePannel = new JPanel();
+		basePannel = new JPanel();
 	 	setPreferredSize(new Dimension(370, 580));
 	    setMaximumSize(new Dimension(370, 580));
 	    setBackground(Color.white);
@@ -41,9 +41,9 @@ public class RoomListPanel extends JPanel {
 	    panelBackground2.setBorder(new LineBorder(Color.LIGHT_GRAY, 1));
 	    panelBackground2.setLayout(null);
 	    
-	    bacePannel.setBounds(12, 51, 346, 437);
-	    bacePannel.setBorder(new LineBorder(Color.LIGHT_GRAY, 1));
-	    bacePannel.setLayout(null);
+	    basePannel.setBounds(12, 51, 346, 437);
+	    basePannel.setBorder(new LineBorder(Color.LIGHT_GRAY, 1));
+	    basePannel.setLayout(null);
 	    
 	    createRoomButton = new JButton("방 개설");
 	    createRoomButton.setBounds(54, 498, 120, 23);
@@ -61,7 +61,7 @@ public class RoomListPanel extends JPanel {
 	    exitRoomButton.setEnabled(false);
 	    
 	    add(exitRoomButton);
-	    add(bacePannel);
+	    add(basePannel);
 	    
 	    myPageButton = new JButton("마이페이지");
 		myPageButton.setBounds(206, 554, 120, 23);
@@ -116,7 +116,7 @@ public class RoomListPanel extends JPanel {
 		return panelBackground2;
 	}
 
-	public JPanel getBacePannel() {
-		return bacePannel;
+	public JPanel getBasePannel() {
+		return basePannel;
 	}
 }
