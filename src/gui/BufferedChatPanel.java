@@ -90,7 +90,6 @@ public class BufferedChatPanel extends JPanel {
 		lblNewLabel.setBounds(12, 10, 87, 31);
 		lblNewLabel.setFont(new Font("맑은 고딕", Font.BOLD, 15));
 		roomlistPanel.add(lblNewLabel);
-
 	}
 
 	public void changeRoomNameList() throws IOException {

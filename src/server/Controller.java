@@ -67,6 +67,7 @@ public class Controller implements Runnable {
 						if (object.getProtocol() == ObjectInOut.CHAT) {
 							try {
 								ChatMap.enterUser(object.getTitle(), object.getNickName(), dos);
+								userDAO.setEnterUserName(object.getTitle(), object.getNickName());
 								ChatMap.messageToAll(object.getTitle(), object.getNickName() + " 님이 입장하셨습니다.");
 								String read = null;
 								while ((read = dis.readUTF())!= null) {
@@ -142,6 +143,15 @@ public class Controller implements Runnable {
 							List<Room> roomlist = roomListDAO.RoomlistAll();
 							if (roomlist != null) {
 								object = new ObjectInOut(ObjectInOut.REFRESHROOM, roomlist);
+								oos.writeObject(object);
+								oos.flush();
+							}
+						} else if (object.getProtocol() == ObjectInOut.REFRESHUSER) {
+							System.out.println("들어옴??");
+							List<String> userlist = userDAO.getEnterUserName(object.getTitle());
+							System.out.println(userlist.toString());
+							if (userlist != null) {
+								object = new ObjectInOut(ObjectInOut.REFRESHUSER, userlist, 0);
 								oos.writeObject(object);
 								oos.flush();
 							}

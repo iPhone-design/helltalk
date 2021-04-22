@@ -11,6 +11,8 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class UserDAO {
 	private static String DRIVER = "com.mysql.jdbc.Driver";
@@ -126,6 +128,38 @@ public class UserDAO {
 					user.setStatus(dbstatus);
 					return user;
 				}
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	public int setEnterUserName(String roomName, String userName) { // 마이페이지, 프로필보기용 유저데이터 조회
+		String sql = "INSERT INTO userlist(roomName, userName) VALUES(?, ?);";
+		try (Connection conn = getConnection();PreparedStatement pstmt = conn.prepareStatement(sql);) {
+			pstmt.setString(1, roomName);
+			pstmt.setString(2, userName);
+			int result = pstmt.executeUpdate();
+			return result;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return -1;
+	}
+	
+	public List<String> getEnterUserName(String roomName) { // 마이페이지, 프로필보기용 유저데이터 조회
+		List<String> userList = new ArrayList<>();
+		String sql = "SELECT userName FROM userlist WHERE roomName = ?";
+		try (Connection conn = getConnection();PreparedStatement pstmt = conn.prepareStatement(sql);) {
+			pstmt.setString(1, roomName);
+			try (ResultSet rs = pstmt.executeQuery()) {
+				while (rs.next()) {
+					String userName = rs.getString("userName");
+					System.out.println(userName);
+					userList.add(userName);
+				}
+				return userList;
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();

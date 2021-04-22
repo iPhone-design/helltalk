@@ -2,6 +2,7 @@ package library;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Set;
 
 public class ObjectInOut implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -17,6 +18,7 @@ public class ObjectInOut implements Serializable {
 	public static final int CREATEROOM = 300;
 	public static final int REMOVEROOM = 301;
 	public static final int REFRESHROOM = 400;
+	public static final int REFRESHUSER = 401;
 	
 	private int protocol;
 	private int age;
@@ -28,6 +30,7 @@ public class ObjectInOut implements Serializable {
 	private String title;
 	private String fileName;
 	private List<Room> roomlist;
+	private List<String> userlist;
 	private byte[] fileArray;
 	private ImageFile imageFile;
 	
@@ -35,6 +38,13 @@ public class ObjectInOut implements Serializable {
 		super();
 	}
 	
+	public ObjectInOut(int protocol, List<String> userlist, int result) {
+		super();
+		this.protocol = protocol;
+		this.userlist = userlist;
+		this.result = result;
+	}
+
 	public ObjectInOut(int protocol, int result, ImageFile imageFile) {
 		super();
 		this.protocol = protocol;
@@ -95,6 +105,13 @@ public class ObjectInOut implements Serializable {
 		this.protocol = protocol;
 		this.title = title;
 		this.nickName = nickName;
+	}
+	
+	public ObjectInOut(int protocol, String title, int result, int age) {
+		super();
+		this.protocol = protocol;
+		this.title = title;
+		this.age = age;
 	}
 	
 	public ObjectInOut(int protocol, String id, String pw, int result) {
@@ -177,6 +194,10 @@ public class ObjectInOut implements Serializable {
 
 	public List<Room> getRoomlist() {
 		return roomlist;
+	}
+	
+	public List<String> getUserlist() {
+		return userlist;
 	}
 
 	public String getFileName() {

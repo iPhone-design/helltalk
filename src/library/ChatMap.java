@@ -2,17 +2,21 @@ package library;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 public class ChatMap {
 	private static Map<String, Map<String, DataOutputStream>> roomMap = new HashMap<>();
 	private static Map<String, DataOutputStream> userMap = new HashMap<>();
+	private static Map<String, String> userCurrent = new HashMap<>();
 	
 	public static void enterUser(String roomName, String id, DataOutputStream dos) {
 		synchronized (roomMap) {
 			roomMap.get(roomName).put(id, dos);
+			userCurrent.put(roomName, id);
 		}
 	}
 	
@@ -84,11 +88,10 @@ public class ChatMap {
 		return exist;
 	}
 	
-	public static void print() {
-		Iterator<String> iterator = roomMap.keySet().iterator();
-		while (iterator.hasNext()) {
-			String key = iterator.next();
-			System.out.println(key);
-		}
+	public static List<String> userList(String roomName) {
+		List<String> userlist = new ArrayList<>();
+		System.out.println(roomMap.toString());
+		System.out.println(userCurrent.toString());
+		return userlist;
 	}
 }
