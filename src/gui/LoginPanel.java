@@ -11,14 +11,10 @@ import java.io.IOException;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.text.JTextComponent;
-
-import library.LoginResult;
-import library.User;
 
 public class LoginPanel extends JPanel implements KeyListener {
 	private MainFrame frame;

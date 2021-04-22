@@ -1,24 +1,16 @@
 package library;
 
 import java.awt.Image;
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.sql.Blob;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
-import javax.imageio.ImageIO;
-
-import com.mysql.cj.result.BinaryStreamValueFactory;
 
 public class UserDAO {
 	private static String DRIVER = "com.mysql.jdbc.Driver";

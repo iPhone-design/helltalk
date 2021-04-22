@@ -1,37 +1,32 @@
 package gui;
 
+import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.ListModel;
-import javax.swing.ListSelectionModel;
-import javax.swing.JLabel;
-import javax.swing.JLayeredPane;
-
 import java.awt.Font;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import java.io.IOException;
 import java.net.Socket;
 
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JList;
-import javax.swing.JComboBox;
-import javax.swing.AbstractListModel;
-import javax.swing.JTextField;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
 
-public class BufferedChatPanel extends JPanel{
+public class BufferedChatPanel extends JPanel {
 	private ChatPanel chatPanel;
 	private RoomListPanel roomlistPanel;
 	private String roomTitle;
 	private Socket socket;
 	private JList roomNameList;
+	private JList userNameList;
 	private JButton enterRoomButton;
-	private JLabel lblNewLabel_1;
+	private CardLayout card;
 
 	public BufferedChatPanel(String nickname) {
+		card = new CardLayout();
 		roomlistPanel = new RoomListPanel();
 		roomlistPanel.getAccountNicNameText().setSize(259, 30);
 		roomlistPanel.getAccountNicNameText().setLocation(99, 10);
@@ -41,7 +36,6 @@ public class BufferedChatPanel extends JPanel{
 		setMaximumSize(new Dimension(1000, 600));
 		setBackground(new Color(255, 228, 225));
 		setLayout(null);
-		 
 		chatPanel = new ChatPanel();
 		chatPanel.getTextField().setLocation(12, 508);
 		chatPanel.getScroll().setLocation(12, 105);
@@ -53,41 +47,62 @@ public class BufferedChatPanel extends JPanel{
 		chatPanel.add(button);
 		roomlistPanel.setBounds(610, 10, 370, 580);
 		add(roomlistPanel);
-		roomlistPanel.getPanelBackground().setLayout(null);
-		
-		
+
 		roomNameList = new JList();
 		roomNameList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		roomNameList.setFont(new Font("맑은 고딕", Font.BOLD, 15));
-		JScrollPane scroll = new JScrollPane(roomNameList);
-		scroll.setBounds(27, 40, 292, 370);
-		scroll.setVerticalScrollBarPolicy(scroll.VERTICAL_SCROLLBAR_AS_NEEDED);
-		roomlistPanel.getPanelBackground().add(scroll);
-		
-		lblNewLabel_1 = new JLabel("[ 방 리스트 ]");
-		lblNewLabel_1.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel_1.setFont(new Font("맑은 고딕", Font.BOLD, 15));
-		lblNewLabel_1.setBounds(27, 10, 101, 26);
-		roomlistPanel.getPanelBackground().add(lblNewLabel_1);
-		
+		JScrollPane scrollRoom = new JScrollPane(roomNameList);
+		scrollRoom.setBounds(27, 40, 292, 370);
+		scrollRoom.setVerticalScrollBarPolicy(scrollRoom.VERTICAL_SCROLLBAR_AS_NEEDED);
+		roomlistPanel.getPanelBackground1().add(scrollRoom);
+
+		userNameList = new JList();
+		userNameList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		userNameList.setFont(new Font("맑은 고딕", Font.BOLD, 15));
+		JScrollPane scrollUser = new JScrollPane(userNameList);
+		scrollUser.setBounds(27, 40, 292, 370);
+		scrollUser.setVerticalScrollBarPolicy(scrollUser.VERTICAL_SCROLLBAR_AS_NEEDED);
+		roomlistPanel.getPanelBackground2().add(scrollUser);
+
+		JLabel roomListLabel = new JLabel("[ 방 리스트 ]");
+		roomListLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		roomListLabel.setFont(new Font("맑은 고딕", Font.BOLD, 15));
+		roomListLabel.setBounds(27, 10, 101, 26);
+		roomlistPanel.getPanelBackground1().add(roomListLabel);
+
+		JLabel userListLabel = new JLabel("[ 유저 리스트 ]");
+		userListLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		userListLabel.setFont(new Font("맑은 고딕", Font.BOLD, 15));
+		userListLabel.setBounds(27, 10, 101, 26);
+		roomlistPanel.getPanelBackground2().add(userListLabel);
+
+		roomlistPanel.getBacePannel().setLayout(card);
+		roomlistPanel.getBacePannel().add("roomNameList", roomlistPanel.getPanelBackground1());
+		roomlistPanel.getBacePannel().add("userNameList", roomlistPanel.getPanelBackground2());
+
 		enterRoomButton = new JButton("방 입장");
 		enterRoomButton.setBounds(54, 526, 120, 23);
 		enterRoomButton.setFont(new Font("맑은 고딕", Font.BOLD, 15));
 		roomlistPanel.add(enterRoomButton);
-		
+
 		JLabel lblNewLabel = new JLabel("닉네임 : ");
 		lblNewLabel.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblNewLabel.setBounds(12, 10, 87, 31);
 		lblNewLabel.setFont(new Font("맑은 고딕", Font.BOLD, 15));
 		roomlistPanel.add(lblNewLabel);
-		
-	}
-	public JButton getEnterRoomButton() {
-		return enterRoomButton;
+
 	}
 
-	public JList getRoomNameList() {
-		return roomNameList;
+	public void changeRoomNameList() throws IOException {
+		card.show(roomlistPanel.getBacePannel(), "roomNameList");
+	}
+
+	public void changeUserNameListl() {
+		card.show(roomlistPanel.getBacePannel(), "userNameList");
+	}
+
+	public JButton getEnterRoomButton() {
+		return enterRoomButton;
 	}
 
 	public ChatPanel getChatPanel() {
@@ -112,5 +127,17 @@ public class BufferedChatPanel extends JPanel{
 
 	public void setRoomTitle(String roomTitle) {
 		this.roomTitle = roomTitle;
+	}
+
+	public JList getRoomNameList() {
+		return roomNameList;
+	}
+
+	public JList getUserNameList() {
+		return userNameList;
+	}
+
+	public CardLayout getCard() {
+		return card;
 	}
 }
