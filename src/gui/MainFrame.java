@@ -292,7 +292,6 @@ public class MainFrame extends JFrame {
 					while(true) {
 						try {
 							while (stop) {
-								System.out.println("동작중?");
 								DefaultListModel<String> model = new DefaultListModel<String>();
 								object = new ObjectInOut(ObjectInOut.REFRESHROOM);
 								oos.writeObject(object);
