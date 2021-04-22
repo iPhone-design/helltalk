@@ -23,6 +23,7 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.text.JTextComponent;
 import javax.swing.text.NumberFormatter;
+import javax.swing.SwingConstants;
 
 public class RegistrationPanel extends JPanel implements KeyListener {
 	private List<JTextField> list = new ArrayList<>();
@@ -40,24 +41,29 @@ public class RegistrationPanel extends JPanel implements KeyListener {
 		
 		setBackground(new Color(255, 228, 225));
 		JLabel idLbl = new JLabel("ID");
-		idLbl.setFont(new Font("함초롬바탕", Font.PLAIN, 23));
+		idLbl.setHorizontalAlignment(SwingConstants.RIGHT);
+		idLbl.setFont(new Font("맑은 고딕", Font.PLAIN, 23));
 		idLbl.setBounds(332, 112, 36, 52);
 		
 		JLabel pwLbl = new JLabel("PASSWORD");
-		pwLbl.setFont(new Font("함초롬바탕", Font.PLAIN, 23));
+		pwLbl.setHorizontalAlignment(SwingConstants.RIGHT);
+		pwLbl.setFont(new Font("맑은 고딕", Font.PLAIN, 23));
 		pwLbl.setBounds(234, 193, 134, 52);
 		
 		JLabel conPwLbl = new JLabel("PASSWORD 확인");
-		conPwLbl.setFont(new Font("함초롬바탕", Font.PLAIN, 23));
-		conPwLbl.setBounds(189, 260, 179, 61);
+		conPwLbl.setHorizontalAlignment(SwingConstants.RIGHT);
+		conPwLbl.setFont(new Font("맑은 고딕", Font.PLAIN, 23));
+		conPwLbl.setBounds(176, 273, 192, 61);
 		
 		JLabel nickNameLbl = new JLabel("닉네임");
-		nickNameLbl.setFont(new Font("함초롬바탕", Font.PLAIN, 23));
-		nickNameLbl.setBounds(300, 345, 68, 52);
+		nickNameLbl.setHorizontalAlignment(SwingConstants.RIGHT);
+		nickNameLbl.setFont(new Font("맑은 고딕", Font.PLAIN, 23));
+		nickNameLbl.setBounds(281, 354, 87, 52);
 		
 		JLabel ageLbl = new JLabel("나이");
-		ageLbl.setFont(new Font("함초롬바탕", Font.PLAIN, 23));
-		ageLbl.setBounds(318, 427, 56, 52);
+		ageLbl.setHorizontalAlignment(SwingConstants.RIGHT);
+		ageLbl.setFont(new Font("맑은 고딕", Font.PLAIN, 23));
+		ageLbl.setBounds(312, 436, 56, 52);
 		
 		idText = new JTextField();
 		idText.setFont(new Font("굴림", Font.PLAIN, 16));
@@ -115,19 +121,19 @@ public class RegistrationPanel extends JPanel implements KeyListener {
 		setMaximumSize(new Dimension(1000, 600));
 		
 		JLabel lblNewLabel = new JLabel("회원가입");
-		lblNewLabel.setFont(new Font("함초롬바탕", Font.BOLD, 30));
+		lblNewLabel.setFont(new Font("맑은 고딕", Font.BOLD, 30));
 		lblNewLabel.setBounds(457, 23, 124, 45);
 		add(lblNewLabel);
 		
 		addUserButton = new JButton("회원가입");
-		addUserButton.setFont(new Font("함초롬바탕", Font.PLAIN, 20));
+		addUserButton.setFont(new Font("맑은 고딕", Font.PLAIN, 20));
 		addUserButton.setBackground(new Color(255, 182, 193));
 		addUserButton.setForeground(new Color(255, 255, 255));
 		addUserButton.setBounds(457, 520, 150, 45);
 		add(addUserButton);
 		
 		JButton btnNewButton_1 = new JButton("홈");
-		btnNewButton_1.setFont(new Font("함초롬바탕", Font.PLAIN, 20));
+		btnNewButton_1.setFont(new Font("맑은 고딕", Font.PLAIN, 20));
 		btnNewButton_1.setBackground(new Color(255, 182, 193));
 		btnNewButton_1.setForeground(new Color(255, 255, 255));
 		btnNewButton_1.setBounds(27, 23, 70, 70);
