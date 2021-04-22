@@ -90,6 +90,18 @@ public class BufferedChatPanel extends JPanel {
 		lblNewLabel.setBounds(12, 10, 87, 31);
 		lblNewLabel.setFont(new Font("맑은 고딕", Font.BOLD, 15));
 		roomlistPanel.add(lblNewLabel);
+		
+		JLabel whisper = new JLabel("/w 닉네임 할말");
+		whisper.setHorizontalAlignment(SwingConstants.CENTER);
+		whisper.setFont(new Font("맑은 고딕", Font.BOLD, 40));
+		whisper.setBounds(100, 230, 400, 200);
+		add(whisper);
+		
+		JLabel title = new JLabel("[ 귓속말 하는 방법 ]");
+		title.setBounds(100, 159, 400, 50);
+		title.setHorizontalAlignment(SwingConstants.CENTER);
+		title.setFont(new Font("맑은 고딕", Font.BOLD, 40));
+		add(title);
 	}
 
 	public void changeRoomNameList() throws IOException {
