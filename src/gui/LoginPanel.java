@@ -54,19 +54,19 @@ public class LoginPanel extends JPanel implements KeyListener {
 		setMaximumSize(new Dimension(1000, 600));
 		
 		JLabel lblNewLabel = new JLabel("Login");
-		lblNewLabel.setFont(new Font("함초롬바탕", Font.BOLD, 30));
+		lblNewLabel.setFont(new Font("맑은 고딕", Font.BOLD, 30));
 		lblNewLabel.setBounds(495, 33, 400, 40);
 		add(lblNewLabel);
 		
 		loginBtn = new JButton("로그인");
-		loginBtn.setFont(new Font("함초롬바탕", Font.PLAIN, 20));
+		loginBtn.setFont(new Font("맑은 고딕", Font.PLAIN, 20));
 		loginBtn.setBackground(new Color(255, 182, 193));
 		loginBtn.setForeground(new Color(255, 255, 255));
 		loginBtn.setBounds(583, 381, 125, 45);
 		add(loginBtn);
 		
 		JButton btnNewButton = new JButton("홈");
-		btnNewButton.setFont(new Font("함초롬바탕", Font.PLAIN, 20));
+		btnNewButton.setFont(new Font("맑은 고딕", Font.PLAIN, 20));
 		btnNewButton.setBackground(new Color(255, 182, 193));
 		btnNewButton.setForeground(new Color(255, 255, 255));
 		btnNewButton.setBounds(23, 21, 70, 70);
