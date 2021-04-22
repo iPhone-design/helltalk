@@ -163,8 +163,11 @@ public class Controller implements Runnable {
 							oos.flush();
 						}
 					} catch (ClassNotFoundException e) {
+//						e.printStackTrace();
 						break;
 					} catch (IOException e) {
+//						e.printStackTrace();
+						System.out.println("클라이언트 비정상적 종료.");
 						break;
 					}
 				}
