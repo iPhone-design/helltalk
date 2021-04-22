@@ -17,5 +17,5 @@ public class ImageFile implements Serializable {
 	
 	public byte[] getImageByte() {
 		return imageByte;
-	}
+	}	
 }

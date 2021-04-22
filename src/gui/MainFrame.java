@@ -293,10 +293,8 @@ public class MainFrame extends JFrame {
 				@Override
 				public void run() {
 					while(true) {
-						System.out.println("방리스트 새로고침 밖");
 						try {
 							while (stopRoomThread) {
-								System.out.println("방리스트 새로고침 안");
 								DefaultListModel<String> model = new DefaultListModel<String>();
 								object = new ObjectInOut(ObjectInOut.REFRESHROOM);
 								oos.writeObject(object);

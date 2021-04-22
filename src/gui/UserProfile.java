@@ -17,7 +17,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import javax.swing.ImageIcon;
@@ -284,13 +283,6 @@ public class UserProfile extends JDialog implements WindowListener {
 							baos.write(buf, 0, len);
 						}
 						byte[] fileArray = baos.toByteArray();
-						////////////////////////////
-						BufferedImage bfImg = ImageIO.read(imageFile);
-						baos = new ByteArrayOutputStream();
-						ImageIO.write(bfImg, "png", baos);
-						
-						baos.flush();
-						////////////////////////////
 						object = new ObjectInOut(ObjectInOut.IMAGECHANGE, id, chooser.getSelectedFile().getName(), fileArray);
 						oos.writeObject(object);
 						oos.flush();
