@@ -1,50 +1,43 @@
 package gui;
 
 import java.awt.BorderLayout;
-import java.awt.FlowLayout;
-
-import javax.imageio.ImageIO;
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JDialog;
-import javax.swing.JFileChooser;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.JPasswordField;
-import javax.swing.border.EmptyBorder;
-
-import com.mysql.cj.result.BinaryStreamValueFactory;
-
-import library.ObjectInOut;
-import library.User;
-
-import javax.swing.SwingConstants;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.Serializable;
-import java.net.Socket;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.awt.event.ActionEvent;
-import java.awt.Color;
-import javax.swing.JTextField;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.net.Socket;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JDialog;
+import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JPasswordField;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
+import javax.swing.border.EmptyBorder;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
-import java.awt.Font;
-import java.awt.Image;
+import library.ImageFile;
+import library.ObjectInOut;
+import library.User;
 
-public class UserProfile extends JDialog {
+public class UserProfile extends JDialog implements WindowListener {
 	private JPanel contentPanel = new JPanel();
 	private JPasswordField tfd_pw;
 	private JPasswordField tfd_confirm_pw;
@@ -180,6 +173,8 @@ public class UserProfile extends JDialog {
 		userLeave.setBounds(242, 382, 90, 59);
 		contentPanel.add(userLeave);
 		
+		addWindowListener(this);
+		
 		// 정보 수정
 		infoChangeButton.addActionListener(new ActionListener() {
 			@Override
@@ -251,6 +246,7 @@ public class UserProfile extends JDialog {
 	         @Override
 	         public void actionPerformed(ActionEvent e) {
 	            JDialog profileImage = new JDialog();
+	            profileImage.setLocationRelativeTo(mainFrame);
 	            JLabel jlabel = new JLabel();
 	            jlabel.setIcon(btnImage);
 	            profileImage.getContentPane().add(jlabel);
@@ -265,23 +261,25 @@ public class UserProfile extends JDialog {
 		// 이미지 변경
 		imageFileButton.addActionListener(new ActionListener() {
 			private BufferedImage bufferedImage;
-
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				JFileChooser chooser = new JFileChooser(".");
+				JFileChooser chooser = new JFileChooser(".\\default_img\\");
+				FileNameExtensionFilter filter = new FileNameExtensionFilter("이미지 파일", "png", "jpg", "jpeg", "gif");
+				chooser.addChoosableFileFilter(filter);
+				chooser.setAcceptAllFileFilterUsed(false);
 				int i = chooser.showOpenDialog(null);
 				FileInputStream fis;
+				File filePath;
 				ByteArrayOutputStream baos = new ByteArrayOutputStream();
 				if (i == JFileChooser.APPROVE_OPTION) {
 					try {
+						filePath = new File(chooser.getSelectedFile().getPath());
 						imageFile = new File(chooser.getSelectedFile().getPath());
 						btn_profile.setIcon(new ImageIcon(imageFile.getPath()));
 						btnImage = new ImageIcon(imageFile.getPath());
-						fis = new FileInputStream(imageFile);
-						
-						byte[] buf = new byte[1024 * 4];
+						fis = new FileInputStream(filePath);
 						int len = 0;
-						
+						byte[] buf = new byte[(int) filePath.length()];
 						while ((len = fis.read(buf)) != -1) {
 							baos.write(buf, 0, len);
 						}
@@ -296,7 +294,14 @@ public class UserProfile extends JDialog {
 						object = new ObjectInOut(ObjectInOut.IMAGECHANGE, id, chooser.getSelectedFile().getName(), fileArray);
 						oos.writeObject(object);
 						oos.flush();
+						object = (ObjectInOut) ois.readObject();
+						ImageFile imageFile = object.getImageFile();
+						FileOutputStream fos = new FileOutputStream(new File(".\\img\\" + imageFile.getImageName()));
+						fos.write(imageFile.getImageByte());
+						showMessage("이미지 변경", "이미지 변경 완료!");
 					} catch (IOException e1) {
+						e1.printStackTrace();
+					} catch (ClassNotFoundException e1) {
 						e1.printStackTrace();
 					}
 				}
@@ -347,5 +352,39 @@ public class UserProfile extends JDialog {
 				, getPassword(tfd_pw.getPassword())
 				, tfd_nickName.getText());
 		return user;
+	}
+
+	@Override
+	public void windowOpened(WindowEvent e) {
+		
+	}
+
+	@Override
+	public void windowClosing(WindowEvent e) {
+		mainFrame.setStop(true);
+	}
+
+	@Override
+	public void windowClosed(WindowEvent e) {
+	}
+
+	@Override
+	public void windowIconified(WindowEvent e) {
+		
+	}
+
+	@Override
+	public void windowDeiconified(WindowEvent e) {
+		
+	}
+
+	@Override
+	public void windowActivated(WindowEvent e) {
+		
+	}
+
+	@Override
+	public void windowDeactivated(WindowEvent e) {
+ 		mainFrame.setStop(true);
 	}
 }

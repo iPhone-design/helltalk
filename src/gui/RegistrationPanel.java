@@ -8,10 +8,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.io.IOException;
-import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -26,13 +23,6 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.text.JTextComponent;
 import javax.swing.text.NumberFormatter;
-
-import com.mysql.cj.protocol.Warning;
-
-import client.SignUpClient;
-import library.LoginResult;
-import library.ObjectInOut;
-import library.User;
 
 public class RegistrationPanel extends JPanel implements KeyListener {
 	private List<JTextField> list = new ArrayList<>();

@@ -1,24 +1,25 @@
 package server;
 
+import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
-import java.awt.Image;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.Serializable;
 import java.net.Socket;
 import java.util.List;
 
 import javax.imageio.ImageIO;
 
-import gui.BufferedChatPanel;
 import library.ChatMap;
+import library.ImageFile;
 import library.ObjectInOut;
 import library.Room;
+import library.RoomListDAO;
 import library.User;
+import library.UserDAO;
 
 public class Controller implements Runnable {
 	private Socket socket;
@@ -35,7 +36,7 @@ public class Controller implements Runnable {
 	public Controller(Socket socket) {
 		userDAO = new UserDAO();
 		roomListDAO = new RoomListDAO();
-		file = new File(".\\img\\img.png");
+		file = new File(".\\default_img\\img.png");
 		this.socket = socket;
 		try {
 			dos = new DataOutputStream(socket.getOutputStream());
@@ -45,9 +46,12 @@ public class Controller implements Runnable {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		
 		List<Room> roomlist = roomListDAO.RoomlistAll();
-		for (int i = 0; i <= roomlist.size() - 1; i++) {
-			ChatMap.createRoom(roomlist.get(i).getTitle());
+		if (roomlist != null) {
+			for (int i = 0; i <= roomlist.size() - 1; i++) {
+				ChatMap.createRoom(roomlist.get(i).getTitle());
+			}
 		}
 	}
 
@@ -85,7 +89,8 @@ public class Controller implements Runnable {
 							if ((userDAO.idCheck(object.getId())) == 0) {
 								userDAO.addUser(object.getId(), object.getPw(), object.getNickName(), object.getAge());
 								userDAO.insertImage(object.getId(), "img.png", file);
-								object = new ObjectInOut(ObjectInOut.REGISTRATION, 0);
+								ImageFile imageFile = userDAO.extractImage(object.getId());
+								object = new ObjectInOut(ObjectInOut.REGISTRATION, 0, imageFile);
 								oos.writeObject(object);
 								oos.flush();
 							} else if ((userDAO.idCheck(object.getId())) == 1) {
@@ -135,21 +140,27 @@ public class Controller implements Runnable {
 							oos.flush();
 						} else if (object.getProtocol() == ObjectInOut.REFRESHROOM) {
 							List<Room> roomlist = roomListDAO.RoomlistAll();
-							object = new ObjectInOut(ObjectInOut.REFRESHROOM, roomlist);
-							oos.writeObject(object);
-							oos.flush();
+							if (roomlist != null) {
+								object = new ObjectInOut(ObjectInOut.REFRESHROOM, roomlist);
+								oos.writeObject(object);
+								oos.flush();
+							}
 						} else if (object.getProtocol() == ObjectInOut.IMAGELOAD) {
-							String fileName = userDAO.extractImage(object.getId());
+							String fileName = userDAO.extractImageName(object.getId());
 							object = new ObjectInOut(ObjectInOut.IMAGELOAD, fileName, 0);
 							oos.writeObject(object);
 							oos.flush();
 						} else if (object.getProtocol() == ObjectInOut.IMAGECHANGE) {
-							object = (ObjectInOut) ois.readObject();
-							object.getFileArray();
+							File tempFile = new File(".\\img\\" + object.getId() + "_" + object.getFileName());
+							ByteArrayInputStream bais = new ByteArrayInputStream(object.getFileArray());
 							String extension = object.getFileName().substring(object.getFileName().indexOf('.') + 1);
-							file = new File(".\\img\\" + object.getFileName());
-							ImageIO.write(object.getBufferedImage(), extension, file);
-//							userDAO.updateImage(object.getId(), object.getFileName(), object.getBufferedImage());
+							BufferedImage bfImg = ImageIO.read(bais);
+				          	ImageIO.write(bfImg , extension, tempFile);
+				          	userDAO.updateImage(object.getId(), object.getFileName(), tempFile);
+				          	ImageFile imageFile = userDAO.extractImage(object.getId());
+							object = new ObjectInOut(ObjectInOut.IMAGECHANGE, 0, imageFile);
+							oos.writeObject(object);
+							oos.flush();
 						}
 					} catch (ClassNotFoundException e) {
 //						e.printStackTrace();

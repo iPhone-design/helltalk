@@ -7,20 +7,19 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 import client.ChatClient;
-import client.SignUpClient;
-import library.ChatMap;
+import library.ImageFile;
 import library.ObjectInOut;
 import library.Room;
 
@@ -36,7 +35,6 @@ public class MainFrame extends JFrame {
 	private FirstPanel firstPanel;
 	private LoginPanel loginPanel;
 	private BufferedChatPanel bufferedChatPanel;
-	private SignUpClient signUpClient;
 	private ObjectInOut object;
 	private UserProfile userProfile;
 	private CreateRoomFrame createRoomFrame;
@@ -52,7 +50,7 @@ public class MainFrame extends JFrame {
 		bufferedChatPanel = new BufferedChatPanel("닉네임");
 		registrationPanel = new RegistrationPanel(this, socket);
 		firstPanel = new FirstPanel(this, registrationPanel);
-		loginPanel = new LoginPanel(MainFrame.this, signUpClient);
+		loginPanel = new LoginPanel(MainFrame.this);
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1000, 650);
@@ -100,6 +98,7 @@ public class MainFrame extends JFrame {
 						bufferedChatPanel.getRoomlistPanel().getExitRoomButton().setEnabled(false);
 						bufferedChatPanel.getChatPanel().setVisible(false);
 						bufferedChatPanel.getChatPanel().getTextArea().setText("");
+						bufferedChatPanel.changeRoomNameList();
 						stop = true;
 					} catch (IOException e1) {
 						e1.printStackTrace();
@@ -135,11 +134,14 @@ public class MainFrame extends JFrame {
 								if (object.getResult() == 0) {
 									JOptionPane.showMessageDialog(registrationPanel, "로그인 실패 존재하지 않는 계정", "로그인", JOptionPane.WARNING_MESSAGE);
 								} else if (object.getResult() == 1) {
-									JOptionPane.showMessageDialog(registrationPanel, "로그인 성공", "로그인", JOptionPane.INFORMATION_MESSAGE);
-									bufferedChatPanel.getRoomlistPanel().getAccountIdText().setText(object.getId());
-									bufferedChatPanel.getRoomlistPanel().getAccountNicNameText().setText(object.getNickName());
-									changeChatPanel();
-//									loginPanel.clearField();
+									System.out.println(object.getId() + " " + object.getNickName());
+									if (object.getId() != null && object.getNickName() != null) {
+										bufferedChatPanel.getRoomlistPanel().getAccountIdText().setText(object.getId());
+										bufferedChatPanel.getRoomlistPanel().getAccountNicNameText().setText(object.getNickName());
+										JOptionPane.showMessageDialog(registrationPanel, "로그인 성공", "로그인", JOptionPane.INFORMATION_MESSAGE);
+										changeChatPanel();
+										loginPanel.clearField();
+									}
 								} else if (object.getResult() == 2) {
 									JOptionPane.showMessageDialog(registrationPanel, "비밀번호가 틀렸습니다", "로그인", JOptionPane.WARNING_MESSAGE);
 								}
@@ -175,13 +177,18 @@ public class MainFrame extends JFrame {
 									Integer.valueOf(registrationPanel.getAgeText().getText()));
 							oos.writeObject(object);
 							oos.flush();
-							
 							object = (ObjectInOut) ois.readObject();
 							if (object.getProtocol() == ObjectInOut.REGISTRATION) {
 								if (object.getResult() == 0) {
-									JOptionPane.showMessageDialog(registrationPanel, "회원가입 성공", "회원가입", JOptionPane.INFORMATION_MESSAGE);
-									registrationPanel.clearField();
-									changeLoginPanel();
+									ImageFile imageFile = object.getImageFile();
+									if (imageFile.getImageName() != null) {
+										JOptionPane.showMessageDialog(registrationPanel, "회원가입 성공", "회원가입", JOptionPane.INFORMATION_MESSAGE);
+										File file = new File(".\\img\\" + imageFile.getImageName());
+										FileOutputStream fos = new FileOutputStream(file);
+										fos.write(imageFile.getImageByte());
+										registrationPanel.clearField();
+										changeLoginPanel();
+									}
 								} else if (object.getResult() == 1) {
 									JOptionPane.showMessageDialog(registrationPanel, "이미 존재하는 계정 입니다.", "회원가입", JOptionPane.WARNING_MESSAGE);
 								}
@@ -200,6 +207,7 @@ public class MainFrame extends JFrame {
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					try {
+						stop = false;
 						object = new ObjectInOut(ObjectInOut.MYPAGE, bufferedChatPanel.getRoomlistPanel().getAccountIdText().getText());
 						oos.writeObject(object);
 						oos.flush();
@@ -266,6 +274,7 @@ public class MainFrame extends JFrame {
 							bufferedChatPanel.getRoomlistPanel().getMyPageButton().setEnabled(false);
 							bufferedChatPanel.getRoomlistPanel().getLogoutButton().setEnabled(false);
 							bufferedChatPanel.getEnterRoomButton().setEnabled(false);
+							bufferedChatPanel.changeUserNameListl();
 							stop = false;
 						}
 					} catch (IOException e1) {
@@ -288,10 +297,12 @@ public class MainFrame extends JFrame {
 								object = (ObjectInOut) ois.readObject();
 								if (object.getProtocol() == ObjectInOut.REFRESHROOM) {
 									java.util.List<Room> roomlist = object.getRoomlist();
-									for (int i = 0; i <= roomlist.size() - 1; i++) {
-										model.addElement(roomlist.get(i).getTitle());
+									if (roomlist != null) {
+										for (int i = 0; i <= roomlist.size() - 1; i++) {
+											model.addElement(roomlist.get(i).getTitle());
+										}
+										bufferedChatPanel.getRoomNameList().setModel(model);
 									}
-									bufferedChatPanel.getRoomNameList().setModel(model);
 								}
 								Thread.sleep(5000);
 							}
@@ -354,5 +365,9 @@ public class MainFrame extends JFrame {
 
 	public BufferedChatPanel getBufferedChatPanel() {
 		return bufferedChatPanel;
+	}
+	
+	public void setStop(boolean stop) {
+		this.stop = stop;
 	}
 }
