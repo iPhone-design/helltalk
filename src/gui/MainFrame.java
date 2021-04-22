@@ -39,10 +39,13 @@ public class MainFrame extends JFrame {
 	private UserProfile userProfile;
 	private CreateRoomFrame createRoomFrame;
 	private Thread refreshRoomList;
-	private boolean stop;
+	private Thread refreshUserList;
+	private boolean stopRoomThread;
+	private boolean stopUserThread;
 
 	public MainFrame(Socket socket) {
-		stop = true;
+		stopRoomThread = true;
+		stopUserThread = false;
 		this.socket = socket;
 		setLayout(cards);
 		setResizable(false);
@@ -99,7 +102,8 @@ public class MainFrame extends JFrame {
 						bufferedChatPanel.getChatPanel().setVisible(false);
 						bufferedChatPanel.getChatPanel().getTextArea().setText("");
 						bufferedChatPanel.changeRoomNameList();
-						stop = true;
+						stopUserThread = false;
+						stopRoomThread = true;
 					} catch (IOException e1) {
 						e1.printStackTrace();
 					}
@@ -207,7 +211,7 @@ public class MainFrame extends JFrame {
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					try {
-						stop = false;
+						stopRoomThread = false;
 						object = new ObjectInOut(ObjectInOut.MYPAGE, bufferedChatPanel.getRoomlistPanel().getAccountIdText().getText());
 						oos.writeObject(object);
 						oos.flush();
@@ -275,7 +279,8 @@ public class MainFrame extends JFrame {
 							bufferedChatPanel.getRoomlistPanel().getLogoutButton().setEnabled(false);
 							bufferedChatPanel.getEnterRoomButton().setEnabled(false);
 							bufferedChatPanel.changeUserNameListl();
-							stop = false;
+							stopUserThread = true;
+							stopRoomThread = false;
 						}
 					} catch (IOException e1) {
 						e1.printStackTrace();
@@ -288,8 +293,10 @@ public class MainFrame extends JFrame {
 				@Override
 				public void run() {
 					while(true) {
+						System.out.println("방리스트 새로고침 밖");
 						try {
-							while (stop) {
+							while (stopRoomThread) {
+								System.out.println("방리스트 새로고침 안");
 								DefaultListModel<String> model = new DefaultListModel<String>();
 								object = new ObjectInOut(ObjectInOut.REFRESHROOM);
 								oos.writeObject(object);
@@ -318,6 +325,48 @@ public class MainFrame extends JFrame {
 				}
 			});
 		    refreshRoomList.start();
+		    
+		    //TODO
+//		    // 유저 새로고침 구현 미완료
+//			refreshUserList = new Thread(new Runnable() {
+//				@Override
+//				public void run() {
+//					while(true) {
+//						System.out.println("유저리스트 새로고침 밖");
+//						try {
+//							while (stopUserThread) {
+//								System.out.println("유저리스트 새로고침 안");
+//								DefaultListModel<String> model = new DefaultListModel<String>();
+//								object = new ObjectInOut(ObjectInOut.REFRESHUSER, "tets", 0 , 0);
+//								oos.writeObject(object);
+//								System.out.println("보냄?");
+//								oos.flush();
+//								object = (ObjectInOut) ois.readObject();
+//								if (object.getProtocol() == ObjectInOut.REFRESHUSER) {
+//									System.out.println("받음");
+//									java.util.List<String> userList = object.getUserlist();
+//									if (userList != null) {
+//										for (int i = 0; i <= userList.size() - 1; i++) {
+//											model.addElement(userList.get(i));
+//											System.out.println(userList.get(i));
+//										}
+//										bufferedChatPanel.getUserNameList().setModel(model);
+//									}
+//								}
+//								Thread.sleep(5000);
+//							}
+//						Thread.sleep(5000);
+//						} catch (IOException e) {
+//							e.printStackTrace();
+//						} catch (ClassNotFoundException e) {
+//							e.printStackTrace();
+//						} catch (InterruptedException e) {
+//							e.printStackTrace();
+//						}
+//					}
+//				}
+//			});
+//			refreshUserList.start();
 		} catch (IOException e) {
 			e.printStackTrace();
 		} 
@@ -368,6 +417,6 @@ public class MainFrame extends JFrame {
 	}
 	
 	public void setStop(boolean stop) {
-		this.stop = stop;
+		this.stopRoomThread = stop;
 	}
 }
