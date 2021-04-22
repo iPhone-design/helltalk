@@ -2,24 +2,16 @@ package gui;
 
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
-import javax.swing.JTextField;
-
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JTextField;
 import javax.swing.SwingConstants;
-
-import library.ObjectInOut;
-import javax.swing.JComboBox;
-import javax.swing.DefaultComboBoxModel;
 
 public class CreateRoomFrame extends JDialog {
 	private JFrame mainFrame;

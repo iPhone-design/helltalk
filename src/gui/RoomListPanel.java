@@ -3,58 +3,47 @@ package gui;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.swing.JPanel;
-import javax.swing.border.LineBorder;
-
-import client.ChatClient;
-import library.ChatMap;
-import library.ObjectInOut;
-import library.Room;
-import library.RoomListDAO;
-import server.Controller;
-import server.Server;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
-import javax.swing.JTextField;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
+import javax.swing.JPanel;
+import javax.swing.border.LineBorder;
 
 public class RoomListPanel extends JPanel {
-	private JPanel panelBackground;
+	private JPanel panelBackground1;
+	private JPanel panelBackground2;
+	private JPanel bacePannel;
 	private Socket socket;
 	private int panelY = 5;
 	private JButton exitRoomButton;
 	private JButton logoutButton;
-	private RoomPanel roomPanel;
 	private JLabel accountIdText;
 	private JButton myPageButton;
 	private JButton createRoomButton;
 	private JLabel accountNicNameText;
 	
 	public RoomListPanel() {
-		panelBackground = new JPanel();
+		panelBackground1 = new JPanel();
+		panelBackground2 = new JPanel();
+		bacePannel = new JPanel();
 	 	setPreferredSize(new Dimension(370, 580));
 	    setMaximumSize(new Dimension(370, 580));
 	    setBackground(Color.white);
 	    setBorder(new LineBorder(Color.LIGHT_GRAY, 1));
 	    setLayout(null);
-	     
-	    panelBackground.setBounds(12, 51, 346, 437);
-	    panelBackground.setBorder(new LineBorder(Color.LIGHT_GRAY, 1));
-	    panelBackground.setLayout(null);
+	    
+	    panelBackground1.setBounds(12, 51, 346, 437);
+	    panelBackground1.setBorder(new LineBorder(Color.LIGHT_GRAY, 1));
+	    panelBackground1.setLayout(null);
+	    
+	    panelBackground2.setBounds(12, 51, 346, 437);
+	    panelBackground2.setBorder(new LineBorder(Color.LIGHT_GRAY, 1));
+	    panelBackground2.setLayout(null);
+	    
+	    bacePannel.setBounds(12, 51, 346, 437);
+	    bacePannel.setBorder(new LineBorder(Color.LIGHT_GRAY, 1));
+	    bacePannel.setLayout(null);
 	    
 	    createRoomButton = new JButton("방 개설");
 	    createRoomButton.setBounds(54, 498, 120, 23);
@@ -70,9 +59,9 @@ public class RoomListPanel extends JPanel {
 	    exitRoomButton.setBounds(206, 526, 120, 23);
 	    exitRoomButton.setFont(new Font("맑은 고딕", Font.BOLD, 15));
 	    exitRoomButton.setEnabled(false);
-	    add(exitRoomButton);
 	    
-	    add(panelBackground);
+	    add(exitRoomButton);
+	    add(bacePannel);
 	    
 	    myPageButton = new JButton("마이페이지");
 		myPageButton.setBounds(206, 554, 120, 23);
@@ -119,11 +108,15 @@ public class RoomListPanel extends JPanel {
 		return logoutButton;
 	}
 
-	public RoomPanel getRoomPanel() {
-		return roomPanel;
+	public JPanel getPanelBackground1() {
+		return panelBackground1;
 	}
 
-	public JPanel getPanelBackground() {
-		return panelBackground;
+	public JPanel getPanelBackground2() {
+		return panelBackground2;
+	}
+
+	public JPanel getBacePannel() {
+		return bacePannel;
 	}
 }

@@ -10,19 +10,15 @@ import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 import client.ChatClient;
-import library.ChatMap;
 import library.ImageFile;
 import library.ObjectInOut;
 import library.Room;
@@ -102,6 +98,7 @@ public class MainFrame extends JFrame {
 						bufferedChatPanel.getRoomlistPanel().getExitRoomButton().setEnabled(false);
 						bufferedChatPanel.getChatPanel().setVisible(false);
 						bufferedChatPanel.getChatPanel().getTextArea().setText("");
+						bufferedChatPanel.changeRoomNameList();
 						stop = true;
 					} catch (IOException e1) {
 						e1.printStackTrace();
@@ -277,6 +274,7 @@ public class MainFrame extends JFrame {
 							bufferedChatPanel.getRoomlistPanel().getMyPageButton().setEnabled(false);
 							bufferedChatPanel.getRoomlistPanel().getLogoutButton().setEnabled(false);
 							bufferedChatPanel.getEnterRoomButton().setEnabled(false);
+							bufferedChatPanel.changeUserNameListl();
 							stop = false;
 						}
 					} catch (IOException e1) {
@@ -371,6 +369,5 @@ public class MainFrame extends JFrame {
 	
 	public void setStop(boolean stop) {
 		this.stop = stop;
-		System.out.println("트루로 변경");
 	}
 }

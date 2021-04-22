@@ -2,25 +2,14 @@ package gui;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Insets;
+import java.awt.Font;
 
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.border.Border;
-import javax.swing.border.LineBorder;
-import java.awt.Panel;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
-import javax.swing.JLabel;
-import java.awt.Font;
-import javax.swing.JButton;
+import javax.swing.border.LineBorder;
 
 public class ChatPanel extends JPanel {
 	private JTextField textField;
@@ -45,11 +34,6 @@ public class ChatPanel extends JPanel {
 		rommtitleLable.setFont(new Font("맑은 고딕", Font.PLAIN, 18));
 		rommtitleLable.setBounds(12, 10, 294, 32);
 		panel.add(rommtitleLable);
-		
-		JButton btnNewButton = new JButton("유저 리스트");
-		btnNewButton.setBackground(new Color(255, 182, 193));
-		btnNewButton.setBounds(12, 45, 97, 23);
-		panel.add(btnNewButton);
 		
 		textArea = new JTextArea();
 		textArea.setBorder(new LineBorder(Color.BLACK, 1));
