@@ -187,6 +187,8 @@ public class UserProfile extends JDialog implements WindowListener {
 		userLeave.setBounds(242, 382, 90, 59);
 		contentPanel.add(userLeave);
 		
+		addWindowListener(this);
+		
 		// 정보 수정
 		infoChangeButton.addActionListener(new ActionListener() {
 			@Override
@@ -366,15 +368,11 @@ public class UserProfile extends JDialog implements WindowListener {
 
 	@Override
 	public void windowClosing(WindowEvent e) {
-		dispose();
-		System.out.println("닫아짐?");
- 		mainFrame.setStop(true);
+		mainFrame.setStop(true);
 	}
 
 	@Override
 	public void windowClosed(WindowEvent e) {
-		System.out.println("닫아짐?");
- 		mainFrame.setStop(true);
 	}
 
 	@Override
@@ -394,7 +392,6 @@ public class UserProfile extends JDialog implements WindowListener {
 
 	@Override
 	public void windowDeactivated(WindowEvent e) {
-		System.out.println("닫아짐?");
  		mainFrame.setStop(true);
 	}
 }
